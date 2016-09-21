@@ -1,0 +1,3 @@
+Course - A certain class that has happened, regardless of date, example: Programming 1 aka CS120
+Student - A person enrolled in a course. Identified by Banner ID. example: Billy Bob banner ID 000444555
+Prereq - A course required to take another course
