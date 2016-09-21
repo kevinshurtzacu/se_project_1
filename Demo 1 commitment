@@ -1,0 +1,5 @@
+Here's what we're going to do by the demo on Friday the 23rd:
+Have a class that's "course"
+Have a class that's "student"
+For cucumber we will show that our getters and setters for course and student will work.
+We will be able to show what courses a student has taken.
