@@ -1,4 +1,5 @@
-/* Student.java
+/**
+ *  Student.java
  */
 
 public class Student

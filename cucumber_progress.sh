@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 javac -cp "jars/*:." step_definitions/*.java \
                      implementation/*.java
                    
