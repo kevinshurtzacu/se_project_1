@@ -1,23 +1,46 @@
-/* 
- * Last Modified By: Kevin Shurtz
- * Last Modified Date: 09/21/2016
+/**
+ * Represents a single course taken by an ACU student.  Maintains data
+ * for
+ * <ul>
+ *     <li>CRN (course registration number)</li>
+ *     <li>Banner ID</li>
+ *     <li>course subject</li>
+ *     <li>course title</li>
+ *     <li>course number</li>
+ *     <li>course number extension</li>
+ *     <li>course year</li>
+ *     <li>course term</li>
+ *     <li>current grade</li>
+ *     <li>whether student course is active</li>
+ * </ul>
+ * <p>
+ *     Future versions of Course may break into a Course and
+ *     CourseDescription object, so that data pertinent to state can
+ *     be separated from data only pertinent to a course's identity.
+ *     CourseDescriptions could then be looked up through the CRN
+ *     number of a Course object.
+ * </p>
  *
- * Notes: This will represent a single instance of a student's course.
- *        The Course object should be aggregated by students. Several 
- *        instances of this object will eventually be populated with data 
- *        from a database.
- * 
- * Course.java
- *     Public Object:   Course
- *     Public Enum:     Term
- * 
- * Table of Contents
- * 
+ * @author Kevin Shurtz
+ * @author Virginia Pettit
+ * @version 1.0
  */
-
 public class Course
 {
-    // Course Term Enum
+    /**
+     * Represents a term (semester, short-coruse, etc).
+     *
+     * Term can represent:
+     * <ul>
+     *     <li>Fall</li>
+     *     <li>Spring</li>
+     *     <li>January short-course</li>
+     *     <li>Maymester course</li>
+     * </ul>
+     *
+     * The Term enum can be extended at a later point to represent
+     * other similar terms.
+     */
     public enum Term {
         FALL,       // Fall term
         SPRING,     // Spring term
@@ -27,11 +50,11 @@ public class Course
     
     // Course characteristics
     int crn;                // Course Registration Number
-    int banner;             // Banner ID
-    
-    String coursetitle;     // Course title (no number)
-    int courseNumber;       // Course number (ie. 101, 102, etc.)
-    String courseNumberExt; // Course number extension (ie. 1, 2, H2, etc.)
+
+    String courseSubject;   // Course subject (BIBL, CS, IT, etc.)
+    String courseTitle;     // Course title (without number)
+    int courseNumber;       // Course number (101, 102, etc.)
+    String courseNumberExt; // Course number extension (1, 2, H2, etc.)
     
     // Time characteristics
     int courseYear;         // Year course is taken
@@ -40,106 +63,182 @@ public class Course
     // Student data
     double courseGrade;     // Student's grade in course (from 0.0 to 100.0)
     boolean inCourseNow;    // Whether the student is in the course now
-    
-	// Construct Course
-	public Course(int crnNum, int bannerNum, String title, int courseNum, 
-	        String ext, int year, Term cTerm, double grade, boolean now)
+
+    /**
+     * Constructs a Course object to represent a student's course.  Course
+     * delegates the instantiation of instance variables to method setCourse.
+     *
+     * @param crnNum    course registration number
+     * @param title     course title, such as 'Software Engineering', 'Networking', etc
+     * @param courseNum course number, such as 220, 221, etc
+     * @param ext       course number extension, such as 01, H1, etc
+     * @param year      year the course is taking place in
+     * @param cTerm     term the coures is taking place in
+     * @param grade     current grade for the course out of 100 points
+     * @param now       whether the course is being actively taken
+     * @see             Course#setCourse(int, int, String, int, String, int, Term, double, boolean)
+     */
+	public Course(int crnNum, String subject, String title, int courseNum, String ext, int year, Term cTerm, double grade, boolean now)
 	{
-	    setCourse(crnNum, bannerNum, title, courseNum, ext, year, cTerm, 
+	    setCourse(crnNum, subject, title, courseNum, ext, year, cTerm,
 	            grade, now);
 	}
-	
-	// Set the course instance variables
-	public void setCourse(int crnNum, int bannerNum, String title, int courseNum, 
-	        String ext, int year, Term cTerm, double grade, boolean now)
+
+    /**
+     * Assigns values to Course instance variables.  The function
+     * delegate assignment to each of the assignment functions
+     * for each instance variable, many of which validate the input.
+     *
+     * @param crnNum    course registration number
+     * @param title     course title, such as 'Software Engineering', 'Networking', etc
+     * @param courseNum course number, such as 220, 221, etc
+     * @param ext       course number extension, such as 01, H1, etc
+     * @param year      year the course is taking place in
+     * @param cTerm     term the coures is taking place in
+     * @param grade     current grade for the course out of 100 points
+     * @param now       whether the course is being actively taken
+     * @throws IllegalArgumentException If one of the arguements provided
+     *                                  was unacceptable
+     */
+	public void setCourse(int crnNum, String subject, String title, int courseNum, String ext, int year, Term cTerm, double grade, boolean now)
     {
-        // Validated assignments
-        setCRN(crnNum);             // Assign crn
-        setBanner(banner);          // Assign banner
-        setTitle(courseTitle);      // Assign title
-        setCourseNumber(courseNum); // Assign course number
-        setCourseNumberExt(ext);    // Assign course number extension
-        setCourseYear(year);        // Assign course year
-        setCourseTerm(Term);        // Assign course term
-        setCourseGrade(grade);      // Assign course grade
-        
-        // No validation necessary
-        inCourseNow = now;          // Assign if in course now
+        setCRN(crnNum);                 // Assign crn
+        setCourseSubject(subject);      // Assign subject
+        setCourseTitle(courseTitle);    // Assign title
+        setCourseNumber(courseNum);     // Assign course number
+        setCourseNumberExt(ext);        // Assign course number extension
+        setCourseYear(year);            // Assign course year
+        setCourseTerm(cTerm);           // Assign course term
+        setCourseGrade(grade);          // Assign course grade
+        setInCourseNow(now);              // Assign if in course now
     }
-    
-    // Validate and set the CRN
-    private void setCRN(int cnrNum) throws IllegalArgumentException
+
+    /**
+     * Assigns the course registration number.  No validation is conducted.
+     *
+     * @param cnrNum    course registration number, a unique course identifier
+     */
+    private void setCRN(int crnNum)
     {
         crn = crnNum;
     }
-    
-    // Validate and set the Banner ID
-    private void setBanner(int bannerNum) throws IllegalArgumentException
+
+    /**
+     * Assigns the course subject.  No validation is conducted on the string,
+     * but typically a course subject is fully capitalized, and no longer
+     * than four characters.
+     *
+     * @param subject       course subject, such as BIBL, CS, IT, etc
+     */
+    public void setCourseSubject(String subject)
     {
-        // If the Banner ID is the wrong size
-        if (Integer.parseInt(banner).length() != 9)
-            throw new IllegalArgumentException("Banner ID has incorrect number of digits (has " + Integer.parseInt(banner).length() + ", needs 9)");
-        
-        // Otherwise, set the Banner ID
-        banner = bannerNum;
+        courseSubject = subject;
     }
-    
-    // Validate and set the course title
-    private void setTitle(String title) throws IllegalArgumentException
+
+    /**
+     * Assigns the course title.  No validation is conducted.  The title is not
+     * to include the course's number, or other identifying information.
+     *
+     * @param title     the title of the course, such as 'Software Engineering', or 'Networking'
+     */
+    private void setCourseTitle(String title)
     {
         courseTitle = title;
     }
-    
-    // Validate and set the course number
-    private void setCourseNumber(int courseNum) throws IllegalArgumentException
+
+    /**
+     * Assigns the course number.  Examples include 101, 102, 374, etc.  Extensions to
+     * course numbers, like 'H1' in '101.H1', are not stored in this field.  Rather,
+     * extensions are stored as a String in setCourseNumberExt.
+     *
+     * @param courseNum     course number
+     * @see                 Course#setCourseNumberExt(String)
+     */
+    private void setCourseNumber(int courseNum)
     {
         courseNumber = courseNum;
     }
-    
-    // Validate and set the course number extension
-    private void setCourseNumberExt(String ext) throws IllegalArgumentException
+
+    /**
+     * Assigns the course number extension.  Examples include '01', '02', and 'H2'.
+     * The full identifier for a course can be created by concatenating the
+     * course number with its extension, joined by a '.'.  For example,
+     * 101.H1
+     *
+     * @param ext       course number extension
+     * @see   Course#setCourseNumber(int)
+     */
+    private void setCourseNumberExt(String ext)
     {
         courseNumberExt = ext;
     }
-    
-    // Validate and set the year
-    private void setCourseYear(int year) throws IllegalArgumentException
+
+    /**
+     * Assigns the year in which the course is taken.  Validation insures that the
+     * year is a reasonable input.
+     *
+     * @param year      the year in which the course is being taken
+     * @throws IllegalArgumentException If the year is from before 1906,
+     *                                  more than four characters, or
+     *                                  less than four characters
+     */
+    private void setCourseYear(int year)
     {
         // If the year is from before ACU was founded
         if (year < 1906)
             throw new IllegalArgumentException("Invalid year (before 1906)");
         
         // If a typo has rendered a year with more than four characters
-        if (Integer.parseInt(year).length() > 4)
+        if (Integer.toString(year).length() > 4)
             throw new IllegalArgumentException("Invalid year (more than 4 characters)");
         
         // If a typo has rendered a year with less than four characters
-        if (Integer.parseInt(year).length() < 4)
+        if (Integer.toString(year).length() < 4)
             throw new IllegalArgumentException("Invalid year (less than 4 characters");
         
         courseYear = year;
     }
-    
-    // Validate and set the Term
-    private void setCourseTerm(Term cTerm) throws IllegalArgumentException
+
+    /**
+     * Assigns the term in which a course is taken.  The term is represented as
+     * a Term enum, which can assume one of several predefined values.  Term is
+     * possessed by the Course object.
+     *
+     * @param cTerm     the term in which a course is taken
+     * @see   Term
+     */
+    private void setCourseTerm(Term cTerm)
     {
         courseTerm = cTerm;
     }
-    
-    // Validate and set the grade
-    private void setCourseGrade(int grade) throws IllegalArgumentException
+
+    /**
+     * Assigns the grade a student has in a course.  The grade cannot be above
+     * a 100.0 or below a 0.0.
+     *
+     * @param grade     the grade a student has in an instance of Course
+     * @throws IllegalArgumentException If a student is assigned a value above 100.0 or
+     *                                  if a student is assigned a value below 0.0.
+     */
+    private void setCourseGrade(double grade)
     {
-        if (grade > 100)
+        if (grade > 100.0)
             throw new IllegalArgumentException("Grade above 100% not possible");
         
-        if (grade < 0)
+        if (grade < 0.0)
             throw new IllegalArgumentException("Grade below 0% not possible");
         
         courseGrade = grade;
     }
-    
-    // Set whether in course now
-    private void setInCourseNow(boolean now) throws IllegalArgumentException
+
+    /**
+     * Assigns boolean regarding whether a student is actively taking the course.
+     * There is no validation that can occur in the function.  This value is
+     * used to differentiate between past and current courses.
+     *
+     * @param now       whether a student is actively taking the course
+     */
+    private void setInCourseNow(boolean now)
     {
         inCourseNow = now;
     }
