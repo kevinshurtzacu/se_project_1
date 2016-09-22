@@ -3,7 +3,6 @@
  * for
  * <ul>
  *     <li>CRN (course registration number)</li>
- *     <li>Banner ID</li>
  *     <li>course subject</li>
  *     <li>course title</li>
  *     <li>course number</li>
@@ -149,13 +148,18 @@ public class Course
     /**
      * Assigns the course number.  Examples include 101, 102, 374, etc.  Extensions to
      * course numbers, like 'H1' in '101.H1', are not stored in this field.  Rather,
-     * extensions are stored as a String in setCourseNumberExt.
+     * extensions are stored as a String in setCourseNumberExt.  If a course number
+     * does not consist of three digits, an exception is thrown.
      *
      * @param courseNum     course number
+     * @throws IllegalArgumentException If the course number is not three digits
      * @see                 Course#setCourseNumberExt(String)
      */
     private void setCourseNumber(int courseNum)
     {
+        if (Integer.toString(courseNum).length() != 3)
+            throw new IllegalArgumentException("Course number is not three digits");
+
         courseNumber = courseNum;
     }
 
