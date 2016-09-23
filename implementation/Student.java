@@ -1,25 +1,40 @@
-/* Student.java
+/**
+ *  Student.java
  */
 
 public class Student
 {
-	public static void main(String[] args) {
-		System.out.println("I'm a student");
-	}
-
-
-	/**
-	 * Assignes the Banner ID
-	 * @param bannerNum
-	 */
-	private void setBanner(int bannerNum)
+	int bannerID;
+	String lastName;
+	String firstName;
+	String emailAddress;
+	
+	
+	public Student(int bID, String last, String first, String email) 
 	{
-		// If the Banner ID is the wrong size
-		if (Integer.parseInt(banner).length() != 9)
-			throw new IllegalArgumentException("Banner ID has incorrect number of digits (has " + Integer.parseInt(banner).length() + ", needs 9)");
-
-		// Otherwise, set the Banner ID
-		banner = bannerNum;
+		setStudent(bID, last, first, email);
 	}
-
+	public void setStudent(int bID, String last, String first, String email)
+	{
+		setBannerID(bID);
+		setLastName(last);
+		setFirstName(first);
+		setEmailAddress(email);
+	}
+	private void setBannerID(int bID)
+	{
+		bannerID = bID;
+	}
+	private void setLastName(String last)
+	{
+		lastName = last;
+	}
+	private void setFirstName(String first)
+	{
+		firstName = first;
+	}
+	private void setEmailAddress(String email)
+    {
+        emailAddress = email;
+    }
 }

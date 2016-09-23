@@ -1,3 +1,6 @@
+
+package implementation;
+
 /**
  * Represents a single course taken by an ACU student.  Maintains data
  * for
@@ -40,13 +43,14 @@ public class Course
      * The Term enum can be extended at a later point to represent
      * other similar terms.
      */
-    public enum Term {
+    public enum Term
+    {
         FALL,       // Fall term
         SPRING,     // Spring term
         JAN_SHORT,  // January short-course
         MAY,        // "Maymester" short-course
     }
-    
+
     // Course characteristics
     int crn;                // Course Registration Number
 
@@ -54,7 +58,7 @@ public class Course
     String courseTitle;     // Course title (without number)
     int courseNumber;       // Course number (101, 102, etc.)
     String courseNumberExt; // Course number extension (1, 2, H2, etc.)
-    
+
     // Time characteristics
     int courseYear;         // Year course is taken
     Term courseTerm;        // Term during which course is taken
@@ -82,6 +86,12 @@ public class Course
 	    setCourse(crnNum, subject, title, courseNum, ext, year, cTerm,
 	            grade, now);
 	}
+
+    public Course(int crnNum, String subject, String title, int courseNum, String ext, int year, String cTerm, double grade, boolean now)
+    {
+        setCourse(crnNum, subject, title, courseNum, ext, year, cTerm,
+                grade, now);
+    }
 
     /**
      * Assigns values to Course instance variables.  The function
@@ -112,12 +122,25 @@ public class Course
         setInCourseNow(now);              // Assign if in course now
     }
 
+    public void setCourse(int crnNum, String subject, String title, int courseNum, String ext, int year, String cTerm, double grade, boolean now)
+    {
+        setCRN(crnNum);                 // Assign crn
+        setCourseSubject(subject);      // Assign subject
+        setCourseTitle(courseTitle);    // Assign title
+        setCourseNumber(courseNum);     // Assign course number
+        setCourseNumberExt(ext);        // Assign course number extension
+        setCourseYear(year);            // Assign course year
+        setCourseTerm(cTerm);           // Assign course term
+        setCourseGrade(grade);          // Assign course grade
+        setInCourseNow(now);              // Assign if in course now
+    }
+
     /**
      * Assigns the course registration number.  No validation is conducted.
      *
      * @param cnrNum    course registration number, a unique course identifier
      */
-    private void setCRN(int crnNum)
+    public void setCRN(int crnNum)
     {
         crn = crnNum;
     }
@@ -140,7 +163,7 @@ public class Course
      *
      * @param title     the title of the course, such as 'Software Engineering', or 'Networking'
      */
-    private void setCourseTitle(String title)
+    public void setCourseTitle(String title)
     {
         courseTitle = title;
     }
@@ -155,7 +178,7 @@ public class Course
      * @throws IllegalArgumentException If the course number is not three digits
      * @see                 Course#setCourseNumberExt(String)
      */
-    private void setCourseNumber(int courseNum)
+    public void setCourseNumber(int courseNum)
     {
         if (Integer.toString(courseNum).length() != 3)
             throw new IllegalArgumentException("Course number is not three digits");
@@ -172,7 +195,7 @@ public class Course
      * @param ext       course number extension
      * @see   Course#setCourseNumber(int)
      */
-    private void setCourseNumberExt(String ext)
+    public void setCourseNumberExt(String ext)
     {
         courseNumberExt = ext;
     }
@@ -186,7 +209,7 @@ public class Course
      *                                  more than four characters, or
      *                                  less than four characters
      */
-    private void setCourseYear(int year)
+    public void setCourseYear(int year)
     {
         // If the year is from before ACU was founded
         if (year < 1906)
@@ -217,6 +240,28 @@ public class Course
     }
 
     /**
+     * Assigns the term in which a course is taken.  The term is represented as
+     * a Term enum, which can assume one of several predefined values.  Term is
+     * possessed by the Course object.
+     *
+     * @param cTerm     the term in which a course is taken as a string
+     * @see   Term
+     */
+    public void setCourseTerm(String cTerm)
+    {
+        if (cTerm.toUpperCase().equals("FALL"))
+            courseTerm = Term.FALL;
+        else if (cTerm.toUpperCase().equals("SPRING"))
+            courseTerm = Term.SPRING;
+        else if (cTerm.toUpperCase().equals("JAN_SHORT"))
+            courseTerm = Term.JAN_SHORT;
+        else if (cTerm.toUpperCase().equals("MAY"))
+            courseTerm = Term.MAY;
+        else
+            courseTerm = null;
+    }
+
+    /**
      * Assigns the grade a student has in a course.  The grade cannot be above
      * a 100.0 or below a 0.0.
      *
@@ -224,7 +269,7 @@ public class Course
      * @throws IllegalArgumentException If a student is assigned a value above 100.0 or
      *                                  if a student is assigned a value below 0.0.
      */
-    private void setCourseGrade(double grade)
+    public void setCourseGrade(double grade)
     {
         if (grade > 100.0)
             throw new IllegalArgumentException("Grade above 100% not possible");
@@ -242,9 +287,58 @@ public class Course
      *
      * @param now       whether a student is actively taking the course
      */
-    private void setInCourseNow(boolean now)
+    public void setInCourseNow(boolean now)
     {
         inCourseNow = now;
+    }
+
+    public int getCrn() {
+        return crn;
+    }
+
+    public String getCourseSubject() {
+        return courseSubject;
+    }
+
+    public String getCourseTitle() {
+        return courseTitle;
+    }
+
+    public int getCourseNumber() {
+        return courseNumber;
+    }
+
+    public String getCourseNumberExt() {
+        return courseNumberExt;
+    }
+
+    public int getCourseYear() {
+        return courseYear;
+    }
+
+    public String getCourseTerm()
+    {
+        if (courseTerm == Term.FALL)
+            return "Fall";
+
+        if (courseTerm == Term.SPRING)
+            return "Spring";
+
+        if (courseTerm == Term.JAN_SHORT)
+            return "January Short";
+
+        if (courseTerm == Term.MAY)
+            return "May";
+
+        return "";
+    }
+
+    public double getCourseGrade() {
+        return courseGrade;
+    }
+
+    public boolean isInCourseNow() {
+        return inCourseNow;
     }
 }
 
