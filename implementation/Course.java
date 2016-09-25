@@ -1,25 +1,20 @@
 package implementation;
 
 /**
- * Represents a single course taken by an ACU student.  Maintains data
- * for
+ * Represents a single course taken by an ACU student.  Maintains data for
  * <ul>
  *     <li>CRN (course registration number)</li>
- *     <li>course subject</li>
- *     <li>course title</li>
- *     <li>course number</li>
  *     <li>course number extension</li>
  *     <li>course year</li>
  *     <li>course term</li>
  *     <li>current grade</li>
  *     <li>whether student course is active</li>
  * </ul>
+ *
  * <p>
- *     Future versions of Course may break into a Course and
- *     CourseDescription object, so that data pertinent to state can
- *     be separated from data only pertinent to a course's identity.
- *     CourseDescriptions could then be looked up through the CRN
- *     number of a Course object.
+ *     Courses and CourseDescriptions will be able to reference one another
+ *     through their CRNs.  CourseDescription is presently capable of equating
+ *     itself with a Course object by use of the default equals method.
  * </p>
  *
  * @author Kevin Shurtz
@@ -45,14 +40,12 @@ public class Course
      * delegates the instantiation of instance variables to method setCourse.
      *
      * @param crnNum    course registration number
-     * @param title     course title, such as 'Software Engineering', 'Networking', etc
-     * @param courseNum course number, such as 220, 221, etc
      * @param ext       course number extension, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
      * @param grade     current grade for the course out of 100 points
      * @param now       whether the course is being actively taken
-     * @see             Course#setCourse(int, int, String, int, String, int, Term, double, boolean)
+     * @see             Course#setCourse(int, String, int, Term, double, boolean)
      */
 	public Course(int crnNum, String ext, int year, Term cTerm, double grade, boolean now)
 	{
@@ -65,8 +58,6 @@ public class Course
      * for each instance variable, many of which validate the input.
      *
      * @param crnNum    course registration number
-     * @param title     course title, such as 'Software Engineering', 'Networking', etc
-     * @param courseNum course number, such as 220, 221, etc
      * @param ext       course number extension, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -88,7 +79,7 @@ public class Course
     /**
      * Assigns the course registration number.  No validation is conducted.
      *
-     * @param cnrNum    course registration number, a unique course identifier
+     * @param crnNum    course registration number, a unique course identifier
      */
     public void setCourseCRN(int crnNum)
     {
@@ -102,7 +93,6 @@ public class Course
      * 101.H1
      *
      * @param ext       course number extension
-     * @see   Course#setCourseNumber(int)
      */
     public void setCourseNumberExt(String ext)
     {

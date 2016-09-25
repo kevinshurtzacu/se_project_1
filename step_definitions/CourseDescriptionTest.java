@@ -6,8 +6,8 @@ import implementation.CourseDescription;
 import static org.junit.Assert.*;
 
 /**
- * These defintions will be used by the cucumber_progress.sh scripts at the root of the project
- * directory to test CourseDescription features, referencing the course_description.feature in the
+ * These defintions will be used by the cucumber scripts at the root of the project directory
+ * to test CourseDescription features, referencing the course_description.feature in the
  * features directory.
  *
  * @author  Kevin Shurtz

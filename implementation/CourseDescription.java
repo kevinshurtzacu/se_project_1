@@ -1,8 +1,7 @@
 package implementation;
 
 /**
- * Represents a single course offered by ACU.  Maintains data
- * for
+ * Represents a single course offered by ACU.  Maintains data for
  * <ul>
  *     <li>CRN (course registration number)</li>
  *     <li>course subject</li>
@@ -11,8 +10,8 @@ package implementation;
  * </ul>
  *
  * <p>
- *     Instances of Course will also contain CRNs, by which they may
- *     look up data from the coresponding CourseDescription.
+ *     Instances of CourseDescription will also contain CRNs, by which Courses may
+ *     look up data from their coresponding CourseDescription.
  * </p>
  *
  * @author Kevin Shurtz
@@ -36,7 +35,7 @@ public class CourseDescription
      * @param courseNum course number, such as 220, 221, etc
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
-     * @see             Course#setCourse(int, int, String, int, String, int, Term, double, boolean)
+     * @see             CourseDescription#setCourseDescription(int, String, int, String) 
      */
     public CourseDescription(int crnNum, String subject, int courseNum, String title)
     {
@@ -55,7 +54,7 @@ public class CourseDescription
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-    public void setCourse(int crnNum, String subject, int courseNum, String title)
+    public void setCourseDescription(int crnNum, String subject, int courseNum, String title)
     {
         setCourseCRN(crnNum);           // Assign crn
         setCourseSubject(subject);      // Assign subject
@@ -66,7 +65,7 @@ public class CourseDescription
     /**
      * Assigns the course registration number.  No validation is conducted.
      *
-     * @param cnrNum    course registration number, a unique course identifier
+     * @param crnNum    course registration number, a unique course identifier
      */
     public void setCourseCRN(int crnNum)
     {
