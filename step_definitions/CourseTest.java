@@ -1,3 +1,10 @@
+package step_definitions;
+
+import implementation.Course;
+import cucumber.api.java.en.*;
+import cucumber.api.PendingException;
+import static org.junit.Assert.*;
+
 /**
  * These defintions will be used by the cucumber_progress.sh scripts at the root of the project
  * directory to test Course features, referencing the course.feature in the
@@ -6,53 +13,50 @@
  * @author  Kevin Shurtz
  * @version 1.0
  */
-package step_definitions;
-
-import cucumber.api.java.en.*;
-import cucumber.api.PendingException;
-import implementation.Course;
-import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.Before;
-
 public class CourseTest
 {
-    private Course course = new Course(12345, "CS", "Programming I", 130, "", 2015, "FALL", 90.5, false);; // Course object to be tested
-    private Object result = null; // result of each test
+    // Course object to be tested
+    private static Course course = new Course(12345, "CS", "Programming I", 130, "",
+            2015, "FALL", 90.5, false);
 
-    /*
-    @Before
-    public void setUp()
-    {
-        course = new Course(12345, "CS", "Programming I", 130, "", 2015, "FALL", 90.5, false);
-        result = null;
-    }
-*/
+    // result of each test
+    private static Object result = null;
 
-    @Given("^the course has the subject (.*?)$")
-    public void theCourseHasTheSubject(String subject) throws Throwable
+    // Givens
+    @Given("^the course has the (.*?(?:\\sextension)?) (.*?)$")
+    public void theCourseHas(String attribute, String value) throws Throwable
     {
-        System.out.println(subject);
-        System.out.println(course);
-        course.setCourseSubject(subject);
-    }
+        attribute = attribute.toLowerCase();
 
-    @Given("^the course has the title ((?:\\w+\\s?)+)$")
-    public void theCourseHasTheTitle(String title) throws Throwable
-    {
-        course.setCourseTitle(title);
-    }
+        if (attribute.equals("subject"))
+            course.setCourseSubject(value);
 
-    @Given("^the course has the number (\\d+)$")
-    public void theCourseHasTheNumber(int courseNumber) throws Throwable
-    {
-        course.setCourseNumber(courseNumber);
+        if (attribute.equals("title"))
+            course.setCourseTitle(value);
+
+        if (attribute.equals("number"))
+            course.setCourseNumber(Integer.parseInt(value));
+
+        if (attribute.equals("number extension"))
+            course.setCourseNumberExt(value);
     }
 
-    @Given("^the course has the number extension (.*?)?$")
-    public void theCourseHasTheNumberExtension(String ext) throws Throwable
+    @Given("^the course is (?:in the|a) (.*?) (?:term|course)$")
+    public void theCourseIsInTheTerm(String term) throws Throwable
     {
-        course.setCourseNumberExt(ext);
+        term = term.toUpperCase();
+
+        if (term.equals("FALL"))
+            course.setCourseTerm("FALL");
+
+        if (term.equals("SPRING"))
+            course.setCourseTerm("SPRING");
+
+        if (term.equals("JANUARY SHORT"))
+            course.setCourseTerm("JANUARY SHORT");
+
+        if (term.equals("MAY") || term.equals("MAYMESTER"))
+            course.setCourseTerm("MAY");
     }
 
     @Given("^the course is in the year (\\d+)$")
@@ -61,19 +65,13 @@ public class CourseTest
         course.setCourseYear(year);
     }
 
-    @Given("^the course is in the (.*?) term$")
-    public void theCourseIsInTheTerm(String term) throws Throwable
-    {
-        course.setCourseTerm(term);
-    }
-
-    @Given("^the student has a grade of (\\d+)$")
-    public void theStudentHasAGradeOf(int grade) throws Throwable
+    @Given("^the course(?:'s)? grade is (\\d+(?:\\.?\\d+)?)$")
+    public void theCourseGradeIs(double grade) throws Throwable
     {
         course.setCourseGrade(grade);
     }
 
-    @Given("^the student (is not|is) actively taking the course$")
+    @Given("^the course (is not|is) being taken by (?:the|a) student$")
     public void theStudentActivelyTakingTheCourse(String active) throws Throwable
     {
         boolean inCourse;
@@ -86,9 +84,12 @@ public class CourseTest
         course.setInCourseNow(inCourse);
     }
 
+    // Whens
     @When("^I ask for the course (\\w+)$")
     public void iAskForTheCourse(String request) throws Throwable
     {
+        request = request.toLowerCase();
+
         if (request.equals("subject"))
             result = course.getCourseSubject();
 
@@ -111,34 +112,32 @@ public class CourseTest
             result = course.getCourseGrade();
     }
 
-    @When("^I ask if the student is active in the course$")
+    @When("^I ask if the course is being taken by (?:the|a) student$")
     public void iAskIfTheStudentIsActiveInTheCourse() throws Throwable
     {
         result = course.isInCourseNow();
     }
 
-    @Then("^I receive the string ((?:\\w+\\s?)+)$")
-    public void iRecieve(String expectation) throws Throwable
+    // Thens
+    @Then("^I receive the string (.*?) from(?:\\sthe)? course$")
+    public void iRecieveTheString(String expected) throws Throwable
     {
-        String realResult = (String)result;
-        assertEquals(expectation, realResult);
+        assertEquals(expected, (String)result);
     }
 
-    @Then("^I receive the number (\\d+)$")
-    public void iReceiveTheNumber(Integer number) throws Throwable
+    @Then("^I receive the integer (\\d+) from(?:\\sthe)? course?$")
+    public void iReceiveTheInteger(Integer expected) throws Throwable
     {
-        Integer realResult = (Integer)result;
-        assertEquals(number, realResult);
+        assertEquals(expected, (Integer)result);
     }
 
-    @Then("^I receive the double (\\d+(?:\\.\\d+)?)$")
-    public void iReceiveTheDouble(Double grade) throws Throwable
+    @Then("^I receive the double (\\d+(?:\\.?\\d+)) from(?:\\sthe)? course$")
+    public void iReceiveTheDouble(Double expected) throws Throwable
     {
-        Double realResult = (Double)result;
-        assertEquals(grade, realResult);
+        assertEquals(expected, (Double)result);
     }
 
-    @Then("^I am told that he (is|is not) active$")
+    @Then("^I am told that it (is|is not) being taken by (?:the|a) student$")
     public void iAmToldThatHeIsActive(String active) throws Throwable
     {
         boolean inCourse;

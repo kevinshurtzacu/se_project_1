@@ -1,4 +1,3 @@
-
 package implementation;
 
 /**
@@ -29,28 +28,6 @@ package implementation;
  */
 public class Course
 {
-    /**
-     * Represents a term (semester, short-coruse, etc).
-     *
-     * Term can represent:
-     * <ul>
-     *     <li>Fall</li>
-     *     <li>Spring</li>
-     *     <li>January short-course</li>
-     *     <li>Maymester course</li>
-     * </ul>
-     *
-     * The Term enum can be extended at a later point to represent
-     * other similar terms.
-     */
-    public enum Term
-    {
-        FALL,       // Fall term
-        SPRING,     // Spring term
-        JAN_SHORT,  // January short-course
-        MAY,        // "Maymester" short-course
-    }
-
     // Course characteristics
     int crn;                // Course Registration Number
 
@@ -141,6 +118,16 @@ public class Course
      * @param cnrNum    course registration number, a unique course identifier
      */
     public void setCRN(int crnNum)
+    {
+        crn = crnNum;
+    }
+
+    /**
+     * Assigns the course registration number.  No validation is conducted.
+     *
+     * @param cnrNum    course registration number, a unique course identifier
+     */
+    public void setCourseCRN(int crnNum)
     {
         crn = crnNum;
     }
@@ -293,6 +280,11 @@ public class Course
     }
 
     public int getCrn() {
+        return crn;
+    }
+
+    public int getCourseCRN()
+    {
         return crn;
     }
 

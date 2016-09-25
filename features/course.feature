@@ -7,15 +7,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks for the course subject
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
     When I ask for the course subject
-    Then I receive the string <result>
+    Then I receive the string <result> from course
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result |
@@ -27,15 +27,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks for the course title
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
     When I ask for the course title
-    Then I receive the string <result>
+    Then I receive the string <result> from course
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result                      |
@@ -47,15 +47,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks for the course number
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
     When I ask for the course number
-    Then I receive the number <result>
+    Then I receive the integer <result> from course
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result |
@@ -66,15 +66,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks for the course number extension
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
     When I ask for the course extension
-    Then I receive the string <result>
+    Then I receive the string <result> from course
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result |
@@ -86,15 +86,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks for the year in which the course was offered
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
     When I ask for the course year
-    Then I receive the number <result>
+    Then I receive the integer <result> from course
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result |
@@ -106,15 +106,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks for the term in which the course was offered
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
     When I ask for the course term
-    Then I receive the string <result>
+    Then I receive the string <result> from course
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result |
@@ -126,15 +126,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks for the student's grade in the course
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
     When I ask for the course grade
-    Then I receive the double <result>
+    Then I receive the double <result> from course
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result |
@@ -146,15 +146,15 @@ Feature: Course instance maintains data about itself
 
   Scenario Outline: System asks if student is active in course
     Given the course has the subject <subject>
-    And the course has the title <title>
-    And the course has the number <number>
-    And the course has the number extension <extension>
-    And the course is in the year <year>
-    And the course is in the <term> term
-    And the student has a grade of <grade>
-    And the student <active> actively taking the course
-    When I ask if the student is active in the course
-    Then I am told that he <result> active
+      And the course has the title <title>
+      And the course has the number <number>
+      And the course has the number extension <extension>
+      And the course is in the year <year>
+      And the course is in the <term> term
+      And the course grade is <grade>
+      And the course <active> being taken by the student
+    When I ask if the course is being taken by the student
+    Then I am told that it <result> being taken by the student
 
     Examples:
       | subject | title                       | number | extension | year | term     | grade | active | result |
