@@ -39,7 +39,7 @@ public class CourseDescription
      */
     public CourseDescription(int crnNum, String subject, int courseNum, String title)
     {
-        setCourse(crnNum, subject, courseNum, title);
+        setCourseDescription(crnNum, subject, courseNum, title);
     }
 
     /**
