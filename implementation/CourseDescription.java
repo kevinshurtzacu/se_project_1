@@ -35,7 +35,7 @@ public class CourseDescription
      * @param courseNum course number, such as 220, 221, etc
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
-     * @see             CourseDescription#setCourseDescription(int, String, int, String) 
+     * @see             CourseDescription#setCourseDescription(int, String, int, String)
      */
     public CourseDescription(int crnNum, String subject, int courseNum, String title)
     {
