@@ -34,6 +34,8 @@ public class CourseDescription
      * @param subject   course subject, such as 'BIBL', 'CS', 'IT', etc
      * @param title     course title, such as 'Software Engineering', 'Networking', etc
      * @param courseNum course number, such as 220, 221, etc
+     * @throws IllegalArgumentException If one of the arguements provided
+     *                                  was unacceptable
      * @see             Course#setCourse(int, int, String, int, String, int, Term, double, boolean)
      */
     public CourseDescription(int crnNum, String subject, int courseNum, String title)
@@ -42,18 +44,14 @@ public class CourseDescription
     }
 
     /**
-     * Assigns values to Course instance variables.  The function
-     * delegate assignment to each of the assignment functions
+     * Assigns values to CourseDescription instance variables. The function
+     * delegates assignment to each of the assignment functions
      * for each instance variable, many of which validate the input.
      *
      * @param crnNum    course registration number
+     * @param subject   course subject, such as 'BIBL', 'CS', 'IT', etc
      * @param title     course title, such as 'Software Engineering', 'Networking', etc
      * @param courseNum course number, such as 220, 221, etc
-     * @param ext       course number extension, such as 01, H1, etc
-     * @param year      year the course is taking place in
-     * @param cTerm     term the coures is taking place in
-     * @param grade     current grade for the course out of 100 points
-     * @param now       whether the course is being actively taken
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */

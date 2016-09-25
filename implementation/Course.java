@@ -29,11 +29,7 @@ package implementation;
 public class Course
 {
     // Course characteristics
-    int crn;                // Course Registration Number
-
-    String courseSubject;   // Course subject (BIBL, CS, IT, etc.)
-    String courseTitle;     // Course title (without number)
-    int courseNumber;       // Course number (101, 102, etc.)
+    int courseCRN;          // Course Registration Number
     String courseNumberExt; // Course number extension (1, 2, H2, etc.)
 
     // Time characteristics
@@ -58,17 +54,10 @@ public class Course
      * @param now       whether the course is being actively taken
      * @see             Course#setCourse(int, int, String, int, String, int, Term, double, boolean)
      */
-	public Course(int crnNum, String subject, String title, int courseNum, String ext, int year, Term cTerm, double grade, boolean now)
+	public Course(int crnNum, String ext, int year, Term cTerm, double grade, boolean now)
 	{
-	    setCourse(crnNum, subject, title, courseNum, ext, year, cTerm,
-	            grade, now);
+	    setCourse(crnNum, ext, year, cTerm, grade, now);
 	}
-
-    public Course(int crnNum, String subject, String title, int courseNum, String ext, int year, String cTerm, double grade, boolean now)
-    {
-        setCourse(crnNum, subject, title, courseNum, ext, year, cTerm,
-                grade, now);
-    }
 
     /**
      * Assigns values to Course instance variables.  The function
@@ -86,40 +75,14 @@ public class Course
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-	public void setCourse(int crnNum, String subject, String title, int courseNum, String ext, int year, Term cTerm, double grade, boolean now)
+	public void setCourse(int crnNum, String ext, int year, Term cTerm, double grade, boolean now)
     {
-        setCRN(crnNum);                 // Assign crn
-        setCourseSubject(subject);      // Assign subject
-        setCourseTitle(courseTitle);    // Assign title
-        setCourseNumber(courseNum);     // Assign course number
+        setCourseCRN(crnNum);           // Assign crn
         setCourseNumberExt(ext);        // Assign course number extension
         setCourseYear(year);            // Assign course year
         setCourseTerm(cTerm);           // Assign course term
         setCourseGrade(grade);          // Assign course grade
-        setInCourseNow(now);              // Assign if in course now
-    }
-
-    public void setCourse(int crnNum, String subject, String title, int courseNum, String ext, int year, String cTerm, double grade, boolean now)
-    {
-        setCRN(crnNum);                 // Assign crn
-        setCourseSubject(subject);      // Assign subject
-        setCourseTitle(courseTitle);    // Assign title
-        setCourseNumber(courseNum);     // Assign course number
-        setCourseNumberExt(ext);        // Assign course number extension
-        setCourseYear(year);            // Assign course year
-        setCourseTerm(cTerm);           // Assign course term
-        setCourseGrade(grade);          // Assign course grade
-        setInCourseNow(now);              // Assign if in course now
-    }
-
-    /**
-     * Assigns the course registration number.  No validation is conducted.
-     *
-     * @param cnrNum    course registration number, a unique course identifier
-     */
-    public void setCRN(int crnNum)
-    {
-        crn = crnNum;
+        setInCourseNow(now);            // Assign if in course now
     }
 
     /**
@@ -129,48 +92,7 @@ public class Course
      */
     public void setCourseCRN(int crnNum)
     {
-        crn = crnNum;
-    }
-
-    /**
-     * Assigns the course subject.  No validation is conducted on the string,
-     * but typically a course subject is fully capitalized, and no longer
-     * than four characters.
-     *
-     * @param subject       course subject, such as BIBL, CS, IT, etc
-     */
-    public void setCourseSubject(String subject)
-    {
-        courseSubject = subject;
-    }
-
-    /**
-     * Assigns the course title.  No validation is conducted.  The title is not
-     * to include the course's number, or other identifying information.
-     *
-     * @param title     the title of the course, such as 'Software Engineering', or 'Networking'
-     */
-    public void setCourseTitle(String title)
-    {
-        courseTitle = title;
-    }
-
-    /**
-     * Assigns the course number.  Examples include 101, 102, 374, etc.  Extensions to
-     * course numbers, like 'H1' in '101.H1', are not stored in this field.  Rather,
-     * extensions are stored as a String in setCourseNumberExt.  If a course number
-     * does not consist of three digits, an exception is thrown.
-     *
-     * @param courseNum     course number
-     * @throws IllegalArgumentException If the course number is not three digits
-     * @see                 Course#setCourseNumberExt(String)
-     */
-    public void setCourseNumber(int courseNum)
-    {
-        if (Integer.toString(courseNum).length() != 3)
-            throw new IllegalArgumentException("Course number is not three digits");
-
-        courseNumber = courseNum;
+        courseCRN = crnNum;
     }
 
     /**
@@ -215,37 +137,15 @@ public class Course
 
     /**
      * Assigns the term in which a course is taken.  The term is represented as
-     * a Term enum, which can assume one of several predefined values.  Term is
-     * possessed by the Course object.
+     * a Term enum, which can assume one of several predefined values.  Term exists
+     * independently of the Course object.
      *
      * @param cTerm     the term in which a course is taken
      * @see   Term
      */
-    private void setCourseTerm(Term cTerm)
+    public void setCourseTerm(Term cTerm)
     {
         courseTerm = cTerm;
-    }
-
-    /**
-     * Assigns the term in which a course is taken.  The term is represented as
-     * a Term enum, which can assume one of several predefined values.  Term is
-     * possessed by the Course object.
-     *
-     * @param cTerm     the term in which a course is taken as a string
-     * @see   Term
-     */
-    public void setCourseTerm(String cTerm)
-    {
-        if (cTerm.toUpperCase().equals("FALL"))
-            courseTerm = Term.FALL;
-        else if (cTerm.toUpperCase().equals("SPRING"))
-            courseTerm = Term.SPRING;
-        else if (cTerm.toUpperCase().equals("JAN_SHORT"))
-            courseTerm = Term.JAN_SHORT;
-        else if (cTerm.toUpperCase().equals("MAY"))
-            courseTerm = Term.MAY;
-        else
-            courseTerm = null;
     }
 
     /**
@@ -279,56 +179,72 @@ public class Course
         inCourseNow = now;
     }
 
-    public int getCrn() {
-        return crn;
-    }
-
+    /**
+     * Returns the course registration number.  This can be used to look up
+     * a CourseDescription for this course.
+     *
+     * @return  the course registration number
+     */
     public int getCourseCRN()
     {
-        return crn;
+        return courseCRN;
     }
 
-    public String getCourseSubject() {
-        return courseSubject;
-    }
-
-    public String getCourseTitle() {
-        return courseTitle;
-    }
-
-    public int getCourseNumber() {
-        return courseNumber;
-    }
-
+    /**
+     * Returns the course number extension.  Courses often have extensions
+     * for their course numbers to differentiate different instances of the
+     * course, represented by a mixture of digits and characters.  Examples
+     * include '01', '02', 'H2', etc.
+     *
+     * Often, the full course identifier is presented as the subject, course
+     * number and course number extension, ajoined by a period.  For example,
+     * BIBL 101.H2.  At ACU, this represnts Bible 101 Jesus: Life and Teachings.
+     * The H2 signifies that this is the "Honors 2" class.
+     *
+     * @return  the course number extension
+     */
     public String getCourseNumberExt() {
         return courseNumberExt;
     }
 
+    /**
+     * Returns the course year.  Examples include, 2012, 2014, 2016, etc.
+     *
+     * @return the course year
+     */
     public int getCourseYear() {
         return courseYear;
     }
 
-    public String getCourseTerm()
+    /**
+     * Returns the course Term, represented by an enum.
+     *
+     * Course terms are limited in number.  Thus, they have been represented as
+     * enumerated types to insure strong typing.  Exmamples include FALL,
+     * SPRING, JAN_SHORT (January Short), and MAY (Maymester).
+     *
+     * @return  the course term
+     */
+    public Term getCourseTerm()
     {
-        if (courseTerm == Term.FALL)
-            return "Fall";
-
-        if (courseTerm == Term.SPRING)
-            return "Spring";
-
-        if (courseTerm == Term.JAN_SHORT)
-            return "January Short";
-
-        if (courseTerm == Term.MAY)
-            return "May";
-
-        return "";
+        return courseTerm;
     }
 
+    /**
+     * Returns the course grade.  This represents the final grade for the course,
+     * or the ongoing grade as an active semester progresses.
+     *
+     * @return  the course grade
+     */
     public double getCourseGrade() {
         return courseGrade;
     }
 
+    /**
+     * Returns whether the course is actively being taken by a student.
+     *
+     * @return  whether the course is actively being taken by a student
+     */
     public boolean isInCourseNow() {
         return inCourseNow;
     }

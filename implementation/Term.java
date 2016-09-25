@@ -16,6 +16,7 @@ package implementation;
  */
 public enum Term
 {
+    UNDEFINED,   // Default value
     FALL,       // Fall term
     SPRING,     // Spring term
     JAN_SHORT,  // January short-course
