@@ -1,0 +1,20 @@
+Kevin Shurtz
+Virginia Pettit
+Isaak Ramirez
+
+We have the following:
+
+course.feature
+	In this feature file, we have declared several scenario outlines that we have implemented in our CourseTest.java file
+Course.java
+	In this java file, we have declared all of the functions that we use in CourseTest.java
+CourseTest.java
+	In this java file, we have implemented all of the scenarios that we have declared in our course.feature file.
+course_description.feature
+	In this feature file, we have declared several scenario outlines that we have implemented in our CourseDescriptionTest.java file
+CourseDescription.java
+	In this java file, we have declared all of the functions that we use in CourseDescriptionTest.java
+CourseDescriptionTest.java
+	In this java file, we have implemented all of the scenarios that we have declared in our course.feature file.
+	
+Overall Progress: ~10%
