@@ -1,3 +1,5 @@
+# Time Sheet
+
 | Person            | Date and Hours                                                                                                    |
 |:-----------------:|:------------------------------------------------------------------------------------------------------------------|
 | Kevin             |                                                                                                                   |
@@ -6,7 +8,7 @@
 | Isaak             |                                                                                                                   |
 
 
-Totals:
-Kevin:
-Virginia:
-Isaak:
+#Totals:
+##Kevin:
+##Virginia:
+##Isaak:
