@@ -10,7 +10,7 @@
 | Term              | An entity that represents a time when a class was taken; Values: FALL, SRING, JAN_SHORT, MAY                      |
 | JavaDoc           |                                                                                                                   |
 | Grade             | This represents the grade point avarage a student has in a class; measured on a 100 point scale                    |
-| Grade             | This represents the grade point avarage a student has in a class; measured on a 100 point scale                    |
+| CRN               |                                                                                                                   |
 
 
 ## Cucumber Terms
