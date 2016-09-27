@@ -3,7 +3,7 @@ Feature: Student instance maintains data about itself
   regarding their name, email, and banner ID.
 
   Scenario Outline: System asks for the student profile last name
-    Given the student profile has last name <lastname>
+    Given the student profile has the last name <lastname>
     And the student profile has the first name <firstname>
     And the student profile has the email <email>
     And the student profile has the banner id <bannerid>
@@ -19,7 +19,7 @@ Feature: Student instance maintains data about itself
       | Wareheim  | Eric      | ebw14a@acu.edu  | 000888888 | Wareheim  |
 	  
   Scenario Outline: System asks for the student profile first name
-    Given the student profile has last name <lastname>
+    Given the student profile has the last name <lastname>
     And the student profile has the first name <firstname>
     And the student profile has the email <email>
     And the student profile has the banner id <bannerid>
@@ -35,7 +35,7 @@ Feature: Student instance maintains data about itself
       | Wareheim  | Eric      | ebw14a@acu.edu  | 000888888 | Eric     |
 	  
   Scenario Outline: System asks for the student profile email
-    Given the student profile has last name <lastname>
+    Given the student profile has the last name <lastname>
     And the student profile has the first name <firstname>
     And the student profile has the email <email>
     And the student profile has the banner id <bannerid>
@@ -51,7 +51,7 @@ Feature: Student instance maintains data about itself
       | Wareheim  | Eric      | ebw14a@acu.edu  | 000888888 | ebw14a@acu.edu |
 	  
   Scenario Outline: System asks for the student profile banner id
-    Given the student profile has last name <lastname>
+    Given the student profile has the last name <lastname>
     And the student profile has the first name <firstname>
     And the student profile has the email <email>
     And the student profile has the banner id <bannerid>
