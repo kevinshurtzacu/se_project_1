@@ -7,7 +7,11 @@
 | Student           | A person enrolled in a course; identified by Banner ID; example: Billy Bob, Banner ID 000444555                   |
 | StudentProfile    |                                                                                                                   |
 | Prereqisite       | An entity that represents a set of courses that satisfy an expectation for a CourseDescription                    |
-| Term              | An entity that represents a time when a class was taken; Values: FALL, SRING, JAN_SHORT, MAY                      
+| Term              | An entity that represents a time when a class was taken; Values: FALL, SRING, JAN_SHORT, MAY                      |
+| JavaDoc           |                                                                                                                   |
+| Grade             | This represents the grade point avarage a student has in a class; measured on a 100 point scale                    |
+| Grade             | This represents the grade point avarage a student has in a class; measured on a 100 point scale                    |
+
 
 ## Cucumber Terms
 | Term             | Definition                                                                                                         |
