@@ -2,13 +2,13 @@ Feature: Student instance maintains data about itself
   Student is an object to represent one a person who has the ability to take classes.  It contains information
   regarding their name, email, and banner ID.
 
-  Scenario Outline: System asks for the student last name
-    Given the student has last name <lastname>
-    And the student has the first name <firstname>
-    And the student has the email <email>
-    And the student has the banner id <bannerid>
-    When I ask for the student last name
-    Then I receive <result>
+  Scenario Outline: System asks for the student profile last name
+    Given the student profile has last name <lastname>
+    And the student profile has the first name <firstname>
+    And the student profile has the email <email>
+    And the student profile has the banner id <bannerid>
+    When I ask for the student profile last name
+    Then I receive the string <result> from student profile
 
     Examples:
       | lastname  | firstname | email           | bannerid  | result    |
@@ -18,13 +18,13 @@ Feature: Student instance maintains data about itself
       | Heidecker | Tim       | teh13d@acu.edu  | 000777777 | Heidecker |
       | Wareheim  | Eric      | ebw14a@acu.edu  | 000888888 | Wareheim  |
 	  
-  Scenario Outline: System asks for the student first name
-    Given the student has last name <lastname>
-    And the student has the first name <firstname>
-    And the student has the email <email>
-    And the student has the banner id <bannerid>
-    When I ask for the student first name
-    Then I receive <result>
+  Scenario Outline: System asks for the student profile first name
+    Given the student profile has last name <lastname>
+    And the student profile has the first name <firstname>
+    And the student profile has the email <email>
+    And the student profile has the banner id <bannerid>
+    When I ask for the student profile first name
+    Then I receive the string <result> from student profile
 
     Examples:
       | lastname  | firstname | email           | bannerid  | result   |
@@ -34,13 +34,13 @@ Feature: Student instance maintains data about itself
       | Heidecker | Tim       | teh13d@acu.edu  | 000777777 | Tim      |
       | Wareheim  | Eric      | ebw14a@acu.edu  | 000888888 | Eric     |
 	  
-  Scenario Outline: System asks for the student email
-    Given the student has last name <lastname>
-    And the student has the first name <firstname>
-    And the student has the email <email>
-    And the student has the banner id <bannerid>
-    When I ask for the student email
-    Then I receive <result>
+  Scenario Outline: System asks for the student profile email
+    Given the student profile has last name <lastname>
+    And the student profile has the first name <firstname>
+    And the student profile has the email <email>
+    And the student profile has the banner id <bannerid>
+    When I ask for the student profile email
+    Then I receive the string <result> from student profile
 
     Examples:
       | lastname  | firstname | email           | bannerid  | result         |
@@ -50,13 +50,13 @@ Feature: Student instance maintains data about itself
       | Heidecker | Tim       | teh13d@acu.edu  | 000777777 | teh13d@acu.edu |
       | Wareheim  | Eric      | ebw14a@acu.edu  | 000888888 | ebw14a@acu.edu |
 	  
-  Scenario Outline: System asks for the student banner id
-    Given the student has last name <lastname>
-    And the student has the first name <firstname>
-    And the student has the email <email>
-    And the student has the banner id <bannerid>
-    When I ask for the student banner id
-    Then I receive <result>
+  Scenario Outline: System asks for the student profile banner id
+    Given the student profile has last name <lastname>
+    And the student profile has the first name <firstname>
+    And the student profile has the email <email>
+    And the student profile has the banner id <bannerid>
+    When I ask for the student profile banner id
+    Then I receive the integer <result> from student profile
 
     Examples:
       | lastname  | firstname | email           | bannerid  | result    |
