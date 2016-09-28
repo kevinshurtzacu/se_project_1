@@ -1,0 +1,7 @@
+Here's what we're going to do by the demo on Wednesday the 28th:
+	We are going to start and finish StudentProfile.java
+	We are going to start and finish StudentProfileTest.java
+	We are going to finish Course.java
+	We are going to finish CourseTest.java
+	We are going to start and finish CourseDescription.java
+	We are going to start and finish CourseDescriptionTest.java
