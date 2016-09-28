@@ -2,6 +2,7 @@ package step_definitions;
 
 import implementation.Course;
 import implementation.Term;
+import implementation.CourseDescription;
 import cucumber.api.java.en.*;
 import cucumber.api.PendingException;
 import static org.junit.Assert.*;
@@ -19,17 +20,37 @@ public class CourseTest
     // Course object to be tested
     private static Course course = new Course(12345, "", 2015, Term.FALL, 90.5, false);
 
+    // Course objects for testing comparisons
+    private static Course firstCourse = new Course(12345, "", 2015, Term.FALL, 90.5, false);
+    private static Course secondCourse = new Course(12345, "", 2015, Term.FALL, 90.5, false);
+
+    // CourseDescription object to compare to
+    private static CourseDescription coursedesc = new CourseDescription(0, "", 100, "");
+
     // result of each test
     private static Object result = null;
 
     // Givens
-    @Given("^the course has the (.*?(?:\\sextension)?) (.*?)$")
-    public void theCourseHas(String attribute, String value) throws Throwable
+    @Given("^the course has the crn (\\d+)$")
+    public void theCourseHasTheCrn(int crn) throws Throwable
     {
-        attribute = attribute.toLowerCase();
+        course.setCourseCRN(crn);
+    }
 
-        if (attribute.equals("number extension"))
-            course.setCourseNumberExt(value);
+    @Given("^the course has the number extension (.*?)$")
+    public void theCourseHasNumberExtension(String value) throws Throwable
+    {
+        course.setCourseNumberExt(value);
+    }
+
+    @Given("^the (first|second) course has the number extension (.*?)$")
+    public void oneCourseHasTheNumberExtension(String which, String value) throws Throwable
+    {
+        if (which.equals("first"))
+            firstCourse.setCourseNumberExt(value);
+
+        if (which.equals("second"))
+            secondCourse.setCourseNumberExt(value);
     }
 
     @Given("^the course is (?:in the|a) (.*?) (?:term|course)$")
@@ -50,16 +71,72 @@ public class CourseTest
             course.setCourseTerm(Term.MAY);
     }
 
+    @Given("^the (first|second) course is (?:in the|a) (.*?) (?:term|course)$")
+    public void oneCourseIsInTheTerm(String which, String term) throws Throwable
+    {
+        term = term.toUpperCase();
+
+        if (which.equals("first"))
+        {
+            if (term.equals("FALL"))
+                firstCourse.setCourseTerm(Term.FALL);
+
+            if (term.equals("SPRING"))
+                firstCourse.setCourseTerm(Term.SPRING);
+
+            if (term.equals("JANUARY SHORT"))
+                firstCourse.setCourseTerm(Term.JAN_SHORT);
+
+            if (term.equals("MAY") || term.equals("MAYMESTER"))
+                firstCourse.setCourseTerm(Term.MAY);
+        }
+
+        if (which.equals("second"))
+        {
+            if (term.equals("FALL"))
+                secondCourse.setCourseTerm(Term.FALL);
+
+            if (term.equals("SPRING"))
+                secondCourse.setCourseTerm(Term.SPRING);
+
+            if (term.equals("JANUARY SHORT"))
+                secondCourse.setCourseTerm(Term.JAN_SHORT);
+
+            if (term.equals("MAY") || term.equals("MAYMESTER"))
+                secondCourse.setCourseTerm(Term.MAY);
+        }
+    }
+
     @Given("^the course is in the year (\\d+)$")
     public void theCourseIsInTheYear(int year) throws Throwable
     {
         course.setCourseYear(year);
     }
 
+    @Given("^the (first|second) course is in the year (\\d+)$")
+    public void oneCourseIsInTheYear(String which, int year) throws Throwable
+    {
+        if (which.equals("first"))
+            firstCourse.setCourseYear(year);
+
+        if (which.equals("second"))
+            secondCourse.setCourseYear(year);
+    }
+
     @Given("^the course(?:'s)? grade is (\\d+(?:\\.?\\d+)?)$")
     public void theCourseGradeIs(double grade) throws Throwable
     {
         course.setCourseGrade(grade);
+    }
+
+    @Given("^the (first|second) course(?:'s)? grade is (\\d+(?:\\.?\\d+)?)$")
+    public void oneCourseGradeIs(String which, double grade) throws Throwable
+    {
+        if (which.equals("first"))
+            firstCourse.setCourseGrade(grade);
+
+        if (which.equals("second"))
+            secondCourse.setCourseGrade(grade);
     }
 
     @Given("^the course (is not|is) being taken by (?:the|a) student$")
@@ -73,6 +150,41 @@ public class CourseTest
             inCourse = false;
 
         course.setInCourseNow(inCourse);
+    }
+
+    @Given("^the (first|second) course (is not|is) being taken by (?:the|a) student$")
+    public void oneCourseBeingTaken(String which, String active) throws Throwable
+    {
+        boolean inCourse;
+
+        if (active.equals("is"))
+            inCourse = true;
+        else
+            inCourse = false;
+
+        if (which.equals("first"))
+            firstCourse.setInCourseNow(inCourse);
+
+        if (which.equals("second"))
+            secondCourse.setInCourseNow(inCourse);
+    }
+
+    @Given("^there is a course description with a \"(.*?)\" of (.*?)$")
+    public void thereIsACourseDescriptionWithAOf(String attribute, String value) throws Throwable
+    {
+        attribute = attribute.toLowerCase();
+
+        if (attribute.equals("crn"))
+            coursedesc.setCourseCRN(Integer.parseInt(value));
+
+        if (attribute.equals("subject"))
+            coursedesc.setCourseSubject(value);
+
+        if (attribute.equals("number"))
+            coursedesc.setCourseNumber(Integer.parseInt(value));
+
+        if (attribute.equals("title"))
+            coursedesc.setCourseTitle(value);
     }
 
     // Whens
@@ -92,12 +204,20 @@ public class CourseTest
 
         if (request.equals("grade"))
             result = course.getCourseGrade();
+
+        if (request.equals("title"))
+            result =
     }
 
     @When("^I ask if the course is being taken by (?:the|a) student$")
     public void iAskIfCourseBeingTaken() throws Throwable
     {
         result = course.isInCourseNow();
+    }
+
+    @When("^I ask if the courses are equal$")
+    public void iAskIfTheCoursesAreEqual() throws Throwable {
+        result = firstCourse.equals(secondCourse);
     }
 
     // Thens
@@ -143,14 +263,29 @@ public class CourseTest
     @Then("^I am told that it (is|is not) being taken by (?:the|a) student$")
     public void iAmToldThatBeingTaken(String active) throws Throwable
     {
-        boolean inCourse;
+        boolean expected;
 
         if (active.equals("is"))
-            inCourse = true;
+            expected = true;
         else
-            inCourse = false;
+            expected = false;
 
-        assertEquals(inCourse, course.isInCourseNow());
+        assertEquals(expected, course.isInCourseNow());
     }
+
+    @Then("^I am told that the first course and second course (are|are not) equal$")
+    public void iAmToldThatEqual(String equal) throws Throwable
+    {
+        boolean expected;
+
+        if (equal.equals("are"))
+            expected = true;
+        else
+            expected = false;
+
+        assertEquals(expected, (Boolean)result);
+
+    }
+
 }
 

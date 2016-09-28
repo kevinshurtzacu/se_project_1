@@ -238,5 +238,41 @@ public class Course
     public boolean isInCourseNow() {
         return inCourseNow;
     }
+
+    /**
+     * Returns true if two Courses have the same CRN and are taken
+     * at the same time.
+     *
+     * @param other     the other Course
+     * @return          whether the Courses are the same
+     */
+    public boolean equals(Course other)
+    {
+        if (getCourseCRN() != other.getCourseCRN())
+            return false;
+
+        if (getCourseYear() != other.getCourseYear())
+            return false;
+
+        if (getCourseTerm() != other.getCourseTerm())
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Returns true if a Course can be related to a CourseDescription
+     * via its CRN.
+     *
+     * @param other     the CourseDescription being compared
+     * @return          whether the Course relates to the CourseDescription
+     */
+    public boolean equals(CourseDescription other)
+    {
+        if (getCourseCRN() != other.getCourseCRN())
+            return false;
+
+        return true;
+    }
 }
 

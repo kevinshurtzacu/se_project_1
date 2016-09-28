@@ -5,8 +5,8 @@ package implementation;
  * <ul>
  *     <li>CRN (course registration number)</li>
  *     <li>course subject</li>
- *     <li>course title</li>
  *     <li>course number</li>
+ *     <li>course title</li>
  * </ul>
  *
  * <p>
