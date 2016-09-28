@@ -1,0 +1,6 @@
+Here's what we're going to do by the demo on Friday the 7th of October:
+	Define equality for students
+	Define equality for student descriptions
+	Modify StudentProfile to contain a set of courses
+	Modify CourseDescription to contain a set of students
+	Have begun our SQLite implementation
