@@ -1,0 +1,147 @@
+Pidm
+Term Code
+Part of Term Code
+Part of Term Desc
+Enrolled Ind
+Registered Ind
+
+Student Status Code
+Student Status Desc
+Level Code
+Level Desc
+Student Type Code
+Student Type Desc
+Program Code1
+Program Code2
+Campus Code
+Campus Desc
+Department Code
+Department Desc
+Degree Code1
+Degree Desc1
+College Code1
+College Desc1
+Major Code1
+Major Desc1
+Major Code1 2
+Major Desc1 2
+Degree Code2
+Degree Desc2
+College Code2
+College Desc2
+Major Code2
+Major Desc2
+Class Code
+Class Desc
+CRN
+Reg STS Code
+Reg STS Desc
+Spec Approval Ind
+Reg Error Flag
+Subject Code
+Subject Desc
+Course Number
+Section Number
+Course Title
+Course Level Code
+Course Campus Code
+Billing Hours
+Credit Hours
+Instructor ID
+Instructor Name
+Hours Attended
+Grade Mode Code
+Grade Mode Desc
+Midterm Grade Code
+Grade Code
+Banner ID
+First Name
+Last Name
+Middle Name
+Prefix
+Suffix
+Preferred First Name
+Confid Ind
+ACU Email Address
+Home Email Address
+Begin Time 1
+End Time1
+Bldg Code1
+Bldg Desc1
+Room Code1
+Schd Code1
+Monday Ind1
+Tuesday Ind1
+Wednesday Ind1
+Thursday Ind1
+Friday Ind1
+Saturday Ind1
+Sunday Ind1
+Begin Time2
+End Time2
+Bldg Code2
+Bldg Desc2
+Room Code2
+Schd Code2
+Monday Ind2
+Tuesday Ind2
+Wednesday Ind2
+Thursday Ind2
+Friday Ind2
+Saturday Ind2
+Sunday Ind2
+Advisor1 Term Code Eff
+Advisor1 Last Name
+Advisor1 First Name
+Advisor1 Advisor Code
+Advisor1 Primary Advisor Ind
+Sport1 Activity Code
+Sport1 Code
+Sport1 Eligibilty Code
+Sport1 Athletic Aid Ind
+Sport2 Activity  Code
+Sport2 Code
+Sport2 Eligibility Code
+Sport2 Athletic Aid Ind
+Vet Term
+Vet Code
+Vet Desc
+Vet Certified Hours
+Vet Certified Date
+Vet Certified Hours
+Minor Code1
+Minor Desc1
+Conc Code1
+Conc Desc1
+Minor Code1 2
+Minor Desc1 2
+Conc Code1 2
+Conc Desc1 2
+Minor Code2
+Minor Desc2
+Rate Code
+Ovrall Cumm GPA Hrs Attempted
+Ovrall Cumm GPA  Hours Earned
+Ovrall Cumm GPA Hrs
+Ovrall Cumm GPA Quality Points
+Ovrall Cumm GPA
+Ovrall Cumm GPA Hrs Passed
+Dead Ind
+Date Class Added
+Registration Status Date
+Activity Date
+Course College Code
+Course College Desc
+Course Dept Code
+Course Dept Desc
+International Ind
+Part of Term Start Date
+Part of Term End Date
+Section Max Enrollment
+Section Enrollment
+Section Available Seats
+Section Schedule Type
+Section Instruction Method
+Section Session Code
+Ipeds Ethnic Code
+Ipeds Ethnic Desc

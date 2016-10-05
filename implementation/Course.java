@@ -226,7 +226,8 @@ public class Course
      *
      * @return  the course grade
      */
-    public double getCourseGrade() {
+    public double getCourseGrade()
+    {
         return courseGrade;
     }
 
@@ -237,6 +238,39 @@ public class Course
      */
     public boolean isInCourseNow() {
         return inCourseNow;
+    }
+
+    /**
+     * Returns the course subject by sending a request to the DataModule.
+     * This infomration is stored in a single CourseDescription object.
+     *
+     * @return  the course subject
+     */
+    public String getCourseSubject()
+    {
+        return DataModule.getCourseSubject(this);
+    }
+
+    /**
+     * Returns the course title by sending a request to the DataModule.
+     * This infomration is stored in a single CourseDescription object.
+     *
+     * @return  the course title
+     */
+    public String getCourseTitle()
+    {
+        return DataModule.getCourseTitle(this);
+    }
+
+    /**
+     * Returns the course number by sending a request to the DataModule.
+     * This infomration is stored in a single CourseDescription object.
+     *
+     * @return  the course number.
+     */
+    public int getCourseNumber()
+    {
+        return DataModule.getCourseNumber(this);
     }
 
     /**

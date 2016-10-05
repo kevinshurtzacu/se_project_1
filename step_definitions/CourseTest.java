@@ -206,7 +206,7 @@ public class CourseTest
             result = course.getCourseGrade();
 
         if (request.equals("title"))
-            result =
+            result = DataModule.getCourseTitle(course);
     }
 
     @When("^I ask if the course is being taken by (?:the|a) student$")
@@ -286,6 +286,5 @@ public class CourseTest
         assertEquals(expected, (Boolean)result);
 
     }
-
 }
 
