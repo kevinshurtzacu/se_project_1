@@ -1,9 +1,9 @@
 package implementation;
 
 /**
- * Represents a single course taken by an ACU student.  Maintains data for
+ * Represents an ACU student who takes courses.  Maintains data for
  * <ul>
- *     <li>CRN (course registration number)</li>
+ *     <li>bannerID (Student's Banner ID)</li>
  *     <li>course number extension</li>
  *     <li>course year</li>
  *     <li>course term</li>
@@ -12,19 +12,19 @@ package implementation;
  * </ul>
  *
  * <p>
- *     Courses and CourseDescriptions will be able to reference one another
- *     through their CRNs.  CourseDescription is presently capable of equating
- *     itself with a Course object by use of the default equals method.
+ *     Students and StudentProfile will be able to reference one another
+ *     through their CRNs.  StudentProfile is presently capable of equating
+ *     itself with a Student object by use of the default equals method.
  * </p>
  *
  * @author Kevin Shurtz
- * @author Virginia Pettit
+ * @author Isaak Ramirez
  * @version 1.0
  */
-public class Course
+public class Student
 {
-    // Course characteristics
-    int courseCRN;          // Course Registration Number
+    // Student characteristics
+    int bannerID;          // Student Banner ID
     String courseNumberExt; // Course number extension (1, 2, H2, etc.)
 
     // Time characteristics
@@ -36,28 +36,28 @@ public class Course
     boolean inCourseNow;    // Whether the student is in the course now
 
     /**
-     * Constructs a Course object to represent a student's course.  Course
-     * delegates the instantiation of instance variables to method setCourse.
+     * Constructs a Student object to represent a student's course.  Student
+     * delegates the instantiation of instance variables to method setStudent.
      *
-     * @param crnNum    course registration number
+     * @param bnrID     banner ID
      * @param ext       course number extension, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
      * @param grade     current grade for the course out of 100 points
      * @param now       whether the course is being actively taken
-     * @see             Course#setCourse(int, String, int, Term, double, boolean)
+     * @see             Student#setStudent(int, String, int, Term, double, boolean)
      */
-	public Course(int crnNum, String ext, int year, Term cTerm, double grade, boolean now)
+	public Student(int bnrID, String ext, int year, Term cTerm, double grade, boolean now)
 	{
-	    setCourse(crnNum, ext, year, cTerm, grade, now);
+	    setStudent(bnrID, ext, year, cTerm, grade, now);
 	}
 
     /**
-     * Assigns values to Course instance variables.  The function
+     * Assigns values to Student instance variables.  The function
      * delegate assignment to each of the assignment functions
      * for each instance variable, many of which validate the input.
      *
-     * @param crnNum    course registration number
+     * @param bnrID     banner ID
      * @param ext       course number extension, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -66,9 +66,9 @@ public class Course
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-	public void setCourse(int crnNum, String ext, int year, Term cTerm, double grade, boolean now)
+	public void setStudent(int bnrID, String ext, int year, Term cTerm, double grade, boolean now)
     {
-        setCourseCRN(crnNum);           // Assign crn
+        setStudentBanner(bnrID);        // Assign crn
         setCourseNumberExt(ext);        // Assign course number extension
         setCourseYear(year);            // Assign course year
         setCourseTerm(cTerm);           // Assign course term
@@ -77,13 +77,13 @@ public class Course
     }
 
     /**
-     * Assigns the course registration number.  No validation is conducted.
+     * Assigns the student's banner ID.  No validation is conducted.
      *
-     * @param crnNum    course registration number, a unique course identifier
+     * @param bnrID     student banner ID, a unique course identifier
      */
-    public void setCourseCRN(int crnNum)
+    public void setStudentBanner(int bnrID)
     {
-        courseCRN = crnNum;
+        bannerID = bnrID;
     }
 
     /**
@@ -170,14 +170,14 @@ public class Course
     }
 
     /**
-     * Returns the course registration number.  This can be used to look up
-     * a CourseDescription for this course.
+     * Returns the student's banner ID.  This can be used to look up
+     * a StudentProfile for this course.
      *
-     * @return  the course registration number
+     * @return  the banner ID number
      */
-    public int getCourseCRN()
+    public int getStudentBanner()
     {
-        return courseCRN;
+        return bannerID;
     }
 
     /**
