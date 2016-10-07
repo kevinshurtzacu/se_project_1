@@ -5,13 +5,13 @@ Feature: Student instance maintains data about itself
 
   Student can refer to a present student, or a past student.
 
-  Scenario Outline: System asks for the course number extension
-    Given the student has the number extension <extension>
+  Scenario Outline: System asks for the student's course number extension
+    Given the student's course has the number extension <extension>
       And the student is in the year <year>
       And the student is in the <term> term
       And the student grade is <grade>
       And the student <active> taking the course
-    When I ask for the course extension
+    When I ask for the student's course extension
     Then I receive the string <result> from student
 
     Examples:
@@ -23,13 +23,13 @@ Feature: Student instance maintains data about itself
       | H2        | 2016 | Spring   | 91    | is not | H2     |
 
   Scenario Outline: System asks for the year in which the student took the course
-    Given the student has the number extension <extension>
+    Given the student's course has the number extension <extension>
       And the student is in the year <year>
       And the student is in the <term> term
       And the student grade is <grade>
-      And the course <active> taking the course
-    When I ask for the course year
-    Then I receive the integer <result> from course
+      And the student <active> taking the course
+    When I ask for the student year
+    Then I receive the integer <result> from student
 
     Examples:
       | extension | year | term     | grade | active | result |
@@ -39,14 +39,14 @@ Feature: Student instance maintains data about itself
       |           | 2014 | Spring   | 88    | is not | 2014   |
       |           | 2015 | Spring   | 91    | is not | 2015   |
 
-  Scenario Outline: System asks for the term in which the course was offered
-    Given the course has the number extension <extension>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> taking the course
-    When I ask for the course term
-    Then I receive the term <result> from course
+  Scenario Outline: System asks for the term in which the student took the course
+    Given the student's course has the number extension <extension>
+      And the student is in the year <year>
+      And the student is in the <term> term
+      And the student grade is <grade>
+      And the student <active> taking the course
+    When I ask for the student term
+    Then I receive the term <result> from student
 
     Examples:
       | extension | year | term     | grade | active | result |
@@ -57,13 +57,13 @@ Feature: Student instance maintains data about itself
       |           | 2016 | Spring   | 91    | is not | Spring |
 
   Scenario Outline: System asks for the student's grade in the course
-    Given the course has the number extension <extension>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> taking the course
-    When I ask for the course grade
-    Then I receive the double <result> from course
+    Given the student's course has the number extension <extension>
+      And the student is in the year <year>
+      And the student is in the <term> term
+      And the student grade is <grade>
+      And the student <active> taking the course
+    When I ask for the student grade
+    Then I receive the double <result> from student
 
     Examples:
       | extension | year | term     | grade | active | result |
@@ -74,13 +74,13 @@ Feature: Student instance maintains data about itself
       |           | 2016 | Spring   | 91    | is not | 91     |
 
   Scenario Outline: System asks if student is active in course
-    Given the course has the number extension <extension>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> taking the course
-    When I ask if the course is taking the course
-    Then I am told that it <result> being taken by the student
+    Given the student's course has the number extension <extension>
+      And the student is in the year <year>
+      And the student is in the <term> term
+      And the student grade is <grade>
+      And the student <active> taking the course
+    When I ask if the student is taking the course
+    Then I am told that the student <result> taking the course
 
     Examples:
       | extension | year | term     | grade | active | result |
