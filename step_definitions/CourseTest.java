@@ -3,6 +3,7 @@ package step_definitions;
 import implementation.Course;
 import implementation.Term;
 import implementation.CourseDescription;
+import implementation.DataModule;
 import cucumber.api.java.en.*;
 import cucumber.api.PendingException;
 import static org.junit.Assert.*;
