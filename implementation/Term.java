@@ -1,24 +1,19 @@
 package implementation;
 
 /**
- * Represents a term (semester, short-course, etc).
+ * Represents a term (Fall, Spring, Summer).
  *
  * Term can represent:
  * <ul>
  *     <li>Fall</li>
  *     <li>Spring</li>
- *     <li>January short-course</li>
- *     <li>Maymester course</li>
+ *     <li>Summer</li>
  * </ul>
- *
- * The Term enum can be extended at a later point to represent
- * other similar terms.
  */
 public enum Term
 {
-    UNDEFINED,   // Default value
+    UNDEFINED,  // Default value
     FALL,       // Fall term
     SPRING,     // Spring term
-    JAN_SHORT,  // January short-course
-    MAY,        // "Maymester" short-course
+    SUMMER,     // Summer term
 }

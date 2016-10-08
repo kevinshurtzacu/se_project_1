@@ -1,19 +1,19 @@
 package implementation;
 
 /**
- * Represents an ACU student who takes courses.  Maintains data for
+ * Represents an ACU student taking a course.  Maintains data for
  * <ul>
- *     <li>bannerID (Student's Banner ID)</li>
- *     <li>course number extension</li>
- *     <li>course year</li>
- *     <li>course term</li>
- *     <li>current grade</li>
- *     <li>whether student course is active</li>
+ *     <li>banner ID (Student's Banner ID)</li>
+ *     <li>student section</li>
+ *     <li>student year</li>
+ *     <li>student term</li>
+ *     <li>student grade</li>
+ *     <li>whether student is active</li>
  * </ul>
  *
  * <p>
  *     Students and StudentProfile will be able to reference one another
- *     through their CRNs.  StudentProfile is presently capable of equating
+ *     through their identifiers.  StudentProfile is presently capable of equating
  *     itself with a Student object by use of the default equals method.
  * </p>
  *
@@ -24,32 +24,32 @@ package implementation;
 public class Student
 {
     // Student characteristics
-    int bannerID;          // Student Banner ID
-    String courseNumberExt; // Course number extension (1, 2, H2, etc.)
+    int studentBannerID;    // Student Banner ID
+    String studentSection;  // Course number extension (1, 2, H2, etc.)
 
     // Time characteristics
-    int courseYear;         // Year course is taken
-    Term courseTerm;        // Term during which course is taken
+    int studentYear;        // Year course is taken
+    Term studentTerm;       // Term during which course is taken
     
     // Student data
-    double courseGrade;     // Student's grade in course (from 0.0 to 100.0)
-    boolean inCourseNow;    // Whether the student is in the course now
+    String studentGrade;    // Student's grade in course (from from F to A)
+    boolean takingNow;      // Whether the student is in the course now
 
     /**
      * Constructs a Student object to represent a student's course.  Student
      * delegates the instantiation of instance variables to method setStudent.
      *
      * @param bnrID     banner ID
-     * @param ext       course number extension, such as 01, H1, etc
-     * @param year      year the course is taking place in
-     * @param cTerm     term the coures is taking place in
-     * @param grade     current grade for the course out of 100 points
-     * @param now       whether the course is being actively taken
+     * @param section   student section, such as 01, H1, etc
+     * @param year      year the student takes the course
+     * @param cTerm     term the student takes the course
+     * @param grade     student grade in the course out of 100 points
+     * @param now       whether the student is presently in the course
      * @see             Student#setStudent(int, String, int, Term, double, boolean)
      */
-	public Student(int bnrID, String ext, int year, Term cTerm, double grade, boolean now)
+	public Student(int bnrID, String section, int year, Term cTerm, double grade, boolean now)
 	{
-	    setStudent(bnrID, ext, year, cTerm, grade, now);
+	    setStudent(bnrID, section, year, cTerm, grade, now);
 	}
 
     /**
@@ -58,22 +58,22 @@ public class Student
      * for each instance variable, many of which validate the input.
      *
      * @param bnrID     banner ID
-     * @param ext       course number extension, such as 01, H1, etc
-     * @param year      year the course is taking place in
-     * @param cTerm     term the coures is taking place in
-     * @param grade     current grade for the course out of 100 points
-     * @param now       whether the course is being actively taken
+     * @param section   student section, such as 01, H1, etc
+     * @param year      year the student takes the course
+     * @param cTerm     term the student takes the course
+     * @param grade     student grade in the course out of 100 points
+     * @param now       whether the student is presently in the course
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-	public void setStudent(int bnrID, String ext, int year, Term cTerm, double grade, boolean now)
+	public void setStudent(int bnrID, String section, int year, Term cTerm, double grade, boolean now)
     {
-        setStudentBanner(bnrID);        // Assign crn
-        setCourseNumberExt(ext);        // Assign course number extension
-        setCourseYear(year);            // Assign course year
-        setCourseTerm(cTerm);           // Assign course term
-        setCourseGrade(grade);          // Assign course grade
-        setInCourseNow(now);            // Assign if in course now
+        setStudentBannerID(bnrID);      // Assign crn
+        setStudentSection(section);     // Assign student section
+        setStudentYear(year);           // Assign student year
+        setStudentTerm(cTerm);          // Assign student term
+        setStudentGrade(grade);         // Assign student grade
+        setTakingNow(now);              // Assign if in course now
     }
 
     /**
@@ -81,9 +81,9 @@ public class Student
      *
      * @param bnrID     student banner ID, a unique course identifier
      */
-    public void setStudentBanner(int bnrID)
+    public void setStudentBannerID(int bnrID)
     {
-        bannerID = bnrID;
+        studentBannerID = bnrID;
     }
 
     /**
@@ -94,9 +94,9 @@ public class Student
      *
      * @param ext       course number extension
      */
-    public void setCourseNumberExt(String ext)
+    public void setStudentSection(String ext)
     {
-        courseNumberExt = ext;
+        studentSection = ext;
     }
 
     /**
@@ -108,7 +108,7 @@ public class Student
      *                                  more than four characters, or
      *                                  less than four characters
      */
-    public void setCourseYear(int year)
+    public void setStudentYear(int year)
     {
         // If the year is from before ACU was founded
         if (year < 1906)
@@ -122,7 +122,7 @@ public class Student
         if (Integer.toString(year).length() < 4)
             throw new IllegalArgumentException("Invalid year (less than 4 characters");
         
-        courseYear = year;
+        studentYear = year;
     }
 
     /**
@@ -133,9 +133,9 @@ public class Student
      * @param cTerm     the term in which a course is taken
      * @see   Term
      */
-    public void setCourseTerm(Term cTerm)
+    public void setStudentTerm(Term cTerm)
     {
-        courseTerm = cTerm;
+        studentTerm = cTerm;
     }
 
     /**
@@ -146,15 +146,45 @@ public class Student
      * @throws IllegalArgumentException If a student is assigned a value above 100.0 or
      *                                  if a student is assigned a value below 0.0.
      */
-    public void setCourseGrade(double grade)
+    public void setStudentGrade(double grade)
     {
+        // Check for exceptions
         if (grade > 100.0)
             throw new IllegalArgumentException("Grade above 100% not possible");
         
         if (grade < 0.0)
             throw new IllegalArgumentException("Grade below 0% not possible");
-        
-        courseGrade = grade;
+
+        // Assign grades
+        if (grade >= 90)
+            studentGrade = "A";
+        else if (grade >= 80)
+            studentGrade = "B";
+        else if (grade >= 70)
+            studentGrade = "C";
+        else if (grade >= 60)
+            studentGrade = "D";
+        else
+            studentGrade = "F";
+    }
+
+    /**
+     * Assigns the grade a student has in a course.  The grade must be a letter
+     * grade, such as (A, B, C, D, or F).
+     *
+     * @param grade     the grade a student has in an instance of Course
+     * @throws IllegalArgumentException If a student is assigned something besides (A, B, C, D, or F).
+     */
+    public void setStudentGrade(String grade)
+    {
+        grade = grade.toUpperCase();
+
+        // Check for exceptions
+        if (!(grade.equals("A") || grade.equals("B") || grade.equals("C") || grade.equals("D") || grade.equals("F")))
+            throw new IllegalArgumentException("Grade must be 'A', 'B', 'C', 'D', or 'F'");
+
+        // Assign grade
+        studentGrade = grade;
     }
 
     /**
@@ -164,9 +194,9 @@ public class Student
      *
      * @param now       whether a student is actively taking the course
      */
-    public void setInCourseNow(boolean now)
+    public void setTakingNow(boolean now)
     {
-        inCourseNow = now;
+        takingNow = now;
     }
 
     /**
@@ -175,9 +205,9 @@ public class Student
      *
      * @return  the banner ID number
      */
-    public int getStudentBanner()
+    public int getStudentBannerID()
     {
-        return bannerID;
+        return studentBannerID;
     }
 
     /**
@@ -193,8 +223,8 @@ public class Student
      *
      * @return  the course number extension
      */
-    public String getCourseNumberExt() {
-        return courseNumberExt;
+    public String getStudentSection() {
+        return studentSection;
     }
 
     /**
@@ -202,8 +232,8 @@ public class Student
      *
      * @return the course year
      */
-    public int getCourseYear() {
-        return courseYear;
+    public int getStudentYear() {
+        return studentYear;
     }
 
     /**
@@ -215,9 +245,9 @@ public class Student
      *
      * @return  the course term
      */
-    public Term getCourseTerm()
+    public Term getStudentTerm()
     {
-        return courseTerm;
+        return studentTerm;
     }
 
     /**
@@ -226,8 +256,8 @@ public class Student
      *
      * @return  the course grade
      */
-    public double getCourseGrade() {
-        return courseGrade;
+    public String getStudentGrade() {
+        return studentGrade;
     }
 
     /**
@@ -235,8 +265,8 @@ public class Student
      *
      * @return  whether the course is actively being taken by a student
      */
-    public boolean isInCourseNow() {
-        return inCourseNow;
+    public boolean isTakingNow() {
+        return takingNow;
     }
 }
 

@@ -38,20 +38,20 @@ public class CourseTest
         course.setCourseCRN(crn);
     }
 
-    @Given("^the course has the number extension (.*?)$")
-    public void theCourseHasNumberExtension(String value) throws Throwable
+    @Given("^the course has the section (.*?)$")
+    public void theCourseHasSection(String value) throws Throwable
     {
-        course.setCourseNumberExt(value);
+        course.setCourseSection(value);
     }
 
-    @Given("^the (first|second) course has the number extension (.*?)$")
-    public void oneCourseHasTheNumberExtension(String which, String value) throws Throwable
+    @Given("^the (first|second) course has the section (.*?)$")
+    public void oneOfTheCoursesHasSection(String which, String value) throws Throwable
     {
         if (which.equals("first"))
-            firstCourse.setCourseNumberExt(value);
+            firstCourse.setCourseSection(value);
 
         if (which.equals("second"))
-            secondCourse.setCourseNumberExt(value);
+            secondCourse.setCourseSection(value);
     }
 
     @Given("^the course is (?:in the|a) (.*?) (?:term|course)$")
@@ -65,11 +65,8 @@ public class CourseTest
         if (term.equals("SPRING"))
             course.setCourseTerm(Term.SPRING);
 
-        if (term.equals("JANUARY SHORT"))
-            course.setCourseTerm(Term.JAN_SHORT);
-
-        if (term.equals("MAY") || term.equals("MAYMESTER"))
-            course.setCourseTerm(Term.MAY);
+        if (term.equals("SUMMER"))
+            course.setCourseTerm(Term.SUMMER);
     }
 
     @Given("^the (first|second) course is (?:in the|a) (.*?) (?:term|course)$")
@@ -85,11 +82,8 @@ public class CourseTest
             if (term.equals("SPRING"))
                 firstCourse.setCourseTerm(Term.SPRING);
 
-            if (term.equals("JANUARY SHORT"))
-                firstCourse.setCourseTerm(Term.JAN_SHORT);
-
-            if (term.equals("MAY") || term.equals("MAYMESTER"))
-                firstCourse.setCourseTerm(Term.MAY);
+            if (term.equals("SUMMER"))
+                firstCourse.setCourseTerm(Term.SUMMER);
         }
 
         if (which.equals("second"))
@@ -100,11 +94,8 @@ public class CourseTest
             if (term.equals("SPRING"))
                 secondCourse.setCourseTerm(Term.SPRING);
 
-            if (term.equals("JANUARY SHORT"))
-                secondCourse.setCourseTerm(Term.JAN_SHORT);
-
-            if (term.equals("MAY") || term.equals("MAYMESTER"))
-                secondCourse.setCourseTerm(Term.MAY);
+            if (term.equals("SUMMER"))
+                secondCourse.setCourseTerm(Term.SUMMER);
         }
     }
 
@@ -124,10 +115,21 @@ public class CourseTest
             secondCourse.setCourseYear(year);
     }
 
-    @Given("^the course(?:'s)? grade is (\\d+(?:\\.?\\d+)?)$")
-    public void theCourseGradeIs(double grade) throws Throwable
+    @Given("^the course(?:'s)? grade is (.*?)$")
+    public void theCourseGradeIs(String grade) throws Throwable
     {
-        course.setCourseGrade(grade);
+        boolean isNum = true;
+
+        for (char character : grade.toCharArray())
+        {
+            if (!Character.isDigit(character))
+                isNum = false;
+        }
+
+        if (isNum)
+            course.setCourseGrade(Double.parseDouble(grade));
+        else
+            course.setCourseGrade(grade);
     }
 
     @Given("^the (first|second) course(?:'s)? grade is (\\d+(?:\\.?\\d+)?)$")
@@ -194,8 +196,8 @@ public class CourseTest
     {
         request = request.toLowerCase();
 
-        if (request.equals("extension"))
-            result = course.getCourseNumberExt();
+        if (request.equals("section"))
+            result = course.getCourseSection();
 
         if (request.equals("year"))
             result = course.getCourseYear();
@@ -246,11 +248,8 @@ public class CourseTest
         if (expected.equals("SPRING"))
             term = Term.SPRING;
 
-        if (expected.equals("JANUARY SHORT"))
-            term = Term.JAN_SHORT;
-
-        if (expected.equals("MAY") || expected.equals("MAYMESTER"))
-            term = Term.MAY;
+        if (expected.equals("SUMMER"))
+            term = Term.SUMMER;
 
         assertEquals(term, (Term)result);
     }
@@ -271,13 +270,13 @@ public class CourseTest
         else
             expected = false;
 
-        assertEquals(expected, course.isInCourseNow());
+        assertEquals(expected, (Boolean)result);
     }
 
     @Then("^I am told that the first course and second course (are|are not) equal$")
     public void iAmToldThatEqual(String equal) throws Throwable
     {
-        boolean expected;
+        Boolean expected;
 
         if (equal.equals("are"))
             expected = true;

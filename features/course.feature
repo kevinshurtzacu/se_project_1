@@ -6,25 +6,25 @@ Feature: Course instance maintains data about itself
   Course can refer to classes a student has actively taken, as well as classes he/she
   has taken in the past.
 
-  Scenario Outline: System asks for the course number extension
-    Given the course has the number extension <extension>
+  Scenario Outline: System asks for the course section
+    Given the course has the section <section>
       And the course is in the year <year>
       And the course is in the <term> term
       And the course grade is <grade>
       And the course <active> being taken by the student
-    When I ask for the course extension
+    When I ask for the course section
     Then I receive the string <result> from course
 
     Examples:
-      | extension | year | term     | grade | active | result |
-      | 01        | 2016 | Spring   | 92    | is not | 01     |
-      | 02        | 2016 | Fall     | 70    | is     | 02     |
-      | H1        | 2015 | Fall     | 90    | is not | H1     |
-      | 05        | 2016 | Spring   | 88    | is not | 05     |
-      | H2        | 2016 | Spring   | 91    | is not | H2     |
+      | section | year | term     | grade | active | result |
+      | 01      | 2016 | Spring   | 92    | is not | 01     |
+      | 02      | 2016 | Fall     | 70    | is     | 02     |
+      | H1      | 2015 | Fall     | 90    | is not | H1     |
+      | 05      | 2016 | Spring   | 88    | is not | 05     |
+      | H2      | 2016 | Spring   | 91    | is not | H2     |
 
   Scenario Outline: System asks for the year in which the course was offered
-    Given the course has the number extension <extension>
+    Given the course has the section <section>
       And the course is in the year <year>
       And the course is in the <term> term
       And the course grade is <grade>
@@ -33,15 +33,15 @@ Feature: Course instance maintains data about itself
     Then I receive the integer <result> from course
 
     Examples:
-      | extension | year | term     | grade | active | result |
-      |           | 2016 | Spring   | 92    | is not | 2016   |
-      |           | 2013 | Fall     | 70    | is     | 2013   |
-      |           | 2012 | Fall     | 90    | is not | 2012   |
-      |           | 2014 | Spring   | 88    | is not | 2014   |
-      |           | 2015 | Spring   | 91    | is not | 2015   |
+      | section | year | term     | grade | active | result |
+      |         | 2016 | Spring   | 92    | is not | 2016   |
+      |         | 2013 | Fall     | 70    | is     | 2013   |
+      |         | 2012 | Fall     | 90    | is not | 2012   |
+      |         | 2014 | Spring   | 88    | is not | 2014   |
+      |         | 2015 | Spring   | 91    | is not | 2015   |
 
   Scenario Outline: System asks for the term in which the course was offered
-    Given the course has the number extension <extension>
+    Given the course has the section <section>
       And the course is in the year <year>
       And the course is in the <term> term
       And the course grade is <grade>
@@ -50,32 +50,32 @@ Feature: Course instance maintains data about itself
     Then I receive the term <result> from course
 
     Examples:
-      | extension | year | term     | grade | active | result |
-      |           | 2016 | Spring   | 92    | is not | Spring |
-      |           | 2016 | Fall     | 70    | is     | Fall   |
-      |           | 2015 | Fall     | 90    | is not | Fall   |
-      |           | 2016 | Spring   | 88    | is not | Spring |
-      |           | 2016 | Spring   | 91    | is not | Spring |
+      | section | year | term     | grade | active | result |
+      |         | 2016 | Spring   | 92    | is not | Spring |
+      |         | 2016 | Fall     | 70    | is     | Fall   |
+      |         | 2015 | Fall     | 90    | is not | Fall   |
+      |         | 2016 | Spring   | 88    | is not | Spring |
+      |         | 2016 | Spring   | 91    | is not | Spring |
 
   Scenario Outline: System asks for the student's grade in the course
-    Given the course has the number extension <extension>
+    Given the course has the section <section>
       And the course is in the year <year>
       And the course is in the <term> term
       And the course grade is <grade>
       And the course <active> being taken by the student
     When I ask for the course grade
-    Then I receive the double <result> from course
+    Then I receive the string <result> from course
 
     Examples:
-      | extension | year | term     | grade | active | result |
-      |           | 2016 | Spring   | 92    | is not | 92     |
-      |           | 2016 | Fall     | 70    | is     | 70     |
-      |           | 2015 | Fall     | 90    | is not | 90     |
-      |           | 2016 | Spring   | 88    | is not | 88     |
-      |           | 2016 | Spring   | 91    | is not | 91     |
+      | section | year | term     | grade | active | result |
+      |         | 2016 | Spring   | A     | is not | A      |
+      |         | 2016 | Fall     | C     | is     | C      |
+      |         | 2015 | Fall     | 90    | is not | A      |
+      |         | 2016 | Spring   | 88    | is not | B      |
+      |         | 2016 | Spring   | F     | is not | F      |
 
   Scenario Outline: System asks if student is active in course
-    Given the course has the number extension <extension>
+    Given the course has the section <section>
       And the course is in the year <year>
       And the course is in the <term> term
       And the course grade is <grade>
@@ -84,20 +84,20 @@ Feature: Course instance maintains data about itself
     Then I am told that it <result> being taken by the student
 
     Examples:
-      | extension | year | term     | grade | active | result |
-      |           | 2016 | Spring   | 92    | is not | is not |
-      |           | 2016 | Fall     | 70    | is     | is     |
-      |           | 2016 | Fall     | 90    | is     | is     |
-      |           | 2016 | Spring   | 88    | is not | is not |
-      |           | 2016 | Spring   | 91    | is not | is not |
+      | section | year | term     | grade | active | result |
+      |         | 2016 | Spring   | 92    | is not | is not |
+      |         | 2016 | Fall     | 70    | is     | is     |
+      |         | 2016 | Fall     | 90    | is     | is     |
+      |         | 2016 | Spring   | 88    | is not | is not |
+      |         | 2016 | Spring   | 91    | is not | is not |
 
   Scenario Outline: System asks checks if two courses are equal
-    Given the first course has the number extension <extension 1>
+    Given the first course has the section <section 1>
       And the first course is in the year <year 1>
       And the first course is in the <term 1> term
       And the first course grade is <grade 1>
       And the first course <active 1> being taken by the student
-    Given the second course has the number extension <extension 2>
+    Given the second course has the section <section 2>
       And the second course is in the year <year 2>
       And the second course is in the <term 2> term
       And the second course grade is <grade 2>
@@ -106,12 +106,12 @@ Feature: Course instance maintains data about itself
     Then I am told that the first course and second course <result> equal
 
     Examples:
-      | extension 1 | year 1 | term 1   | grade 1 | active 1 | extension 2 | year 2 | term 2   | grade 2 | active 2 | result  |
-      |             | 2016   | Spring   | 92      | is not   |             | 2016   | Fall     | 92      | is not   | are not |
-      |             | 2016   | Fall     | 70      | is       |             | 2016   | Fall     | 80      | is       | are     |
-      |             | 2015   | Fall     | 90      | is       |             | 2016   | Fall     | 90      | is       | are not |
-      |             | 2016   | Spring   | 88      | is not   |             | 2016   | Spring   | 88      | is       | are     |
-      |             | 2016   | Spring   | 72      | is not   |             | 2016   | Spring   | 91      | is       | are     |
+      | section 1 | year 1 | term 1   | grade 1 | active 1 | section 2 | year 2 | term 2   | grade 2 | active 2 | result  |
+      |           | 2016   | Spring   | 92      | is not   |           | 2016   | Fall     | 92      | is not   | are not |
+      |           | 2016   | Fall     | 70      | is       |           | 2016   | Fall     | 80      | is       | are     |
+      |           | 2015   | Fall     | 90      | is       |           | 2016   | Fall     | 90      | is       | are not |
+      |           | 2016   | Spring   | 88      | is not   |           | 2016   | Spring   | 88      | is       | are     |
+      |           | 2016   | Spring   | 72      | is not   |           | 2016   | Spring   | 91      | is       | are     |
 
   Scenario Outline: System asks for course description information
     Given the course has the crn <course crn>

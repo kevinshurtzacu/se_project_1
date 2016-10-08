@@ -4,7 +4,7 @@ package implementation;
  * Represents a single course taken by an ACU student.  Maintains data for
  * <ul>
  *     <li>CRN (course registration number)</li>
- *     <li>course number extension</li>
+ *     <li>course section</li>
  *     <li>course year</li>
  *     <li>course term</li>
  *     <li>current grade</li>
@@ -18,21 +18,20 @@ package implementation;
  * </p>
  *
  * @author Kevin Shurtz
- * @author Virginia Pettit
  * @version 1.0
  */
 public class Course
 {
     // Course characteristics
     int courseCRN;          // Course Registration Number
-    String courseNumberExt; // Course number extension (1, 2, H2, etc.)
+    String courseSection; // Course section (1, 2, H2, etc.)
 
     // Time characteristics
     int courseYear;         // Year course is taken
     Term courseTerm;        // Term during which course is taken
     
     // Student data
-    double courseGrade;     // Student's grade in course (from 0.0 to 100.0)
+    String courseGrade;     // Student's grade in course (from 0.0 to 100.0)
     boolean inCourseNow;    // Whether the student is in the course now
 
     /**
@@ -40,7 +39,7 @@ public class Course
      * delegates the instantiation of instance variables to method setCourse.
      *
      * @param crnNum    course registration number
-     * @param ext       course number extension, such as 01, H1, etc
+     * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
      * @param grade     current grade for the course out of 100 points
@@ -58,7 +57,7 @@ public class Course
      * for each instance variable, many of which validate the input.
      *
      * @param crnNum    course registration number
-     * @param ext       course number extension, such as 01, H1, etc
+     * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
      * @param grade     current grade for the course out of 100 points
@@ -66,10 +65,10 @@ public class Course
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-	public void setCourse(int crnNum, String ext, int year, Term cTerm, double grade, boolean now)
+	public void setCourse(int crnNum, String section, int year, Term cTerm, double grade, boolean now)
     {
         setCourseCRN(crnNum);           // Assign crn
-        setCourseNumberExt(ext);        // Assign course number extension
+        setCourseSection(section);        // Assign course section
         setCourseYear(year);            // Assign course year
         setCourseTerm(cTerm);           // Assign course term
         setCourseGrade(grade);          // Assign course grade
@@ -87,16 +86,16 @@ public class Course
     }
 
     /**
-     * Assigns the course number extension.  Examples include '01', '02', and 'H2'.
+     * Assigns the course section.  Examples include '01', '02', and 'H2'.
      * The full identifier for a course can be created by concatenating the
      * course number with its extension, joined by a '.'.  For example,
      * 101.H1
      *
-     * @param ext       course number extension
+     * @param ext       course section
      */
-    public void setCourseNumberExt(String ext)
+    public void setCourseSection(String section)
     {
-        courseNumberExt = ext;
+        courseSection = section;
     }
 
     /**
@@ -148,12 +147,42 @@ public class Course
      */
     public void setCourseGrade(double grade)
     {
+        // Check for exceptions
         if (grade > 100.0)
             throw new IllegalArgumentException("Grade above 100% not possible");
-        
+
         if (grade < 0.0)
             throw new IllegalArgumentException("Grade below 0% not possible");
-        
+
+        // Assign grades
+        if (grade >= 90)
+            courseGrade = "A";
+        else if (grade >= 80)
+            courseGrade = "B";
+        else if (grade >= 70)
+            courseGrade = "C";
+        else if (grade >= 60)
+            courseGrade = "D";
+        else
+            courseGrade = "F";
+    }
+
+    /**
+     * Assigns the grade a student has in a course.  The grade must be a letter
+     * grade, such as (A, B, C, D, or F).
+     *
+     * @param grade     the grade a student has in an instance of Course
+     * @throws IllegalArgumentException If a student is assigned something besides (A, B, C, D, or F).
+     */
+    public void setCourseGrade(String grade)
+    {
+        grade = grade.toUpperCase();
+
+        // Check for exceptions
+        if (!(grade.equals("A") || grade.equals("B") || grade.equals("C") || grade.equals("D") || grade.equals("F")))
+            throw new IllegalArgumentException("Grade must be 'A', 'B', 'C', 'D', or 'F'");
+
+        // Assign grade
         courseGrade = grade;
     }
 
@@ -181,20 +210,20 @@ public class Course
     }
 
     /**
-     * Returns the course number extension.  Courses often have extensions
+     * Returns the course section.  Courses often have extensions
      * for their course numbers to differentiate different instances of the
      * course, represented by a mixture of digits and characters.  Examples
      * include '01', '02', 'H2', etc.
      *
      * Often, the full course identifier is presented as the subject, course
-     * number and course number extension, ajoined by a period.  For example,
+     * number and course section, ajoined by a period.  For example,
      * BIBL 101.H2.  At ACU, this represnts Bible 101 Jesus: Life and Teachings.
      * The H2 signifies that this is the "Honors 2" class.
      *
-     * @return  the course number extension
+     * @return  the course section
      */
-    public String getCourseNumberExt() {
-        return courseNumberExt;
+    public String getCourseSection() {
+        return courseSection;
     }
 
     /**
@@ -221,12 +250,12 @@ public class Course
     }
 
     /**
-     * Returns the course grade.  This represents the final grade for the course,
-     * or the ongoing grade as an active semester progresses.
+     * Returns the course grade.  This represents the final letter grade for
+     * the course, or the ongoing grade as an active semester progresses.
      *
      * @return  the course grade
      */
-    public double getCourseGrade()
+    public String getCourseGrade()
     {
         return courseGrade;
     }
