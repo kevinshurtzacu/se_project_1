@@ -3,15 +3,14 @@ package implementation;
 /**
  * Represents a single course offered by ACU.  Maintains data for
  * <ul>
- *     <li>CRN (course registration number)</li>
  *     <li>course subject</li>
  *     <li>course number</li>
  *     <li>course title</li>
  * </ul>
  *
  * <p>
- *     Instances of CourseDescription will also contain CRNs, by which Courses may
- *     look up data from their coresponding CourseDescription.
+ *     Instances of CourseDescription will also contain a subject and number,
+ *     by which Courses may look up data from their coresponding CourseDescription.
  * </p>
  *
  * @author Kevin Shurtz
@@ -20,16 +19,14 @@ package implementation;
 public class CourseDescription
 {
     // Course characteristics
-    int courseCRN;          // Course Registration Number
     String courseSubject;   // Course subject (BIBL, CS, IT, etc.)
-    int courseNumber;       // Course number (101, 102, etc.)
+    String courseNumber;    // Course number (101, 102, etc.)
     String courseTitle;     // Course title (without number)
 
     /**
      * Constructs a Course object to represent a student's course.  Course
      * delegates the instantiation of instance variables to method setCourse.
      *
-     * @param crnNum    course registration number
      * @param subject   course subject, such as 'BIBL', 'CS', 'IT', etc
      * @param title     course title, such as 'Software Engineering', 'Networking', etc
      * @param courseNum course number, such as 220, 221, etc
@@ -37,9 +34,9 @@ public class CourseDescription
      *                                  was unacceptable
      * @see             CourseDescription#setCourseDescription(int, String, int, String)
      */
-    public CourseDescription(int crnNum, String subject, int courseNum, String title)
+    public CourseDescription(String subject, String courseNum, String title)
     {
-        setCourseDescription(crnNum, subject, courseNum, title);
+        setCourseDescription(subject, courseNum, title);
     }
 
     /**
@@ -54,22 +51,11 @@ public class CourseDescription
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-    public void setCourseDescription(int crnNum, String subject, int courseNum, String title)
+    public void setCourseDescription(String subject, String courseNum, String title)
     {
-        setCourseCRN(crnNum);           // Assign crn
         setCourseSubject(subject);      // Assign subject
         setCourseNumber(courseNum);     // Assign course number
         setCourseTitle(courseTitle);    // Assign title
-    }
-
-    /**
-     * Assigns the course registration number.  No validation is conducted.
-     *
-     * @param crnNum    course registration number, a unique course identifier
-     */
-    public void setCourseCRN(int crnNum)
-    {
-        courseCRN = crnNum;
     }
 
     /**
@@ -94,9 +80,9 @@ public class CourseDescription
      * @throws IllegalArgumentException If the course number is not three digits
      * @see                 Course#setCourseNumberExt(String)
      */
-    public void setCourseNumber(int courseNum)
+    public void setCourseNumber(String courseNum)
     {
-        if (Integer.toString(courseNum).length() != 3)
+        if (courseNum.length() != 3)
             throw new IllegalArgumentException("Course number is not three digits");
 
         courseNumber = courseNum;
@@ -111,16 +97,6 @@ public class CourseDescription
     public void setCourseTitle(String title)
     {
         courseTitle = title;
-    }
-
-    /**
-     * Returns the CRN.  The CRN is the course registration number.
-     *
-     * @return  the course CRN
-     */
-    public int getCourseCRN()
-    {
-        return courseCRN;
     }
 
     /**
@@ -139,7 +115,7 @@ public class CourseDescription
      *
      * @return  the course number
      */
-    public int getCourseNumber()
+    public String getCourseNumber()
     {
         return courseNumber;
     }
@@ -162,9 +138,6 @@ public class CourseDescription
      */
     public boolean equals(CourseDescription other)
     {
-        if (courseCRN != other.getCourseCRN())
-            return false;
-
         if (courseSubject != other.getCourseSubject())
             return false;
 
@@ -185,9 +158,12 @@ public class CourseDescription
      */
     public boolean equals(Course other)
     {
-        if (courseCRN == other.getCourseCRN())
-            return true;
+        if (courseSubject != other.getCourseSubject())
+            return false;
 
-        return false;
+        if (courseNumber != other.getCourseNumber())
+            return false;
+
+        return true;
     }
 }

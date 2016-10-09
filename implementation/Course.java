@@ -3,7 +3,8 @@ package implementation;
 /**
  * Represents a single course taken by an ACU student.  Maintains data for
  * <ul>
- *     <li>CRN (course registration number)</li>
+ *     <li>course subject</li>
+ *     <li>course number</li>
  *     <li>course section</li>
  *     <li>course year</li>
  *     <li>course term</li>
@@ -13,8 +14,9 @@ package implementation;
  *
  * <p>
  *     Courses and CourseDescriptions will be able to reference one another
- *     through their CRNs.  CourseDescription is presently capable of equating
- *     itself with a Course object by use of the default equals method.
+ *     through their subjects and numbers.  CourseDescription is presently
+ *     capable of equating itself with a Course object by use of the default
+ *     equals method.
  * </p>
  *
  * @author Kevin Shurtz
@@ -23,8 +25,9 @@ package implementation;
 public class Course
 {
     // Course characteristics
-    int courseCRN;          // Course Registration Number
-    String courseSection; // Course section (1, 2, H2, etc.)
+    String courseNumber;    // Coures number (101, 102, etc)
+    String courseSubject;   // Course subject (ACCT, IT, CS, etc)
+    String courseSection;   // Course section (1, 2, H2, etc)
 
     // Time characteristics
     int courseYear;         // Year course is taken
@@ -38,7 +41,6 @@ public class Course
      * Constructs a Course object to represent a student's course.  Course
      * delegates the instantiation of instance variables to method setCourse.
      *
-     * @param crnNum    course registration number
      * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -46,17 +48,32 @@ public class Course
      * @param now       whether the course is being actively taken
      * @see             Course#setCourse(int, String, int, Term, double, boolean)
      */
-	public Course(int crnNum, String ext, int year, Term cTerm, double grade, boolean now)
+	public Course(String subject, String number, String section, int year, Term cTerm, double grade, boolean now)
 	{
-	    setCourse(crnNum, ext, year, cTerm, grade, now);
+	    setCourse(subject, number, section, year, cTerm, grade, now);
 	}
+
+    /**
+     * Constructs a Course object to represent a student's course.  Course
+     * delegates the instantiation of instance variables to method setCourse.
+     *
+     * @param section   course section, such as 01, H1, etc
+     * @param year      year the course is taking place in
+     * @param cTerm     term the coures is taking place in
+     * @param grade     current grade for the course as a letter (A, B, etc)
+     * @param now       whether the course is being actively taken
+     * @see             Course#setCourse(int, String, int, Term, double, boolean)
+     */
+    public Course(String subject, String number, String section, int year, Term cTerm, String grade, boolean now)
+    {
+        setCourse(subject, number, section, year, cTerm, grade, now);
+    }
 
     /**
      * Assigns values to Course instance variables.  The function
      * delegate assignment to each of the assignment functions
      * for each instance variable, many of which validate the input.
      *
-     * @param crnNum    course registration number
      * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -65,24 +82,63 @@ public class Course
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-	public void setCourse(int crnNum, String section, int year, Term cTerm, double grade, boolean now)
+	public void setCourse(String subject, String number, String section, int year, Term cTerm, double grade, boolean now)
     {
-        setCourseCRN(crnNum);           // Assign crn
-        setCourseSection(section);        // Assign course section
-        setCourseYear(year);            // Assign course year
-        setCourseTerm(cTerm);           // Assign course term
-        setCourseGrade(grade);          // Assign course grade
-        setInCourseNow(now);            // Assign if in course now
+        setCourseSubject(subject);  // Assign course subject
+        setCourseNumber(number);    // Assign course number
+        setCourseSection(section);  // Assign course section
+        setCourseYear(year);        // Assign course year
+        setCourseTerm(cTerm);       // Assign course term
+        setCourseGrade(grade);      // Assign course grade
+        setInCourseNow(now);        // Assign if in course now
     }
 
     /**
-     * Assigns the course registration number.  No validation is conducted.
+     * Assigns values to Course instance variables.  The function
+     * delegate assignment to each of the assignment functions
+     * for each instance variable, many of which validate the input.
      *
-     * @param crnNum    course registration number, a unique course identifier
+     * @param section   course section, such as 01, H1, etc
+     * @param year      year the course is taking place in
+     * @param cTerm     term the coures is taking place in
+     * @param grade     current grade for the course as a letter (A, B, etc)
+     * @param now       whether the course is being actively taken
+     * @throws IllegalArgumentException If one of the arguements provided
+     *                                  was unacceptable
      */
-    public void setCourseCRN(int crnNum)
+    public void setCourse(String subject, String number, String section, int year, Term cTerm, String grade, boolean now)
     {
-        courseCRN = crnNum;
+        setCourseSubject(subject);  // Assign course subject
+        setCourseNumber(number);    // Assign course number
+        setCourseSection(section);  // Assign course section
+        setCourseYear(year);        // Assign course year
+        setCourseTerm(cTerm);       // Assign course term
+        setCourseGrade(grade);      // Assign course grade
+        setInCourseNow(now);        // Assign if in course now
+    }
+
+    /**
+     * Assigns the course subject.  Examples include 'ACCT', 'IT', etc.
+     * This value is part of a course's unique identifier, in conjunction
+     * with the course number.
+     *
+     * @param subject   the course subject, such as 'ACCT', 'IT', etc
+     */
+    public void setCourseSubject(String subject)
+    {
+        courseSubject = subject;
+    }
+
+    /**
+     * Assigns the course number.  Examples include '101', 102', etc.
+     * This value is part of the unique identifier, in conjunction with
+     * the course subject.
+     *
+     * @param number    the course number, such as '101', '102', etc
+     */
+    public void setCourseNumber(String number)
+    {
+        courseNumber = number;
     }
 
     /**
@@ -199,17 +255,6 @@ public class Course
     }
 
     /**
-     * Returns the course registration number.  This can be used to look up
-     * a CourseDescription for this course.
-     *
-     * @return  the course registration number
-     */
-    public int getCourseCRN()
-    {
-        return courseCRN;
-    }
-
-    /**
      * Returns the course section.  Courses often have extensions
      * for their course numbers to differentiate different instances of the
      * course, represented by a mixture of digits and characters.  Examples
@@ -277,7 +322,7 @@ public class Course
      */
     public String getCourseSubject()
     {
-        return DataModule.getCourseSubject(this);
+        return courseSubject;
     }
 
     /**
@@ -297,21 +342,24 @@ public class Course
      *
      * @return  the course number.
      */
-    public int getCourseNumber()
+    public String getCourseNumber()
     {
-        return DataModule.getCourseNumber(this);
+        return courseNumber;
     }
 
     /**
-     * Returns true if two Courses have the same CRN and are taken
-     * at the same time.
+     * Returns true if two Courses have the same subject, number,
+     * and are taken at the same time.
      *
      * @param other     the other Course
      * @return          whether the Courses are the same
      */
     public boolean equals(Course other)
     {
-        if (getCourseCRN() != other.getCourseCRN())
+        if (getCourseSubject() != other.getCourseSubject())
+            return false;
+
+        if (getCourseNumber() != other.getCourseNumber())
             return false;
 
         if (getCourseYear() != other.getCourseYear())
@@ -320,19 +368,25 @@ public class Course
         if (getCourseTerm() != other.getCourseTerm())
             return false;
 
+        if (getCourseGrade() != other.getCourseGrade())
+            return false;
+
         return true;
     }
 
     /**
      * Returns true if a Course can be related to a CourseDescription
-     * via its CRN.
+     * via its subject and number.
      *
      * @param other     the CourseDescription being compared
      * @return          whether the Course relates to the CourseDescription
      */
     public boolean equals(CourseDescription other)
     {
-        if (getCourseCRN() != other.getCourseCRN())
+        if (getCourseSubject() != other.getCourseSubject())
+            return false;
+
+        if (getCourseNumber() != other.getCourseNumber())
             return false;
 
         return true;

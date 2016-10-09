@@ -6,126 +6,124 @@ Feature: Course instance maintains data about itself
   Course can refer to classes a student has actively taken, as well as classes he/she
   has taken in the past.
 
+  Scenario Outline: System asks for the course subject
+    Given the course has the subject <subject>
+    When I ask for the course subject
+    Then I receive the string <result> from course
+
+    Examples:
+      | subject | result |
+      | ACCT    | ACCT   |
+      | BIBL    | BIBL   |
+      | IT      | IT     |
+      | CS      | CS     |
+      | IS      | IS     |
+
+  Scenario Outline: System asks for the course number
+    Given the course has the number <number>
+    When I ask for the course number
+    Then I receive the string <result> from course
+
+    Examples:
+      | number  | result |
+      | 101     | 101    |
+      | 374     | 374    |
+      | 102     | 102    |
+      | 603     | 603    |
+      | 220     | 220    |
+
   Scenario Outline: System asks for the course section
     Given the course has the section <section>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> being taken by the student
     When I ask for the course section
     Then I receive the string <result> from course
 
     Examples:
-      | section | year | term     | grade | active | result |
-      | 01      | 2016 | Spring   | 92    | is not | 01     |
-      | 02      | 2016 | Fall     | 70    | is     | 02     |
-      | H1      | 2015 | Fall     | 90    | is not | H1     |
-      | 05      | 2016 | Spring   | 88    | is not | 05     |
-      | H2      | 2016 | Spring   | 91    | is not | H2     |
+      | section | result |
+      | 01      | 01     |
+      | 02      | 02     |
+      | H1      | H1     |
+      | 05      | 05     |
+      | H2      | H2     |
 
   Scenario Outline: System asks for the year in which the course was offered
-    Given the course has the section <section>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> being taken by the student
+    Given the course is in the year <year>
     When I ask for the course year
     Then I receive the integer <result> from course
 
     Examples:
-      | section | year | term     | grade | active | result |
-      |         | 2016 | Spring   | 92    | is not | 2016   |
-      |         | 2013 | Fall     | 70    | is     | 2013   |
-      |         | 2012 | Fall     | 90    | is not | 2012   |
-      |         | 2014 | Spring   | 88    | is not | 2014   |
-      |         | 2015 | Spring   | 91    | is not | 2015   |
+      | year | result |
+      | 2016 | 2016   |
+      | 2013 | 2013   |
+      | 2012 | 2012   |
+      | 2014 | 2014   |
+      | 2015 | 2015   |
 
   Scenario Outline: System asks for the term in which the course was offered
-    Given the course has the section <section>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> being taken by the student
+    Given the course is in the <term> term
     When I ask for the course term
     Then I receive the term <result> from course
 
     Examples:
-      | section | year | term     | grade | active | result |
-      |         | 2016 | Spring   | 92    | is not | Spring |
-      |         | 2016 | Fall     | 70    | is     | Fall   |
-      |         | 2015 | Fall     | 90    | is not | Fall   |
-      |         | 2016 | Spring   | 88    | is not | Spring |
-      |         | 2016 | Spring   | 91    | is not | Spring |
+      | term     | result |
+      | Spring   | Spring |
+      | Fall     | Fall   |
+      | Fall     | Fall   |
+      | Spring   | Spring |
+      | Spring   | Spring |
 
   Scenario Outline: System asks for the student's grade in the course
-    Given the course has the section <section>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> being taken by the student
+    Given the course grade is <grade>
     When I ask for the course grade
     Then I receive the string <result> from course
 
     Examples:
-      | section | year | term     | grade | active | result |
-      |         | 2016 | Spring   | A     | is not | A      |
-      |         | 2016 | Fall     | C     | is     | C      |
-      |         | 2015 | Fall     | 90    | is not | A      |
-      |         | 2016 | Spring   | 88    | is not | B      |
-      |         | 2016 | Spring   | F     | is not | F      |
+      | grade | result |
+      | A     | A      |
+      | C     | C      |
+      | 90    | A      |
+      | 88    | B      |
+      | F     | F      |
 
   Scenario Outline: System asks if student is active in course
-    Given the course has the section <section>
-      And the course is in the year <year>
-      And the course is in the <term> term
-      And the course grade is <grade>
-      And the course <active> being taken by the student
+    Given the course <active> being taken by the student
     When I ask if the course is being taken by the student
     Then I am told that it <result> being taken by the student
 
     Examples:
-      | section | year | term     | grade | active | result |
-      |         | 2016 | Spring   | 92    | is not | is not |
-      |         | 2016 | Fall     | 70    | is     | is     |
-      |         | 2016 | Fall     | 90    | is     | is     |
-      |         | 2016 | Spring   | 88    | is not | is not |
-      |         | 2016 | Spring   | 91    | is not | is not |
+      | active | result |
+      | is not | is not |
+      | is     | is     |
+      | is     | is     |
+      | is not | is not |
+      | is not | is not |
 
-  Scenario Outline: System asks checks if two courses are equal
-    Given the first course has the section <section 1>
-      And the first course is in the year <year 1>
-      And the first course is in the <term 1> term
-      And the first course grade is <grade 1>
-      And the first course <active 1> being taken by the student
-    Given the second course has the section <section 2>
-      And the second course is in the year <year 2>
-      And the second course is in the <term 2> term
-      And the second course grade is <grade 2>
-      And the second course <active 2> being taken by the student
+  Scenario Outline: System asks if two courses are equal
+    Given both courses have the subject <subject>
+      And both courses have the number <number>
+      And both courses have the section <section>
+      And both courses are in the year <year>
+      And both courses are in the <term> term
+      And both courses have the grade <grade>
+      And both courses <active> being taken by the student
     When I ask if the courses are equal
     Then I am told that the first course and second course <result> equal
 
     Examples:
-      | section 1 | year 1 | term 1   | grade 1 | active 1 | section 2 | year 2 | term 2   | grade 2 | active 2 | result  |
-      |           | 2016   | Spring   | 92      | is not   |           | 2016   | Fall     | 92      | is not   | are not |
-      |           | 2016   | Fall     | 70      | is       |           | 2016   | Fall     | 80      | is       | are     |
-      |           | 2015   | Fall     | 90      | is       |           | 2016   | Fall     | 90      | is       | are not |
-      |           | 2016   | Spring   | 88      | is not   |           | 2016   | Spring   | 88      | is       | are     |
-      |           | 2016   | Spring   | 72      | is not   |           | 2016   | Spring   | 91      | is       | are     |
+      | subject | number | section | year | term   | grade | active  | result  |
+      | IT      | 220    |         | 2016 | Fall   | 70    | are     | are     |
+      | BIBL    | 201    |         | 2016 | Spring | 88    | are not | are     |
+      | CS      | 101    |         | 2016 | Spring | 72    | are not | are     |
 
-  Scenario Outline: System asks for course description information
-    Given the course has the crn <course crn>
-      And the course is in the year <course year>
-      And the course is in the <course term> term
-    Given there is a course description with a "crn" of <cd crn>
-      And there is a course description with a "number" of <cd num>
-      And there is a course description with a "subject" of <cd subject>
-      And there is a course description with a "title" of <cd title>
-    When I ask for the course title
-    Then I receive the string <result> from student profile
 
-    Examples:
-      | course crn | course year | course term | cd crn | cd num | cd subject | cd title                  | result                    |
-      | 12345      | 2016        | Spring      | 12345  | 101    | BIBL       | Jesus: Life and Teachings | Jesus: Life and Teachings |
-      | 54321      | 2015        | Fall        | 54321  | 374    | CS         | Software Engineering      | Software Engineering      |
-      | 12345      | 2012        | Maymester   | 12345  | 220    | IT         | Databases and DBMS        | Databases and DBMS        |
+    Scenario Outline: System asks if two courses are equal
+      Given the first course grade is <grade 1>
+        And the second course grade is <grade 2>
+      When I ask if the courses are equal
+      Then I am told that the first course and second course <result> equal
+
+      Examples:
+        | grade 1 | grade 2 | result  |
+        | A       | B       | are not |
+        | A       | A       | are     |
+        | F       | F       | are     |
+        | C       | D       | are not |

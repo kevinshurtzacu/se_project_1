@@ -19,29 +19,52 @@ import static org.junit.Assert.*;
 public class CourseTest
 {
     // Course object to be tested
-    private static Course course = new Course(12345, "", 2015, Term.FALL, 90.5, false);
+    private static Course course = new Course("CS", "374", "", 2016, Term.FALL, "F", true);
 
     // Course objects for testing comparisons
-    private static Course firstCourse = new Course(12345, "", 2015, Term.FALL, 90.5, false);
-    private static Course secondCourse = new Course(12345, "", 2015, Term.FALL, 90.5, false);
+    private static Course firstCourse = new Course("CS", "374", "", 2016, Term.FALL, "F", true);
+    private static Course secondCourse = new Course("CS", "374", "", 2016, Term.FALL, "F", true);
 
     // CourseDescription object to compare to
-    private static CourseDescription coursedesc = new CourseDescription(0, "", 100, "");
+    private static CourseDescription coursedesc = new CourseDescription("", "100", "");
 
     // result of each test
     private static Object result = null;
 
-    // Givens
-    @Given("^the course has the crn (\\d+)$")
-    public void theCourseHasTheCrn(int crn) throws Throwable
+    // Given subject, number, section
+    @Given("^the course has the (.*?) (.*?)$")
+    public void theCourseHasThe(String attribute, String value) throws Throwable
     {
-        course.setCourseCRN(crn);
+        if (attribute.equals("subject"))
+            course.setCourseSubject(value);
+
+        if (attribute.equals("number"))
+            course.setCourseNumber(value);
+
+        if (attribute.equals("section"))
+            course.setCourseSection(value);
     }
 
-    @Given("^the course has the section (.*?)$")
-    public void theCourseHasSection(String value) throws Throwable
+    @Given("^both courses have the (.*?) (.*?)")
+    public void bothCoursesHave(String attribute, String value) throws Throwable
     {
-        course.setCourseSection(value);
+        if (attribute.equals("subject"))
+        {
+            firstCourse.setCourseSubject(value);
+            secondCourse.setCourseSubject(value);
+        }
+
+        if (attribute.equals("number"))
+        {
+            firstCourse.setCourseNumber(value);
+            secondCourse.setCourseNumber(value);
+        }
+
+        if (attribute.equals("section"))
+        {
+            firstCourse.setCourseSection(value);
+            secondCourse.setCourseSection(value);
+        }
     }
 
     @Given("^the (first|second) course has the section (.*?)$")
@@ -54,6 +77,7 @@ public class CourseTest
             secondCourse.setCourseSection(value);
     }
 
+    // Given Term
     @Given("^the course is (?:in the|a) (.*?) (?:term|course)$")
     public void theCourseIsInTheTerm(String term) throws Throwable
     {
@@ -67,6 +91,30 @@ public class CourseTest
 
         if (term.equals("SUMMER"))
             course.setCourseTerm(Term.SUMMER);
+    }
+
+    @Given("both courses are in the (.*?) term")
+    public void bothCoursesAreInTheTerm(String term)
+    {
+        term = term.toUpperCase();
+
+        if (term.equals("FALL"))
+        {
+            firstCourse.setCourseTerm(Term.FALL);
+            secondCourse.setCourseTerm(Term.FALL);
+        }
+
+        if (term.equals("SPRING"))
+        {
+            firstCourse.setCourseTerm(Term.SPRING);
+            secondCourse.setCourseTerm(Term.SPRING);
+        }
+
+        if (term.equals("SUMMER"))
+        {
+            firstCourse.setCourseTerm(Term.SUMMER);
+            secondCourse.setCourseTerm(Term.SUMMER);
+        }
     }
 
     @Given("^the (first|second) course is (?:in the|a) (.*?) (?:term|course)$")
@@ -99,10 +147,18 @@ public class CourseTest
         }
     }
 
+    // Given year
     @Given("^the course is in the year (\\d+)$")
     public void theCourseIsInTheYear(int year) throws Throwable
     {
         course.setCourseYear(year);
+    }
+
+    @Given("^both courses are in the year (\\d+)")
+    public void bothCoursesAreInTheYear(int value) throws Throwable
+    {
+        firstCourse.setCourseYear(value);
+        secondCourse.setCourseYear(value);
     }
 
     @Given("^the (first|second) course is in the year (\\d+)$")
@@ -115,6 +171,7 @@ public class CourseTest
             secondCourse.setCourseYear(year);
     }
 
+    // Given grade
     @Given("^the course(?:'s)? grade is (.*?)$")
     public void theCourseGradeIs(String grade) throws Throwable
     {
@@ -142,6 +199,17 @@ public class CourseTest
             secondCourse.setCourseGrade(grade);
     }
 
+    @Given("^the (first|second) course(?:'s)? grade is (.*?)$")
+    public void oneCourseGradeIs(String which, String grade) throws Throwable
+    {
+        if (which.equals("first"))
+            firstCourse.setCourseGrade(grade);
+
+        if (which.equals("second"))
+            secondCourse.setCourseGrade(grade);
+    }
+
+    // Given active
     @Given("^the course (is not|is) being taken by (?:the|a) student$")
     public void theCourseBeingTaken(String active) throws Throwable
     {
@@ -153,6 +221,20 @@ public class CourseTest
             inCourse = false;
 
         course.setInCourseNow(inCourse);
+    }
+
+    @Given("both courses (are|are not) being taken by the student")
+    public void bothCoursesBeingTaken(String active)
+    {
+        boolean inCourse;
+
+        if (active.equals("are"))
+            inCourse = true;
+        else
+            inCourse = false;
+
+        firstCourse.setInCourseNow(inCourse);
+        secondCourse.setInCourseNow(inCourse);
     }
 
     @Given("^the (first|second) course (is not|is) being taken by (?:the|a) student$")
@@ -177,14 +259,11 @@ public class CourseTest
     {
         attribute = attribute.toLowerCase();
 
-        if (attribute.equals("crn"))
-            coursedesc.setCourseCRN(Integer.parseInt(value));
-
         if (attribute.equals("subject"))
             coursedesc.setCourseSubject(value);
 
         if (attribute.equals("number"))
-            coursedesc.setCourseNumber(Integer.parseInt(value));
+            coursedesc.setCourseNumber(value);
 
         if (attribute.equals("title"))
             coursedesc.setCourseTitle(value);
@@ -195,6 +274,12 @@ public class CourseTest
     public void iAskForTheCourse(String request) throws Throwable
     {
         request = request.toLowerCase();
+
+        if (request.equals("subject"))
+            result = course.getCourseSubject();
+
+        if (request.equals("number"))
+            result = course.getCourseNumber();
 
         if (request.equals("section"))
             result = course.getCourseSection();

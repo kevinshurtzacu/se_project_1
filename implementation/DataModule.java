@@ -48,7 +48,7 @@ public class DataModule {
         return null;
     }
 
-    public static int getCourseNumber(Course course) {
+    public static String getCourseNumber(Course course) {
         // Sets do not have accessors methods, making iteration necessary
         Iterator<CourseDescription> it = courseDescriptions.iterator();
 
@@ -60,7 +60,7 @@ public class DataModule {
         }
 
         // This event should never happen
-        return 0;
+        return "";
     }
 
     public static String getCourseTitle(Course course) {
@@ -92,42 +92,46 @@ public class DataModule {
             line = scan.nextLine();
             record = parseRecord(line);
 
-            System.out.println("\n___________________________");
+            System.out.println(record[50]);
 
-            // CourseDescription - These work
-            System.out.println("CourseDescription: ");
-            System.out.println("?   Course identifier: ?");
-            System.out.println("40  Course subject: " + record[40]);
-            System.out.println("44  Course title: " + record[44]);
-            System.out.println("42  Course number: " + record[42]);
-            System.out.println();
 
-            // CRN is 35
+//            System.out.println("\n___________________________");
+//
+//            // CourseDescription - These work
+//            System.out.println("CourseDescription: ");
+//            System.out.println("?   Course identifier: ?");
+//            System.out.println("40  Course subject: " + record[40]);
+//            System.out.println("44  Course title: " + record[44]);
+//            System.out.println("42  Course number: " + record[42]);
+//            System.out.println();
+//
+//            // CRN is 35
+//
+//            // Course - This works
+//            System.out.println("\nCourse: ");
+//            System.out.println("?   Course identifier: ?");
+//            System.out.println("43  Course section: " + record[43]);
+//            System.out.println("1   Course year: " + record[1]);
+//            System.out.println("1   Course term: " + record[1]);
+//            System.out.println("55  Course grade: " + record[55]);
+//            System.out.println("1   Is active: " + record[1]);
+//
+//            // StudentProfile - These work (and account for all of Student Profile)
+//            System.out.println("\nStudentProfile: ");
+//            System.out.println("56  Banner ID: " + record[56]);
+//            System.out.println("57  First: " + record[57]);
+//            System.out.println("58  Last: " + record[58]);
+//            System.out.println("64  ACU Email: " + record[64]);
+//
+//            // Student
+//            System.out.println("\nStudent: ");
+//            System.out.println("57  Banner ID: " + record[56]);
+//            System.out.println("43  Student section: " + record[43]);
+//            System.out.println("1   Student year: " + record[1]);
+//            System.out.println("1   Student term: " + record[1]);
+//            System.out.println("55  Student grade: " + record[55]);
+//            System.out.println("1   Is active: " + record[1]);
 
-            // Course - This works
-            System.out.println("\nCourse: ");
-            System.out.println("?   Course identifier: ?");
-            System.out.println("43  Course section: " + record[43]);
-            System.out.println("1   Course year: " + record[1]);
-            System.out.println("1   Course term: " + record[1]);
-            System.out.println("55  Course grade: " + record[55]);
-            System.out.println("1   Is active: " + record[1]);
-
-            // StudentProfile - These work (and account for all of Student Profile)
-            System.out.println("\nStudentProfile: ");
-            System.out.println("56  Banner ID: " + record[56]);
-            System.out.println("57  First: " + record[57]);
-            System.out.println("58  Last: " + record[58]);
-            System.out.println("64  ACU Email: " + record[64]);
-
-            // Student
-            System.out.println("\nStudent: ");
-            System.out.println("57  Student identifier: ?");
-            System.out.println("43  Student section: " + record[43]);
-            System.out.println("1   Student year: " + record[1]);
-            System.out.println("1   Student term: " + record[1]);
-            System.out.println("55  Student grade: " + record[55]);
-            System.out.println("1   Is active: " + record[1]);
         }
     }
 
@@ -223,27 +227,27 @@ public class DataModule {
         return new StudentProfile(banner, first, last, mail);
     }
 
-    private Student makeStudent(Integer bnrID, String section, Integer year, Term cTerm, Double grade, Boolean now)
+    private Student makeStudent(Integer banner, String section, Integer year, Term cTerm, Double grade, Boolean now)
     {
-        if (bnrID == null || section == null || year == null || cTerm == null || grade == null || now == null)
+        if (banner == null || section == null || year == null || cTerm == null || grade == null || now == null)
             return null;
 
-        return new Student(bnrID, section, year, cTerm, grade, now);
+        return new Student(banner, section, year, cTerm, grade, now);
     }
 
-    private CourseDescription makeCourseDescription(Integer crnNum, String subject, Integer courseNum, String title)
+    private CourseDescription makeCourseDescription(String subject, String courseNum, String title)
     {
-        if (crnNum == null || subject == null || courseNum == null || title == null)
+        if (subject == null || courseNum == null || title == null)
             return null;
 
-        return new CourseDescription(crnNum, subject, courseNum, title);
+        return new CourseDescription(subject, courseNum, title);
     }
 
-    private Course makeCourse(Integer crnNum, String ext, Integer year, String cTerm, Double grade, Boolean now)
+    private Course makeCourse(String subject, String courseNum, String section, Integer year, Term cTerm, String grade, Boolean now)
     {
-        if (crnNum == null || ext == null || ext == null || year == null || cTerm == null || grade == null || now == null)
+        if (section == "" || courseNum == "" || year == 0 || cTerm == null || grade == "" || now == null)
             return null;
 
-        return null;
+        return new Course(subject, courseNum, section, year, cTerm, grade, now);
     }
 }
