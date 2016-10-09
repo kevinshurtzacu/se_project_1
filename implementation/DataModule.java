@@ -25,6 +25,10 @@ public class DataModule {
     static private HashSet<CourseDescription> courseDescriptions = new HashSet<CourseDescription>();
     static private HashSet<StudentProfile> studentProfiles = new HashSet<StudentProfile>();
 
+    // These will be calculated later
+    static private currentYear = 2016;
+    static private currentTerm = Term.FALL;
+
     public static void addCourseDescription(CourseDescription courseDescription) {
         courseDescriptions.add(courseDescription);
     }
@@ -52,7 +56,8 @@ public class DataModule {
         // Sets do not have accessors methods, making iteration necessary
         Iterator<CourseDescription> it = courseDescriptions.iterator();
 
-        while (it.hasNext()) {
+        while (it.hasNext())
+        {
             CourseDescription description = it.next();
 
             if (description.equals(course))
@@ -67,7 +72,8 @@ public class DataModule {
         // Sets do not have accessors methods, making iteration necessary
         Iterator<CourseDescription> it = courseDescriptions.iterator();
 
-        while (it.hasNext()) {
+        while (it.hasNext())
+        {
             CourseDescription description = it.next();
 
             if (description.equals(course))
@@ -92,43 +98,69 @@ public class DataModule {
             line = scan.nextLine();
             record = parseRecord(line);
 
-            System.out.println("\n___________________________");
+            // entities to load
+            CourseDescription courseDesc;
+            Course course;
+            Student student;
+            StudentProfile studentProfile;
 
-            // CourseDescription - These work
-            System.out.println("CourseDescription: ");
-            System.out.println("40  Course subject: " + record[40]);
-            System.out.println("44  Course title: " + record[44]);
-            System.out.println("42  Course number: " + record[42]);
-            System.out.println();
+            // create course description
+            String subject = record[40];
+            String title = record[44];
+            String number = record[42];
 
-            CourseDescrption courseDesc 
+            courseDesc = makeCourseDescription(subject, title, number);
 
-            // CRN is 35
+            // create course and student
+            subject = record[40];
+            title = record[44];
+            String section;
+            Integer banner;
+            Integer year;
+            Term term;
+            String grade;
+            Boolean isActive;
 
-            // Course - This works
-            System.out.println("\nCourse: ");
-            System.out.println("?   Course identifier: ?");
-            System.out.println("43  Course section: " + record[43]);
-            System.out.println("1   Course year: " + record[1]);
-            System.out.println("1   Course term: " + record[1]);
-            System.out.println("55  Course grade: " + record[55]);
-            System.out.println("1   Is active: " + record[1]);
+            // determine the year
+            section = record[43];
+            banner = record[56];
+            String timeFrame = record[1];
+            year = Integer.parseInt(timeFrame.substring(0, 4));
 
-            // StudentProfile - These work (and account for all of Student Profile)
-            System.out.println("\nStudentProfile: ");
-            System.out.println("56  Banner ID: " + record[56]);
-            System.out.println("57  First: " + record[57]);
-            System.out.println("58  Last: " + record[58]);
-            System.out.println("64  ACU Email: " + record[64]);
+            // determine the term
+            int termCode = Integer.parseInt(timeFrame.substring(4, 6));
 
-            // Student
-            System.out.println("\nStudent: ");
-            System.out.println("57  Banner ID: " + record[56]);
-            System.out.println("43  Student section: " + record[43]);
-            System.out.println("1   Student year: " + record[1]);
-            System.out.println("1   Student term: " + record[1]);
-            System.out.println("55  Student grade: " + record[55]);
-            System.out.println("1   Is active: " + record[1]);
+            if (termCode == 10)
+                term = Term.FALL;
+            else if (termCode == 20)
+                term = Term.SPRING;
+            else if (termCode == 30)
+                term = Term.SUMMER;
+            else
+                term = null;
+
+            grade = record[55];
+
+            // determine if active
+            if (term == currentTerm && year == currentYear)
+                isActive = true;
+            else
+                isActive = false;
+
+            course = makeCourse(subject, number, section, year, term, grade, isActive);
+            student = makeStudent(banner, section, year, term, grade, isActive);
+
+            // create student profile
+            banner = record[56];
+            String first;
+            String last;
+            String email;
+
+            first = record[57];
+            last = record[58];
+            email = record[64];
+
+            studentProfile = makeStudentProfile(banner, first, last, email);
         }
     }
 
@@ -242,7 +274,7 @@ public class DataModule {
 
     private Course makeCourse(String subject, String courseNum, String section, Integer year, Term cTerm, String grade, Boolean now)
     {
-        if (section == "" || courseNum == "" || year == 0 || cTerm == null || grade == "" || now == null)
+        if (subject == "" || courseNum == "" || section == "" || year == 0 || cTerm == null || grade == "" || now == null)
             return null;
 
         return new Course(subject, courseNum, section, year, cTerm, grade, now);
