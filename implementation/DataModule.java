@@ -92,46 +92,43 @@ public class DataModule {
             line = scan.nextLine();
             record = parseRecord(line);
 
-            System.out.println(record[50]);
+            System.out.println("\n___________________________");
 
+            // CourseDescription - These work
+            System.out.println("CourseDescription: ");
+            System.out.println("40  Course subject: " + record[40]);
+            System.out.println("44  Course title: " + record[44]);
+            System.out.println("42  Course number: " + record[42]);
+            System.out.println();
 
-//            System.out.println("\n___________________________");
-//
-//            // CourseDescription - These work
-//            System.out.println("CourseDescription: ");
-//            System.out.println("?   Course identifier: ?");
-//            System.out.println("40  Course subject: " + record[40]);
-//            System.out.println("44  Course title: " + record[44]);
-//            System.out.println("42  Course number: " + record[42]);
-//            System.out.println();
-//
-//            // CRN is 35
-//
-//            // Course - This works
-//            System.out.println("\nCourse: ");
-//            System.out.println("?   Course identifier: ?");
-//            System.out.println("43  Course section: " + record[43]);
-//            System.out.println("1   Course year: " + record[1]);
-//            System.out.println("1   Course term: " + record[1]);
-//            System.out.println("55  Course grade: " + record[55]);
-//            System.out.println("1   Is active: " + record[1]);
-//
-//            // StudentProfile - These work (and account for all of Student Profile)
-//            System.out.println("\nStudentProfile: ");
-//            System.out.println("56  Banner ID: " + record[56]);
-//            System.out.println("57  First: " + record[57]);
-//            System.out.println("58  Last: " + record[58]);
-//            System.out.println("64  ACU Email: " + record[64]);
-//
-//            // Student
-//            System.out.println("\nStudent: ");
-//            System.out.println("57  Banner ID: " + record[56]);
-//            System.out.println("43  Student section: " + record[43]);
-//            System.out.println("1   Student year: " + record[1]);
-//            System.out.println("1   Student term: " + record[1]);
-//            System.out.println("55  Student grade: " + record[55]);
-//            System.out.println("1   Is active: " + record[1]);
+            CourseDescrption courseDesc 
 
+            // CRN is 35
+
+            // Course - This works
+            System.out.println("\nCourse: ");
+            System.out.println("?   Course identifier: ?");
+            System.out.println("43  Course section: " + record[43]);
+            System.out.println("1   Course year: " + record[1]);
+            System.out.println("1   Course term: " + record[1]);
+            System.out.println("55  Course grade: " + record[55]);
+            System.out.println("1   Is active: " + record[1]);
+
+            // StudentProfile - These work (and account for all of Student Profile)
+            System.out.println("\nStudentProfile: ");
+            System.out.println("56  Banner ID: " + record[56]);
+            System.out.println("57  First: " + record[57]);
+            System.out.println("58  Last: " + record[58]);
+            System.out.println("64  ACU Email: " + record[64]);
+
+            // Student
+            System.out.println("\nStudent: ");
+            System.out.println("57  Banner ID: " + record[56]);
+            System.out.println("43  Student section: " + record[43]);
+            System.out.println("1   Student year: " + record[1]);
+            System.out.println("1   Student term: " + record[1]);
+            System.out.println("55  Student grade: " + record[55]);
+            System.out.println("1   Is active: " + record[1]);
         }
     }
 
@@ -227,9 +224,9 @@ public class DataModule {
         return new StudentProfile(banner, first, last, mail);
     }
 
-    private Student makeStudent(Integer banner, String section, Integer year, Term cTerm, Double grade, Boolean now)
+    private Student makeStudent(Integer banner, String section, Integer year, Term cTerm, String grade, Boolean now)
     {
-        if (banner == null || section == null || year == null || cTerm == null || grade == null || now == null)
+        if (banner == null || section == null || year == null || cTerm == null || grade == "" || now == null)
             return null;
 
         return new Student(banner, section, year, cTerm, grade, now);

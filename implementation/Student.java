@@ -53,6 +53,23 @@ public class Student
 	}
 
     /**
+     * Constructs a Student object to represent a student's course.  Student
+     * delegates the instantiation of instance variables to method setStudent.
+     *
+     * @param bnrID     banner ID
+     * @param section   student section, such as 01, H1, etc
+     * @param year      year the student takes the course
+     * @param cTerm     term the student takes the course
+     * @param grade     student grade in the course as a letter (A, B, etc)
+     * @param now       whether the student is presently in the course
+     * @see             Student#setStudent(int, String, int, Term, double, boolean)
+     */
+    public Student(int bnrID, String section, int year, Term cTerm, String grade, boolean now)
+    {
+        setStudent(bnrID, section, year, cTerm, grade, now);
+    }
+
+    /**
      * Assigns values to Student instance variables.  The function
      * delegate assignment to each of the assignment functions
      * for each instance variable, many of which validate the input.
@@ -67,6 +84,30 @@ public class Student
      *                                  was unacceptable
      */
 	public void setStudent(int bnrID, String section, int year, Term cTerm, double grade, boolean now)
+    {
+        setStudentBannerID(bnrID);      // Assign crn
+        setStudentSection(section);     // Assign student section
+        setStudentYear(year);           // Assign student year
+        setStudentTerm(cTerm);          // Assign student term
+        setStudentGrade(grade);         // Assign student grade
+        setTakingNow(now);              // Assign if in course now
+    }
+
+    /**
+     * Assigns values to Student instance variables.  The function
+     * delegate assignment to each of the assignment functions
+     * for each instance variable, many of which validate the input.
+     *
+     * @param bnrID     banner ID
+     * @param section   student section, such as 01, H1, etc
+     * @param year      year the student takes the course
+     * @param cTerm     term the student takes the course
+     * @param grade     student grade in the course as a letter (A, B, etc)
+     * @param now       whether the student is presently in the course
+     * @throws IllegalArgumentException If one of the arguements provided
+     *                                  was unacceptable
+     */
+    public void setStudent(int bnrID, String section, int year, Term cTerm, String grade, boolean now)
     {
         setStudentBannerID(bnrID);      // Assign crn
         setStudentSection(section);     // Assign student section
