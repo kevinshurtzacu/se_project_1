@@ -1,4 +1,5 @@
 package implementation;
+import java.util.ArrayList;
 
 /**
  * Represents a single course offered by ACU.  Maintains data for
@@ -19,9 +20,10 @@ package implementation;
 public class CourseDescription
 {
     // Course characteristics
-    String courseSubject;   // Course subject (BIBL, CS, IT, etc.)
-    String courseNumber;    // Course number (101, 102, etc.)
-    String courseTitle;     // Course title (without number)
+    String courseSubject;       // Course subject (BIBL, CS, IT, etc.)
+    String courseNumber;        // Course number (101, 102, etc.)
+    String courseTitle;         // Course title (without number)
+	ArrayList<Prereq> prereqsNeeded; // List of prereqs needed for a certain class
 
     /**
      * Constructs a Course object to represent a student's course.  Course
@@ -98,7 +100,7 @@ public class CourseDescription
     {
         courseTitle = title;
     }
-
+	
     /**
      * Returns the course subject.  The course subject is output in an abbreviated format such
      * as 'BIBL', 'CS', 'IT', etc.
@@ -166,4 +168,9 @@ public class CourseDescription
 
         return true;
     }
+	
+	public void addPrereqs()
+	{
+		prereqsNeeded = new ArrayList<Prereqs>();
+	}
 }
