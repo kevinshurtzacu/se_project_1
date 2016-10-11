@@ -211,6 +211,34 @@ public class CourseDescription
     }
 
     /**
+     * Returns a deeply copied HashSet of Students currently in the course.
+     *
+     * @return      a copy of the Student set for the CourseDescription for all current students
+     */
+    public HashSet<Student> getCurrentStudentSet()
+    {
+        // deep copy and return
+        HashSet<Student> studentSet = new HashSet<Student>();
+
+        for (Student student : students)
+        {
+            // Note: While Strings are objects, they are immutable; this works for a deep copy
+            int bannerID = student.getStudentBannerID();
+            String section = student.getStudentSection();
+            int year = student.getStudentYear();
+            Term term = student.getStudentTerm();
+            String grade = student.getStudentGrade();
+            boolean now = student.isTakingNow();
+
+            // If the student is current
+            if (year == DataModule.currentYear && Term == DataModule.currentTerm)
+                studentSet.add(new Student(bannerID, section, year, term, grade, now));
+        }
+
+        return studentSet;
+    }
+
+    /**
      * Determines if the CourseDescription is equal to another CourseDescripion or Course.
      * This function delegates the equals operation to one of the two private equals
      * functions in CourseDescription.

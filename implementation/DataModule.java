@@ -30,65 +30,38 @@ public class DataModule
     static private ArrayList<Prereq> allPrereqs = new ArrayList<Prereq>();
 
     // These will be calculated later
-    static private int currentYear = 2016;
-    static private Term currentTerm = Term.FALL;
+    static public int currentYear = 2016;
+    static public Term currentTerm = Term.FALL;
 
+    /**
+     * Adds a CourseDescription to the set of CourseDescriptions.  This function exists
+     * primarily for testing purposes.
+     *
+     * @param courseDescription a CourseDescription object
+     */
     public static void addCourseDescription(CourseDescription courseDescription)
     {
         courseDescriptions.add(courseDescription);
     }
 
+    /**
+     * Adds a StudentProfile to the set of StudentProfiles.  This function exists
+     * primarily for testing purposes.
+     *
+     * @param studentProfile    a StudentProfile object
+     */
     public static void addStudentProfile(StudentProfile studentProfile) {
         studentProfiles.add(studentProfile);
     }
 
-    public static String getCourseSubject(Course course) {
-        // Sets do not have accessors methods, making iteration necessary
-        Iterator<CourseDescription> it = courseDescriptions.iterator();
-
-        while (it.hasNext()) {
-            CourseDescription description = it.next();
-
-            if (description.equals(course))
-                return description.getCourseSubject();
-        }
-
-        // This event should never happen
-        return null;
-    }
-
-    public static String getCourseNumber(Course course) {
-        // Sets do not have accessors methods, making iteration necessary
-        Iterator<CourseDescription> it = courseDescriptions.iterator();
-
-        while (it.hasNext())
-        {
-            CourseDescription description = it.next();
-
-            if (description.equals(course))
-                return description.getCourseNumber();
-        }
-
-        // This event should never happen
-        return "";
-    }
-
-    public static String getCourseTitle(Course course) {
-        // Sets do not have accessors methods, making iteration necessary
-        Iterator<CourseDescription> it = courseDescriptions.iterator();
-
-        while (it.hasNext())
-        {
-            CourseDescription description = it.next();
-
-            if (description.equals(course))
-                return description.getCourseTitle();
-        }
-
-        // This event should never happen
-        return null;
-    }
-
+    /**
+     * A helper function to locate a CourseDescription and insert a Student object.
+     *
+     * @param student   the Student object to be added
+     * @param subject   the CourseDescription subject (to identify the CourseDescription)
+     * @param courseNum the CourseDescription number (to identify the CourseDescription)
+     * @param title     the CourseDescription title (to identify the CourseDescription)
+     */
     private static void addStudent(Student student, String subject, String courseNum, String title)
     {
         // add a student to a course description
@@ -103,7 +76,12 @@ public class DataModule
         }
     }
 
-    // load in a CSV file for students, courses, course descriptions, and student profiles
+    /**
+     * Load in a CSV file for students, courses, course descriptions, and student profiles.
+     *
+     * @param path      the path to the CSV file to be loaded in
+     * @throws IOException
+     */
     public static void loadHistory(String path) throws IOException
     {
         Scanner scan = new Scanner(new FileReader(path));
@@ -288,6 +266,22 @@ public class DataModule
                         description.addPrereq(new Prereq(prereqSubject, prereqNumber, prereqTitle, prereqGrade));
                     }
                 }
+            }
+        }
+    }
+
+    public static void printIneligable(String subject, String courseNum, String title)
+    {
+        // print all ineligable students in a course
+        for (CourseDescription description : courseDescriptions)
+        {
+            // uniquely identify course description under review
+            if (description.getCourseSubject().equals(subject) &&
+                    description.getCourseNumber().equals(courseNum) &&
+                    description.getCourseTitle().equals(title))
+            {
+
+                description
             }
         }
     }
