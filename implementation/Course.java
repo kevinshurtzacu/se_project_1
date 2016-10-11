@@ -500,7 +500,7 @@ public class Course
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCourseSubject(), getCourseNumber());
+        return Objects.hash(getCourseSubject(), getCourseNumber(), getCourseTitle());
     }
 }
 

@@ -63,9 +63,9 @@ public class CourseDescription
     {
         setCourseSubject(subject);                  // Assign subject
         setCourseNumber(courseNum);                 // Assign course number
-        setCourseTitle(title);                // Assign title
+        setCourseTitle(title);                      // Assign title
         prereqsNeeded = new ArrayList<Prereq>();    // instantiate prerequisite list
-        students = new HashSet<Student>();
+        students = new HashSet<Student>();          // instnatiate student list
     }
 
     /**
@@ -290,6 +290,6 @@ public class CourseDescription
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCourseSubject(), getCourseNumber());
+        return Objects.hash(getCourseSubject(), getCourseNumber(), getCourseTitle());
     }
 }

@@ -1,5 +1,7 @@
 package implementation;
 
+import java.util.HashSet;
+
 /**
  * Represents a single student's profile.  Maintains data for
  * <ul>
@@ -7,6 +9,7 @@ package implementation;
  *     <li>first name</li>
  *     <li>last name</li>
  *     <li>email address</li>
+ *     <li>student course history</li>
  * </ul>
  *
  * <p>
@@ -22,10 +25,11 @@ package implementation;
 public class StudentProfile
 {
     // Student Information
-    private int bannerID;       // banner ID
-    private String firstName;   // first name
-    private String lastName;    // last name;
-    private String email;       // email address
+    private int bannerID;               // banner ID
+    private String firstName;           // first name
+    private String lastName;            // last name;
+    private String email;               // email address
+    private HashSet<Course> courses;    // student courses
 
     /**
      * Constructs a StudentProfile object to represent the canonical
@@ -56,6 +60,11 @@ public class StudentProfile
         setFirstName(first);    // set first name
         setLastName(last);      // set last name
         setEmail(email);        // set email
+    }
+
+    public void addCourse(Course course)
+    {
+        courses.add(course);
     }
 
     /**
@@ -96,6 +105,35 @@ public class StudentProfile
     public void setEmail(String mail)
     {
         email = mail;
+    }
+
+    /**
+     * Return a deeply copied HashSet of all of the students possesd by
+     * the StudentProfile.
+     *
+     * @return      a set of all the StudentProfile's courses
+     */
+    public HashSet<Course> getCourseSet()
+    {
+        // deep copy and return
+        HashSet<Course> courseSet = new HashSet<Course>();
+
+        for (Course course : courses)
+        {
+            // Note: While Strings are objects, they are immutable; this works for a deep copy
+            String subject = course.getCourseSubject();
+            String number = course.getCourseNumber();
+            String title = course.getCourseTitle();
+            String section = course.getStudentSection();
+            int year = course.getStudentYear();
+            Term term = course.getStudentTerm();
+            String grade = course.getStudentGrade();
+            boolean now = course.isTakingNow();
+
+            courseSet.add(new Course(subject, number, title, section, year, term, grade, now));
+        }
+
+        return courseSet;
     }
 
     /**
