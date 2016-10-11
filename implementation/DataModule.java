@@ -25,11 +25,15 @@ public class DataModule {
     static private HashSet<CourseDescription> courseDescriptions = new HashSet<CourseDescription>();
     static private HashSet<StudentProfile> studentProfiles = new HashSet<StudentProfile>();
 
-    // These will be calculated later
-    static private currentYear = 2016;
-    static private currentTerm = Term.FALL;
+    // All prerequisites for all course
+    static private ArrayList<Prereq> allPrereqs = new ArrayList<Prereq>();
 
-    public static void addCourseDescription(CourseDescription courseDescription) {
+    // These will be calculated later
+    static private int currentYear = 2016;
+    static private Term currentTerm = Term.FALL;
+
+    public static void addCourseDescription(CourseDescription courseDescription)
+    {
         courseDescriptions.add(courseDescription);
     }
 
@@ -84,17 +88,18 @@ public class DataModule {
         return null;
     }
 
-    // load in a CSV file
-    public static void load(String path) throws IOException {
+    // load in a CSV file for students, courses, course descriptions, and student profiles
+    public static void loadHistory(String path) throws IOException
+    {
         Scanner scan = new Scanner(new FileReader(path));
         String line;        // each row of data from the csv (String)
         String[] record;    // each row of data from the csv (Array)
 
         // discard the first line
-        String temp = scan.nextLine();
-        String[] headers = parseRecord(temp);
+        scan.nextLine();
 
-        while (scan.hasNextLine()) {
+        while (scan.hasNextLine())
+        {
             line = scan.nextLine();
             record = parseRecord(line);
 
@@ -105,41 +110,55 @@ public class DataModule {
             StudentProfile studentProfile;
 
             // create course description
-            String subject = record[40];
-            String title = record[44];
-            String number = record[42];
+            String subject = null;
+            String title = null;
+            String number = null;
 
-            courseDesc = makeCourseDescription(subject, title, number);
-
-            // create course and student
+            // assign subject, record, number
             subject = record[40];
             title = record[44];
-            String section;
-            Integer banner;
-            Integer year;
-            Term term;
-            String grade;
-            Boolean isActive;
+            number = record[42];
 
-            // determine the year
+            // make course description
+            courseDesc = makeCourseDescription(subject, number, title);
+
+            // create course and student
+            subject = record[40];   // used previously
+            title = record[44];     // used previously
+
+            Integer banner = null;
+            String section = null;
+            Integer year = null;
+            Term term = null;
+            String grade = null;
+            Boolean isActive = null;
+
+            // assign banner
+            banner = Integer.parseInt(record[56]);
+
+            // assign section
             section = record[43];
-            banner = record[56];
+
             String timeFrame = record[1];
-            year = Integer.parseInt(timeFrame.substring(0, 4));
 
-            // determine the term
-            int termCode = Integer.parseInt(timeFrame.substring(4, 6));
+            if (timeFrame.length() > 0)
+            {
+                // determine the year
+                year = Integer.parseInt(timeFrame.substring(0, 4));
 
-            if (termCode == 10)
-                term = Term.FALL;
-            else if (termCode == 20)
-                term = Term.SPRING;
-            else if (termCode == 30)
-                term = Term.SUMMER;
-            else
-                term = null;
+                // determine the term
+                int termCode = Integer.parseInt(timeFrame.substring(4, 6));
+
+                if (termCode == 10)
+                    term = Term.FALL;
+                else if (termCode == 20)
+                    term = Term.SPRING;
+                else if (termCode == 30)
+                    term = Term.SUMMER;
+            }
 
             grade = record[55];
+            // System.out.println("\tI JUST GRABBED: " + grade + " FROM RECORD 55 (" + record[55] + ")");
 
             // determine if active
             if (term == currentTerm && year == currentYear)
@@ -147,11 +166,12 @@ public class DataModule {
             else
                 isActive = false;
 
+            // make course and student
             course = makeCourse(subject, number, section, year, term, grade, isActive);
             student = makeStudent(banner, section, year, term, grade, isActive);
 
             // create student profile
-            banner = record[56];
+            banner = Integer.parseInt(record[56]);
             String first;
             String last;
             String email;
@@ -160,7 +180,60 @@ public class DataModule {
             last = record[58];
             email = record[64];
 
+            // make student profile
             studentProfile = makeStudentProfile(banner, first, last, email);
+        }
+    }
+
+    /**
+     * Applies all Prereqs to their respective CourseDescriptions.  This function
+     * is only useful if loadHistory has already been called.  Otherwise, there
+     * exist no CourseDescriptions to which a Prereq may be applied.
+     *
+     * @param path  the file path to the CSV of prerequisites
+     * @throws IOException
+     */
+    public static void loadPrereqs(String path) throws IOException
+    {
+        Scanner scan = new Scanner(new FileReader(path));
+        String line;        // each row of data from the csv (String)
+        String[] record;    // each row of data from the csv (Array)
+
+        // find and apply each CSV
+        while (scan.hasNextLine())
+        {
+            line = scan.nextLine();
+            record = parseRecord(line);
+
+            // Identify which course description
+            String[] descriptionID = record[0].split(",");
+            String descriptionSubject = descriptionID[0];
+            String descriptionNumber = descriptionID[1];
+
+            String[] prereqID;
+            String prereqSubject;
+            String prereqNumber;
+            String prereqGrade;
+
+            for (CourseDescription description : courseDescriptions)
+            {
+                // if there is a course description that matches the course description for this record
+                if (description.getCourseSubject().equals(descriptionSubject) &&
+                        description.getCourseNumber().equals(descriptionNumber))
+                {
+                    // add each Prereq to the corresponding CourseDescription
+                    for (int index = 1; index < record.length; ++index)
+                    {
+                        prereqID = record[index].split(",");
+
+                        prereqSubject = prereqID[0];
+                        prereqNumber = prereqID[1];
+                        prereqGrade = prereqID[2];
+
+                        description.addPrereq(new Prereq(prereqSubject, prereqNumber, prereqGrade));
+                    }
+                }
+            }
         }
     }
 
@@ -248,33 +321,34 @@ public class DataModule {
         return result.toArray(new String[result.size()]);
     }
 
-    private StudentProfile makeStudentProfile(Integer banner, String first, String last, String mail)
+    private static StudentProfile makeStudentProfile(Integer banner, String first, String last, String mail)
     {
-        if (banner == null || first == null || last == null || mail == null)
+        if (banner == null || first.equals("") || last.equals("") || mail.equals(""))
             return null;
 
         return new StudentProfile(banner, first, last, mail);
     }
 
-    private Student makeStudent(Integer banner, String section, Integer year, Term cTerm, String grade, Boolean now)
+    private static Student makeStudent(Integer banner, String section, Integer year, Term cTerm, String grade, Boolean now)
     {
-        if (banner == null || section == null || year == null || cTerm == null || grade == "" || now == null)
+        if (banner == null || section.equals("") || year.equals("") || cTerm == null || grade.equals("") || now == null)
             return null;
 
         return new Student(banner, section, year, cTerm, grade, now);
     }
 
-    private CourseDescription makeCourseDescription(String subject, String courseNum, String title)
+    private static CourseDescription makeCourseDescription(String subject, String courseNum, String title)
     {
-        if (subject == null || courseNum == null || title == null)
+        if (subject.equals("") || courseNum.equals("") || title.equals(""))
             return null;
 
         return new CourseDescription(subject, courseNum, title);
     }
 
-    private Course makeCourse(String subject, String courseNum, String section, Integer year, Term cTerm, String grade, Boolean now)
+    private static Course makeCourse(String subject, String courseNum, String section, Integer year, Term cTerm, String grade, Boolean now)
     {
-        if (subject == "" || courseNum == "" || section == "" || year == 0 || cTerm == null || grade == "" || now == null)
+        // System.out.println(grade);
+        if (subject.equals("") || courseNum.equals("") || section.equals("") || year == 0 || cTerm == null || grade.equals("") || now == null)
             return null;
 
         return new Course(subject, courseNum, section, year, cTerm, grade, now);

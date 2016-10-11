@@ -7,6 +7,7 @@ import java.util.ArrayList;
  *     <li>course subject</li>
  *     <li>course number</li>
  *     <li>course title</li>
+ *     <li>prerequisite list</li>
  * </ul>
  *
  * <p>
@@ -20,10 +21,10 @@ import java.util.ArrayList;
 public class CourseDescription
 {
     // Course characteristics
-    String courseSubject;       // Course subject (BIBL, CS, IT, etc.)
-    String courseNumber;        // Course number (101, 102, etc.)
-    String courseTitle;         // Course title (without number)
-	ArrayList<Prereq> prereqsNeeded; // List of prereqs needed for a certain class
+    String courseSubject;               // Course subject (BIBL, CS, IT, etc.)
+    String courseNumber;                // Course number (101, 102, etc.)
+    String courseTitle;                 // Course title (without number)
+	ArrayList<Prereq> prereqsNeeded;    // List of prereqs needed for a certain class
 
     /**
      * Constructs a Course object to represent a student's course.  Course
@@ -55,9 +56,20 @@ public class CourseDescription
      */
     public void setCourseDescription(String subject, String courseNum, String title)
     {
-        setCourseSubject(subject);      // Assign subject
-        setCourseNumber(courseNum);     // Assign course number
-        setCourseTitle(courseTitle);    // Assign title
+        setCourseSubject(subject);                  // Assign subject
+        setCourseNumber(courseNum);                 // Assign course number
+        setCourseTitle(courseTitle);                // Assign title
+        prereqsNeeded = new ArrayList<Prereq>();    // instantiate prerequisite list
+    }
+
+    /**
+     * Adds a Prereq object to CourseDescriptions's List of Prereqs.
+     *
+     * @param prerequisite  a course prerequisite
+     */
+    public void addPrereq(Prereq prerequisite)
+    {
+        prereqsNeeded.add(prerequisite);
     }
 
     /**
@@ -153,6 +165,28 @@ public class CourseDescription
     }
 
     /**
+     * Returns a deeply copied ArrayList of Prereqs.
+     *
+     * @return      a copy of the Prereq list for the CourseDescription
+     */
+    public ArrayList<Prereq> getPrereqList()
+    {
+        // deep copy and return
+        ArrayList<Prereq> prereqList = new ArrayList<Prereq>();
+
+        for (Prereq prerequisite : prereqsNeeded)
+        {
+            String subject = prerequisite.getPrereqSubject();
+            String number = prerequisite.getPrereqNumber();
+            String grade = prerequisite.getPrereqGrade();
+
+            prereqList.add(new Prereq(subject, number, grade));
+        }
+
+        return prereqList;
+    }
+
+    /**
      * Checks if a Course object is represented by a CourseDescription object.
      *
      * @param other the Course object looking up the appropriate CourseDescription object
@@ -168,9 +202,4 @@ public class CourseDescription
 
         return true;
     }
-	
-	public void addPrereqs()
-	{
-		prereqsNeeded = new ArrayList<Prereqs>();
-	}
 }

@@ -211,18 +211,52 @@ public class Student
 
     /**
      * Assigns the grade a student has in a course.  The grade must be a letter
-     * grade, such as (A, B, C, D, or F).
+     * grade, such as (A, B, C, D, F, P, S, U, NP, CR, NC, NG, AU, W, WF, I, IP).
+     *
+     * 'W' signfies 'withdraw', 'WF' signifies 'withdraw' with 'failure', and 'F' just signifies a typical
+     * failure.  'W' does not affect the student's GPA, while a 'WF' does.
+     *
+     * 'IP' is primarily for graduate students and means 'in progress'.  'I' means 'incomplete', and is also
+     * more common for graduate students.
+     *
+     * 'P' is for 'pass', and is exclusive to pass/fail courses.  Similarly, 'NP' represents 'no pass'.
+     *
+     * 'CR' stands for 'credit', and is for students who sign up for a course on a credit/no credit basis.
+     * Similarly, 'NC' stands for 'no credit'.
+     *
+     * 'AU' represents a 'course audit', and typically results in no course credit.
+     *
+     * 'NG' stands for 'no grade', and typically represents a course in progress.
+     *
+     * 'S' stands for 'satisfactory', and 'U' for unsatisfactory.
      *
      * @param grade     the grade a student has in an instance of Course
-     * @throws IllegalArgumentException If a student is assigned something besides (A, B, C, D, or F).
+     * @throws IllegalArgumentException If a student is assigned something besides (A, B, C, D, F, P, S, U, NP, CR, NC, NG, AU W, WF, I, or IP).
      */
     public void setStudentGrade(String grade)
     {
         grade = grade.toUpperCase();
 
         // Check for exceptions
-        if (!(grade.equals("A") || grade.equals("B") || grade.equals("C") || grade.equals("D") || grade.equals("F")))
-            throw new IllegalArgumentException("Grade must be 'A', 'B', 'C', 'D', or 'F'");
+        if (!(grade.equals("A")    ||
+                grade.equals("B")  ||
+                grade.equals("C")  ||
+                grade.equals("D")  ||
+                grade.equals("F")  ||
+                grade.equals("P")  ||
+                grade.equals("S")  ||
+                grade.equals("U")  ||
+                grade.equals("NP") ||
+                grade.equals("CR") ||
+                grade.equals("NC") ||
+                grade.equals("NG") ||
+                grade.equals("AU") ||
+                grade.equals("W")  ||
+                grade.equals("WF") ||
+                grade.equals("I")  ||
+                grade.equals("IP")))
+            throw new IllegalArgumentException("Grade must be 'A', 'B', 'C', 'D', 'F', " +
+                    "'P', 'S', 'U', 'NP', 'CR', 'NC', 'NG', 'AU', 'W', 'WF', 'I', or 'IP'; Invalid Argument: " + grade);
 
         // Assign grade
         studentGrade = grade;
