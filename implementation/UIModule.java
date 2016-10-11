@@ -51,7 +51,7 @@ public class UIModule
         System.out.println("Version 1.0");
         System.out.println("Authors:\n" +
             "\tKevin Shurtz\n" +
-            "\tIssak Ramirez\n" +
+            "\tIsaak Ramirez\n" +
             "\tVirginia Pettit\n");
 
         System.out.println("\nThis system allows users to identify all students currently " +
