@@ -77,6 +77,78 @@ public class DataModule
     }
 
     /**
+     * A helper function to iterate through the student profiles and return the one
+     * that matches the Student object.
+     *
+     * @param student   the Student object to be matched to a StudentProfile
+     * @return          the StudentProfile that matches student
+     */
+    private static StudentProfile getStudentProfile(Student student)
+    {
+        for (StudentProfile profile : studentProfiles)
+        {
+            if (profile.equals(student))
+                return profile;
+        }
+    }
+
+    /**
+     * A helper function to iterate through the course descriptions and return the one
+     * that matches the Course object.
+     *
+     * @param course    the CourseDescription object to be matched to a Course
+     * @return          the CourseDescription that matches course
+     */
+    private static CourseDescription getCourseDescription(Course course)
+    {
+        for (CourseDescription description : courseDescriptions)
+        {
+            if (description.equals(course))
+                return description;
+        }
+    }
+
+    /**
+     * A helper function to iterate through the course descriptions and return the one
+     * that matches the Course object.
+     *
+     * @param course    the CourseDescription object to be matched to a Course
+     * @return          the CourseDescription that matches course
+     */
+    private static CourseDescription getCourseDescription(String subject, String courseNum, String title)
+    {
+        for (CourseDescription description : courseDescriptions)
+        {
+            if (description.getCourseSubject().equals(subject) &&
+                    description.getCourseNumber().equals(courseNum) &&
+                    description.getCourseTitle().equals(title))
+            {
+                return description;
+            }
+        }
+    }
+
+    /**
+     * A helper function to locate a CourseDescription and insert a Student object.
+     *
+     * @param student   the Student object to be added
+     * @param subject   the CourseDescription subject (to identify the CourseDescription)
+     * @param courseNum the CourseDescription number (to identify the CourseDescription)
+     * @param title     the CourseDescription title (to identify the CourseDescription)
+     */
+    private static void addCourse(String bannerID, Course course)
+    {
+        // add a student to a course description
+        for (StudentProfile profile : studentProfiles)
+        {
+            if (profile.getStudentBannerID.equals(bannerID))
+            {
+                profile.addCourse(course);
+            }
+        }
+    }
+
+    /**
      * Load in a CSV file for students, courses, course descriptions, and student profiles.
      *
      * @param path      the path to the CSV file to be loaded in
@@ -183,6 +255,9 @@ public class DataModule
             if (courseDesc != null)
                 courseDescriptions.add(courseDesc);
 
+            if (studentProfile != null)
+                studentProfiles.add(studentProfile);
+
             // if (studentProfile != null)
             //     studentProfiles.add(studentProfile);
 
@@ -192,6 +267,9 @@ public class DataModule
                         courseDesc.getCourseSubject(),
                         courseDesc.getCourseNumber(),
                         courseDesc.getCourseTitle());
+
+            if (course != null && studentProfile != null)
+                addCourse(course, studentProfile.bannerID);
 
             // add course to student profiles once such methods are implemented
         }
@@ -270,18 +348,47 @@ public class DataModule
         }
     }
 
+    /**
+     * Prints all of the ineligable students for a given course.
+     *
+     * @param subject       the subject of the CourseDescription being queried
+     * @param courseNum     the number of the CourseDescription being queried
+     * @param title         the titel of the CourseDescription being queried
+     */
     public static void printIneligable(String subject, String courseNum, String title)
     {
-        // print all ineligable students in a course
-        for (CourseDescription description : courseDescriptions)
-        {
-            // uniquely identify course description under review
-            if (description.getCourseSubject().equals(subject) &&
-                    description.getCourseNumber().equals(courseNum) &&
-                    description.getCourseTitle().equals(title))
-            {
+        // uniquely identify course description under review
+        CourseDescription description = getCourseDescription(subject, courseNum, title);
 
-                description
+        // get all prerequisites
+        ArrayList<Prereq> prereqList = description.getPrereqList();
+
+        // get all current students
+        HashSet<Student> currentStudents = description.getCurrentStudents();
+
+        // check each student's history agains the list of prereqs
+        for (Student student : currentStudents)
+        {
+            // find the matching student profile
+            StudentProfile profile = getStudentProfile(student);
+
+            // identify all courses taken by the student
+            HashSet<Course> courseSet = profile.getCourseSet();
+
+            // Compare each prerequisite against each student's course history
+            for (Prereq prerequisite : prereqList)
+            {
+                if (!courseSet.contains(prerequisite))
+                {
+                    // The student does not contain a prerequisite - notify the user
+                    System.out.println(profile.getFirstName() + " " + profile.getLastName() + " is ineligable for " +
+                            "Course: " + description.getCourseSubject() + " " + description.getCourseNumber() + ": "
+                            description.getCourseTitle());
+
+                    // Tell the user about the missing prerequisite
+                    System.out.println("Student requires Prerequisite: " + prerequisite.getPrereqSubject() + " " +
+                            prerequisite.getPrereqNumber() + ": " + prerequisite.getPrereqTitle());
+                }
             }
         }
     }

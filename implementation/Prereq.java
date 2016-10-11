@@ -1,5 +1,7 @@
 package implementation;
 
+import java.utils.Objects;
+
 public class Prereq
 {
 	// Prereq Information
@@ -71,7 +73,10 @@ public class Prereq
             return true;
 
         if (other instanceof Prereq)
-            return equals(other);
+            return equals((Prereq)other);
+
+		if (other instanceof Course)
+		    return equals((Course)other);
 
         return false;
     }
@@ -93,7 +98,7 @@ public class Prereq
 		return true;
 	}
 	
-	public boolean equals(Course other)
+	private boolean equals(Course other)
 	{
 		if (!getPrereqSubject().equals(other.getCourseSubject()))
 			return false;
@@ -109,4 +114,10 @@ public class Prereq
 		
 		return true;
 	}
+
+	@Override
+	public int hashCode()
+    {
+        return Objects.hash(getPrereqSubject(), getPrereqNumber(), getPrereqTitle());
+    }
 }

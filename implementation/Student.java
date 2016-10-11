@@ -298,7 +298,8 @@ public class Student
      *
      * @return  the course number extension
      */
-    public String getStudentSection() {
+    public String getStudentSection()
+    {
         return studentSection;
     }
 
@@ -307,7 +308,8 @@ public class Student
      *
      * @return the course year
      */
-    public int getStudentYear() {
+    public int getStudentYear()
+    {
         return studentYear;
     }
 
@@ -331,7 +333,8 @@ public class Student
      *
      * @return  the course grade
      */
-    public String getStudentGrade() {
+    public String getStudentGrade()
+    {
         return studentGrade;
     }
 
@@ -340,8 +343,58 @@ public class Student
      *
      * @return  whether the course is actively being taken by a student
      */
-    public boolean isTakingNow() {
+    public boolean isTakingNow()
+    {
         return takingNow;
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other == null)
+            return false;
+
+        if (other == this)
+            return true;
+
+        if (other instanceof Student)
+            return equals((Student) other);
+
+        if (other instanceof StudentProfile)
+            return equals((StudentProfile) other);
+
+        return false;
+    }
+
+    private boolean equals(Student other)
+    {
+        if (getStudentBannerID() != other.getStudentBannerID())
+            return false;
+
+        if (!getStudentSection().equals(other.getStudentSection()))
+            return false;
+
+        if (getStudentYear() != other.getStudentYear())
+            return false;
+
+        if (!getStudentTerm().equals(other.getStudentTerm()))
+            return false;
+
+        return true;
+    }
+
+    private boolean equals(StudentProfile other)
+    {
+        if (getStudentBannerID() != other.getBannerID())
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getStudentBannerID());
     }
 }
 

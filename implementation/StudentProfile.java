@@ -124,11 +124,11 @@ public class StudentProfile
             String subject = course.getCourseSubject();
             String number = course.getCourseNumber();
             String title = course.getCourseTitle();
-            String section = course.getStudentSection();
-            int year = course.getStudentYear();
-            Term term = course.getStudentTerm();
-            String grade = course.getStudentGrade();
-            boolean now = course.isTakingNow();
+            String section = course.getCourseSection();
+            int year = course.getCourseYear();
+            Term term = course.getCourseTerm();
+            String grade = course.getCourseGrade();
+            boolean now = course.isInCourseNow();
 
             courseSet.add(new Course(subject, number, title, section, year, term, grade, now));
         }
@@ -174,6 +174,46 @@ public class StudentProfile
     public String getEmail()
     {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other == null)
+            return false;
+
+        if (other == this)
+            return true;
+
+        if (other instanceof StudentProfile)
+            return equals((StudentProfile) other);
+
+        if (other instanceof Student)
+            return equals((Student) other);
+
+        return false;
+    }
+
+    private boolean equals(StudentProfile other)
+    {
+        if (getBannerID() != other.getBannerID())
+            return false;
+
+        return true;
+    }
+
+    private boolean equals(Student other)
+    {
+        if (getBannerID() != other.getStudentBannerID())
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getBannerID());
     }
 }
 

@@ -231,7 +231,7 @@ public class CourseDescription
             boolean now = student.isTakingNow();
 
             // If the student is current
-            if (year == DataModule.currentYear && Term == DataModule.currentTerm)
+            if (year == DataModule.currentYear && term == DataModule.currentTerm)
                 studentSet.add(new Student(bannerID, section, year, term, grade, now));
         }
 

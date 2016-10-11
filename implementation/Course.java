@@ -459,9 +459,6 @@ public class Course
         if (!getCourseTerm().equals(other.getCourseTerm()))
             return false;
 
-        if (!getCourseGrade().equals(other.getCourseGrade()))
-            return false;
-
         return true;
     }
 
