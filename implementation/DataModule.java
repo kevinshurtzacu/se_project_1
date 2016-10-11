@@ -20,7 +20,8 @@ import java.io.IOException;
  * @author Kevin Shurtz
  * @version 1.0
  */
-public class DataModule {
+public class DataModule
+{
     // The canonical list of courseDescriptions and studentProfiles
     static private HashSet<CourseDescription> courseDescriptions = new HashSet<CourseDescription>();
     static private HashSet<StudentProfile> studentProfiles = new HashSet<StudentProfile>();
@@ -88,13 +89,14 @@ public class DataModule {
         return null;
     }
 
-    private static void addStudent(Student student, String subject, String courseNum)
+    private static void addStudent(Student student, String subject, String courseNum, String title)
     {
         // add a student to a course description
         for (CourseDescription description : courseDescriptions)
         {
             if (description.getCourseSubject().equals(subject) &&
-                    description.getCourseNumber().equals(courseNum))
+                    description.getCourseNumber().equals(courseNum) &&
+                    description.getCourseTitle().equals(title))
             {
                 description.addStudent(student);
             }
@@ -124,19 +126,20 @@ public class DataModule {
 
             // create course description
             String subject = null;
-            String title = null;
             String number = null;
+            String title = null;
 
             // assign subject, record, number
             subject = record[40];
-            title = record[44];
             number = record[42];
+            title = record[44];
 
             // make course description
             courseDesc = makeCourseDescription(subject, number, title);
 
             // create course and student
             subject = record[40];   // used previously
+            number = record[42];    // used previously
             title = record[44];     // used previously
 
             Integer banner = null;
@@ -179,7 +182,7 @@ public class DataModule {
                 isActive = false;
 
             // make course and student
-            course = makeCourse(subject, number, section, year, term, grade, isActive);
+            course = makeCourse(subject, number, title, section, year, term, grade, isActive);
             student = makeStudent(banner, section, year, term, grade, isActive);
 
             // create student profile
@@ -202,11 +205,15 @@ public class DataModule {
             if (courseDesc != null)
                 courseDescriptions.add(courseDesc);
 
-            if (studentProfile != null)
-                studentProfiles.add(studentProfile);
+            // if (studentProfile != null)
+            //     studentProfiles.add(studentProfile);
 
-            if (student != null)
-                addStudent(student, courseDesc.getCourseSubject(), courseDesc.getCourseNumber());
+            // System.out.println(courseDesc.getStudentBannerID());
+            if (student != null && courseDesc != null)
+                addStudent(student,
+                        courseDesc.getCourseSubject(),
+                        courseDesc.getCourseNumber(),
+                        courseDesc.getCourseTitle());
 
             // add course to student profiles once such methods are implemented
         }
@@ -215,7 +222,18 @@ public class DataModule {
         //                         about 9359-9485 unique students
 
         System.out.println("course description set size: " + courseDescriptions.size());
-        System.out.println("student profile set size: " + studentProfiles.size());
+
+        for (CourseDescription cd : courseDescriptions) {
+            System.out.println(cd.getCourseSubject() + " " + cd.getCourseNumber() + " " + cd.getCourseTitle());
+
+            ArrayList<Prereq> prereqList = cd.getPrereqList();
+
+            for (Prereq pr : prereqList)
+                System.out.println("\t" +
+                        pr.getPrereqSubject() +
+                        pr.getPrereqNumber() +
+                        pr.getPrereqTitle());
+        }
     }
 
     /**
@@ -242,17 +260,20 @@ public class DataModule {
             String[] descriptionID = record[0].split(",");
             String descriptionSubject = descriptionID[0];
             String descriptionNumber = descriptionID[1];
+            String descriptionTitle = descriptionID[2];
 
             String[] prereqID;
             String prereqSubject;
             String prereqNumber;
+            String prereqTitle;
             String prereqGrade;
 
             for (CourseDescription description : courseDescriptions)
             {
                 // if there is a course description that matches the course description for this record
                 if (description.getCourseSubject().equals(descriptionSubject) &&
-                        description.getCourseNumber().equals(descriptionNumber))
+                        description.getCourseNumber().equals(descriptionNumber) &&
+                        description.getCourseTitle().equals(descriptionTitle))
                 {
                     // add each Prereq to the corresponding CourseDescription
                     for (int index = 1; index < record.length; ++index)
@@ -261,9 +282,10 @@ public class DataModule {
 
                         prereqSubject = prereqID[0];
                         prereqNumber = prereqID[1];
-                        prereqGrade = prereqID[2];
+                        prereqTitle = prereqID[2];
+                        prereqGrade = prereqID[3];
 
-                        description.addPrereq(new Prereq(prereqSubject, prereqNumber, prereqGrade));
+                        description.addPrereq(new Prereq(prereqSubject, prereqNumber, prereqTitle, prereqGrade));
                     }
                 }
             }
@@ -378,12 +400,12 @@ public class DataModule {
         return new CourseDescription(subject, courseNum, title);
     }
 
-    private static Course makeCourse(String subject, String courseNum, String section, Integer year, Term cTerm, String grade, Boolean now)
+    private static Course makeCourse(String subject, String courseNum, String title, String section, Integer year, Term cTerm, String grade, Boolean now)
     {
         // System.out.println(grade);
-        if (subject.equals("") || courseNum.equals("") || section.equals("") || year == 0 || cTerm == null || grade.equals("") || now == null)
+        if (subject.equals("") || courseNum.equals("") || title.equals("") || section.equals("") || year == 0 || cTerm == null || grade.equals("") || now == null)
             return null;
 
-        return new Course(subject, courseNum, section, year, cTerm, grade, now);
+        return new Course(subject, courseNum, title, section, year, cTerm, grade, now);
     }
 }

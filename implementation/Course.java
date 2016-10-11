@@ -29,6 +29,7 @@ public class Course
     // Course characteristics
     private String courseNumber;    // Coures number (101, 102, etc)
     private String courseSubject;   // Course subject (ACCT, IT, CS, etc)
+    private String courseTitle;     // Course title (Data Structures, Computer Organization, etc)
     private String courseSection;   // Course section (1, 2, H2, etc)
 
     // Time characteristics
@@ -43,6 +44,9 @@ public class Course
      * Constructs a Course object to represent a student's course.  Course
      * delegates the instantiation of instance variables to method setCourse.
      *
+     * @param subject   course subject, such ACCT, CS, IT, etc
+     * @param number    course number, such as 101, 102, 374, etc
+     * @param title     course title, such as 'Software Engineering', 'Data Structures', etc
      * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -50,15 +54,18 @@ public class Course
      * @param now       whether the course is being actively taken
      * @see             Course#setCourse(int, String, int, Term, double, boolean)
      */
-	public Course(String subject, String number, String section, int year, Term cTerm, double grade, boolean now)
+	public Course(String subject, String number, String title, String section, int year, Term cTerm, double grade, boolean now)
 	{
-	    setCourse(subject, number, section, year, cTerm, grade, now);
+	    setCourse(subject, number, title, section, year, cTerm, grade, now);
 	}
 
     /**
      * Constructs a Course object to represent a student's course.  Course
      * delegates the instantiation of instance variables to method setCourse.
      *
+     * @param subject   course subject, such ACCT, CS, IT, etc
+     * @param number    course number, such as 101, 102, 374, etc
+     * @param title     course title, such as 'Software Engineering', 'Data Structures', etc
      * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -66,9 +73,9 @@ public class Course
      * @param now       whether the course is being actively taken
      * @see             Course#setCourse(int, String, int, Term, double, boolean)
      */
-    public Course(String subject, String number, String section, int year, Term cTerm, String grade, boolean now)
+    public Course(String subject, String number, String title, String section, int year, Term cTerm, String grade, boolean now)
     {
-        setCourse(subject, number, section, year, cTerm, grade, now);
+        setCourse(subject, number, title, section, year, cTerm, grade, now);
     }
 
     /**
@@ -76,6 +83,9 @@ public class Course
      * delegate assignment to each of the assignment functions
      * for each instance variable, many of which validate the input.
      *
+     * @param subject   course subject, such ACCT, CS, IT, etc
+     * @param number    course number, such as 101, 102, 374, etc
+     * @param title     course title, such as 'Software Engineering', 'Data Structures', etc
      * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -84,10 +94,11 @@ public class Course
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-	public void setCourse(String subject, String number, String section, int year, Term cTerm, double grade, boolean now)
+	public void setCourse(String subject, String number, String title, String section, int year, Term cTerm, double grade, boolean now)
     {
         setCourseSubject(subject);  // Assign course subject
         setCourseNumber(number);    // Assign course number
+        setCourseTitle(title);      // Assign course title
         setCourseSection(section);  // Assign course section
         setCourseYear(year);        // Assign course year
         setCourseTerm(cTerm);       // Assign course term
@@ -100,6 +111,9 @@ public class Course
      * delegate assignment to each of the assignment functions
      * for each instance variable, many of which validate the input.
      *
+     * @param subject   course subject, such ACCT, CS, IT, etc
+     * @param number    course number, such as 101, 102, 374, etc
+     * @param title     course title, such as 'Software Engineering', 'Data Structures', etc
      * @param section   course section, such as 01, H1, etc
      * @param year      year the course is taking place in
      * @param cTerm     term the coures is taking place in
@@ -108,10 +122,11 @@ public class Course
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-    public void setCourse(String subject, String number, String section, int year, Term cTerm, String grade, boolean now)
+    public void setCourse(String subject, String number, String title, String section, int year, Term cTerm, String grade, boolean now)
     {
         setCourseSubject(subject);  // Assign course subject
         setCourseNumber(number);    // Assign course number
+        setCourseTitle(title);      // Assign course title
         setCourseSection(section);  // Assign course section
         setCourseYear(year);        // Assign course year
         setCourseTerm(cTerm);       // Assign course term
@@ -141,6 +156,16 @@ public class Course
     public void setCourseNumber(String number)
     {
         courseNumber = number;
+    }
+
+    /**
+     * Sets the course title.
+     *
+     * @param title     the course title (Data Structures, Computer Organization, etc)
+     */
+    public void setCourseTitle(String title)
+    {
+        courseTitle = title;
     }
 
     /**
@@ -363,14 +388,13 @@ public class Course
     }
 
     /**
-     * Returns the course title by sending a request to the DataModule.
-     * This infomration is stored in a single CourseDescription object.
+     * Returns the course title.
      *
      * @return  the course title
      */
     public String getCourseTitle()
     {
-        return DataModule.getCourseTitle(this);
+        return courseTitle;
     }
 
     /**
@@ -420,22 +444,22 @@ public class Course
      */
     private boolean equals(Course other)
     {
-        if (other == null)
+        if (!getCourseSubject().equals(other.getCourseSubject()))
             return false;
 
-        if (getCourseSubject() != other.getCourseSubject())
+        if (!getCourseNumber().equals(other.getCourseNumber()))
             return false;
 
-        if (getCourseNumber() != other.getCourseNumber())
+        if (!getCourseTitle().equals(other.getCourseTitle()))
             return false;
 
         if (getCourseYear() != other.getCourseYear())
             return false;
 
-        if (getCourseTerm() != other.getCourseTerm())
+        if (!getCourseTerm().equals(other.getCourseTerm()))
             return false;
 
-        if (getCourseGrade() != other.getCourseGrade())
+        if (!getCourseGrade().equals(other.getCourseGrade()))
             return false;
 
         return true;
@@ -450,13 +474,16 @@ public class Course
      */
     private boolean equals(CourseDescription other)
     {
-        if (other == null)
+        if (!getCourseSubject().equals(other.getCourseSubject()))
             return false;
 
-        if (getCourseSubject() != other.getCourseSubject())
+        if (!getCourseNumber().equals(other.getCourseNumber()))
             return false;
 
-        if (getCourseNumber() != other.getCourseNumber())
+        if (!getCourseTitle().equals(other.getCourseTitle()))
+            return false;
+
+        if (!getCourseTitle().equals(other.getCourseTitle()))
             return false;
 
         return true;

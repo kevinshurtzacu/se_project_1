@@ -63,7 +63,7 @@ public class CourseDescription
     {
         setCourseSubject(subject);                  // Assign subject
         setCourseNumber(courseNum);                 // Assign course number
-        setCourseTitle(courseTitle);                // Assign title
+        setCourseTitle(title);                // Assign title
         prereqsNeeded = new ArrayList<Prereq>();    // instantiate prerequisite list
         students = new HashSet<Student>();
     }
@@ -175,9 +175,10 @@ public class CourseDescription
             // Note: While Strings are objects, they are immutable; this works for a deep copy
             String subject = prerequisite.getPrereqSubject();
             String number = prerequisite.getPrereqNumber();
+            String title = prerequisite.getPrereqTitle();
             String grade = prerequisite.getPrereqGrade();
 
-            prereqList.add(new Prereq(subject, number, grade));
+            prereqList.add(new Prereq(subject, number, title, grade));
         }
 
         return prereqList;
@@ -246,13 +247,13 @@ public class CourseDescription
         if (other == null)
             return false;
 
-        if (courseSubject != other.getCourseSubject())
+        if (!getCourseSubject().equals(other.getCourseSubject()))
             return false;
 
-        if (courseNumber != other.getCourseNumber())
+        if (!getCourseNumber().equals(other.getCourseNumber()))
             return false;
 
-        if (courseTitle != other.getCourseTitle())
+        if (!getCourseTitle().equals(other.getCourseTitle()))
             return false;
 
         return true;
@@ -269,10 +270,10 @@ public class CourseDescription
         if (other == null)
             return false;
 
-        if (courseSubject != other.getCourseSubject())
+        if (!courseSubject.equals(other.getCourseSubject()))
             return false;
 
-        if (courseNumber != other.getCourseNumber())
+        if (!courseNumber.equals(other.getCourseNumber()))
             return false;
 
         return true;

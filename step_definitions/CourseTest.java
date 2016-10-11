@@ -19,11 +19,11 @@ import static org.junit.Assert.*;
 public class CourseTest
 {
     // Course object to be tested
-    private static Course course = new Course("CS", "374", "", 2016, Term.FALL, "F", true);
+    private static Course course = new Course("CS", "374", "Software Engineering", "", 2016, Term.FALL, "F", true);
 
     // Course objects for testing comparisons
-    private static Course firstCourse = new Course("CS", "374", "", 2016, Term.FALL, "F", true);
-    private static Course secondCourse = new Course("CS", "374", "", 2016, Term.FALL, "F", true);
+    private static Course firstCourse = new Course("CS", "374", "Software Engineering", "", 2016, Term.FALL, "F", true);
+    private static Course secondCourse = new Course("CS", "374", "Software Engineering", "", 2016, Term.FALL, "F", true);
 
     // CourseDescription object to compare to
     private static CourseDescription coursedesc = new CourseDescription("", "100", "");
