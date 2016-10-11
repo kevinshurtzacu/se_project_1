@@ -1,5 +1,7 @@
 package implementation;
 
+import java.util.Objects;
+
 /**
  * Represents a single course taken by an ACU student.  Maintains data for
  * <ul>
@@ -25,17 +27,17 @@ package implementation;
 public class Course
 {
     // Course characteristics
-    String courseNumber;    // Coures number (101, 102, etc)
-    String courseSubject;   // Course subject (ACCT, IT, CS, etc)
-    String courseSection;   // Course section (1, 2, H2, etc)
+    private String courseNumber;    // Coures number (101, 102, etc)
+    private String courseSubject;   // Course subject (ACCT, IT, CS, etc)
+    private String courseSection;   // Course section (1, 2, H2, etc)
 
     // Time characteristics
-    int courseYear;         // Year course is taken
-    Term courseTerm;        // Term during which course is taken
+    private int courseYear;         // Year course is taken
+    private Term courseTerm;        // Term during which course is taken
     
     // Student data
-    String courseGrade;     // Student's grade in course (from 0.0 to 100.0)
-    boolean inCourseNow;    // Whether the student is in the course now
+    private String courseGrade;     // Student's grade in course (from 0.0 to 100.0)
+    private boolean inCourseNow;    // Whether the student is in the course now
 
     /**
      * Constructs a Course object to represent a student's course.  Course
@@ -383,14 +385,44 @@ public class Course
     }
 
     /**
+     * Determines if the Course is equal to another or Course or CourseDescription.
+     * This function delegates the equals operation to one of the two private equals
+     * functions in Course.
+     *
+     * @param other     either a CourseDescription or Course object
+     * @return          whether the Course is equal to the other object
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other == null)
+            return false;
+
+        if (other == this)
+            return true;
+
+        if (other instanceof Course)
+            return equals((Course)other);
+
+        if (other instanceof CourseDescription) {
+            return equals((CourseDescription)other);
+        }
+
+        return false;
+    }
+
+    /**
      * Returns true if two Courses have the same subject, number,
      * and are taken at the same time.
      *
      * @param other     the other Course
      * @return          whether the Courses are the same
      */
-    public boolean equals(Course other)
+    private boolean equals(Course other)
     {
+        if (other == null)
+            return false;
+
         if (getCourseSubject() != other.getCourseSubject())
             return false;
 
@@ -416,8 +448,11 @@ public class Course
      * @param other     the CourseDescription being compared
      * @return          whether the Course relates to the CourseDescription
      */
-    public boolean equals(CourseDescription other)
+    private boolean equals(CourseDescription other)
     {
+        if (other == null)
+            return false;
+
         if (getCourseSubject() != other.getCourseSubject())
             return false;
 
@@ -425,6 +460,20 @@ public class Course
             return false;
 
         return true;
+    }
+
+    /**
+     * Returns a hash for Course.  The hash utilizes the Objects library hash function,
+     * and uses the course subject and number to generate the hash.
+     *
+     * CourseDescription should hash to the same value.
+     *
+     * @return      a hash for Course
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getCourseSubject(), getCourseNumber());
     }
 }
 

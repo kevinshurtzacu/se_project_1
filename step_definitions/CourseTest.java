@@ -369,7 +369,6 @@ public class CourseTest
             expected = false;
 
         assertEquals(expected, (Boolean)result);
-
     }
 }
 

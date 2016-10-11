@@ -3,9 +3,9 @@ package implementation;
 public class Prereq
 {
 	// Prereq Information
-	String subject; // Course Subject
-	String number;	// Course Number
-	String grade;   // Course Grade
+	private String subject; // Course Subject
+	private String number;	// Course Number
+	private String grade;   // Course Grade
 	
 	public Prereq(String sbt, String num, String grd)
 	{

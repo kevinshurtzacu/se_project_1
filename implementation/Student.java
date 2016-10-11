@@ -24,16 +24,16 @@ package implementation;
 public class Student
 {
     // Student characteristics
-    int studentBannerID;    // Student Banner ID
-    String studentSection;  // Course number extension (1, 2, H2, etc.)
+    private int studentBannerID;    // Student Banner ID
+    private String studentSection;  // Course number extension (1, 2, H2, etc.)
 
     // Time characteristics
-    int studentYear;        // Year course is taken
-    Term studentTerm;       // Term during which course is taken
+    private int studentYear;        // Year course is taken
+    private Term studentTerm;       // Term during which course is taken
     
     // Student data
-    String studentGrade;    // Student's grade in course (from from F to A)
-    boolean takingNow;      // Whether the student is in the course now
+    private String studentGrade;    // Student's grade in course (from from F to A)
+    private boolean takingNow;      // Whether the student is in the course now
 
     /**
      * Constructs a Student object to represent a student's course.  Student

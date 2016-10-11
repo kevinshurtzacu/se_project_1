@@ -88,6 +88,19 @@ public class DataModule {
         return null;
     }
 
+    private static void addStudent(Student student, String subject, String courseNum)
+    {
+        // add a student to a course description
+        for (CourseDescription description : courseDescriptions)
+        {
+            if (description.getCourseSubject().equals(subject) &&
+                    description.getCourseNumber().equals(courseNum))
+            {
+                description.addStudent(student);
+            }
+        }
+    }
+
     // load in a CSV file for students, courses, course descriptions, and student profiles
     public static void loadHistory(String path) throws IOException
     {
@@ -158,7 +171,6 @@ public class DataModule {
             }
 
             grade = record[55];
-            // System.out.println("\tI JUST GRABBED: " + grade + " FROM RECORD 55 (" + record[55] + ")");
 
             // determine if active
             if (term == currentTerm && year == currentYear)
@@ -182,7 +194,28 @@ public class DataModule {
 
             // make student profile
             studentProfile = makeStudentProfile(banner, first, last, email);
+
+            // System.out.println(banner);
+            // System.out.println(subject + " " + number);
+
+            // add and assemble entities
+            if (courseDesc != null)
+                courseDescriptions.add(courseDesc);
+
+            if (studentProfile != null)
+                studentProfiles.add(studentProfile);
+
+            if (student != null)
+                addStudent(student, courseDesc.getCourseSubject(), courseDesc.getCourseNumber());
+
+            // add course to student profiles once such methods are implemented
         }
+
+        // In actuality, there are about 1605      unique courses
+        //                         about 9359-9485 unique students
+
+        System.out.println("course description set size: " + courseDescriptions.size());
+        System.out.println("student profile set size: " + studentProfiles.size());
     }
 
     /**
