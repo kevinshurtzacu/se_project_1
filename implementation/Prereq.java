@@ -1,6 +1,6 @@
 package implementation;
 
-import java.utils.Objects;
+import java.util.Objects;
 
 public class Prereq
 {

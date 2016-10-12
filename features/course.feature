@@ -123,7 +123,7 @@ Feature: Course instance maintains data about itself
 
       Examples:
         | grade 1 | grade 2 | result  |
-        | A       | B       | are not |
+        | A       | B       | are     |
         | A       | A       | are     |
         | F       | F       | are     |
-        | C       | D       | are not |
+        | C       | D       | are     |

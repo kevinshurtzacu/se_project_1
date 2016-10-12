@@ -90,6 +90,9 @@ public class DataModule
             if (profile.equals(student))
                 return profile;
         }
+
+        // this should never happen
+        return null;
     }
 
     /**
@@ -106,6 +109,9 @@ public class DataModule
             if (description.equals(course))
                 return description;
         }
+
+        // this should never happen
+        return null;
     }
 
     /**
@@ -126,6 +132,9 @@ public class DataModule
                 return description;
             }
         }
+
+        // this should never happen
+        return null;
     }
 
     /**
@@ -136,12 +145,12 @@ public class DataModule
      * @param courseNum the CourseDescription number (to identify the CourseDescription)
      * @param title     the CourseDescription title (to identify the CourseDescription)
      */
-    private static void addCourse(String bannerID, Course course)
+    private static void addCourse(Course course, int bannerID)
     {
         // add a student to a course description
         for (StudentProfile profile : studentProfiles)
         {
-            if (profile.getStudentBannerID.equals(bannerID))
+            if (profile.getBannerID() == bannerID)
             {
                 profile.addCourse(course);
             }
@@ -268,15 +277,19 @@ public class DataModule
                         courseDesc.getCourseNumber(),
                         courseDesc.getCourseTitle());
 
-            if (course != null && studentProfile != null)
-                addCourse(course, studentProfile.bannerID);
-
+            if (course != null && studentProfile != null) {
+                System.out.println(course);
+                System.out.println(studentProfile);
+                System.out.println(studentProfile.getBannerID());
+                addCourse(course, studentProfile.getBannerID());
+            }
             // add course to student profiles once such methods are implemented
         }
 
         // In actuality, there are about 1605      unique courses
         //                         about 9359-9485 unique students
 
+        /*
         System.out.println("course description set size: " + courseDescriptions.size());
 
         for (CourseDescription cd : courseDescriptions) {
@@ -290,6 +303,7 @@ public class DataModule
                         pr.getPrereqNumber() +
                         pr.getPrereqTitle());
         }
+        */
     }
 
     /**
@@ -364,7 +378,7 @@ public class DataModule
         ArrayList<Prereq> prereqList = description.getPrereqList();
 
         // get all current students
-        HashSet<Student> currentStudents = description.getCurrentStudents();
+        HashSet<Student> currentStudents = description.getCurrentStudentSet();
 
         // check each student's history agains the list of prereqs
         for (Student student : currentStudents)
@@ -382,7 +396,7 @@ public class DataModule
                 {
                     // The student does not contain a prerequisite - notify the user
                     System.out.println(profile.getFirstName() + " " + profile.getLastName() + " is ineligable for " +
-                            "Course: " + description.getCourseSubject() + " " + description.getCourseNumber() + ": "
+                            "Course: " + description.getCourseSubject() + " " + description.getCourseNumber() + ": " +
                             description.getCourseTitle());
 
                     // Tell the user about the missing prerequisite

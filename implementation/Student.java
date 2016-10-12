@@ -1,5 +1,7 @@
 package implementation;
 
+import java.util.Objects;
+
 /**
  * Represents an ACU student taking a course.  Maintains data for
  * <ul>

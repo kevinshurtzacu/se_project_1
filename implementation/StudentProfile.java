@@ -1,6 +1,7 @@
 package implementation;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Represents a single student's profile.  Maintains data for
