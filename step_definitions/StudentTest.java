@@ -23,13 +23,13 @@ public class StudentTest
     private static Object result = null;
 
     // Givens
-    @Given("^the student's course has the (.*?(?:\\sextension)?) (.*?)$")
+    @Given("^the student's course has the (.*?) (.*?)$")
     public void theStudentHas(String attribute, String value) throws Throwable
     {
         attribute = attribute.toLowerCase();
 
-        if (attribute.equals("number extension"))
-            student.setCourseNumberExt(value);
+        if (attribute.equals("section"))
+            student.setStudentSection(value);
     }
 
     @Given("^the student is (?:in the|a) (.*?) (?:term|course)$")
@@ -38,28 +38,36 @@ public class StudentTest
         term = term.toUpperCase();
 
         if (term.equals("FALL"))
-            student.setCourseTerm(Term.FALL);
+            student.setStudentTerm(Term.FALL);
 
         if (term.equals("SPRING"))
-            student.setCourseTerm(Term.SPRING);
+            student.setStudentTerm(Term.SPRING);
 
-        if (term.equals("JANUARY SHORT"))
-            student.setCourseTerm(Term.JAN_SHORT);
-
-        if (term.equals("MAY") || term.equals("MAYMESTER"))
-            student.setCourseTerm(Term.MAY);
+        if (term.equals("SUMMER"))
+            student.setStudentTerm(Term.SUMMER);
     }
 
     @Given("^the student is in the year (\\d+)$")
     public void theStudentIsInTheYear(int year) throws Throwable
     {
-        student.setCourseYear(year);
+        student.setStudentYear(year);
     }
 
-    @Given("^the student(?:'s)? grade is (\\d+(?:\\.?\\d+)?)$")
-    public void theStudentGradeIs(double grade) throws Throwable
+    @Given("^the student(?:'s)? grade is (.*?)$")
+    public void theStudentGradeIs(String grade) throws Throwable
     {
-        student.setCourseGrade(grade);
+        boolean isNum = true;
+
+        for (char character : grade.toCharArray())
+        {
+            if (!Character.isDigit(character))
+                isNum = false;
+        }
+
+        if (isNum)
+            student.setStudentGrade(Double.parseDouble(grade));
+        else
+            student.setStudentGrade(grade);
     }
 
     @Given("^the student (is not|is) taking (?:the|a) course$")
@@ -72,7 +80,7 @@ public class StudentTest
         else
             inCourse = false;
 
-        student.setInCourseNow(inCourse);
+        student.setTakingNow(inCourse);
     }
 
     // Whens
@@ -81,23 +89,23 @@ public class StudentTest
     {
         request = request.toLowerCase();
 
-        if (request.equals("extension"))
-            result = student.getCourseNumberExt();
+        if (request.equals("section"))
+            result = student.getStudentSection();
 
         if (request.equals("year"))
-            result = student.getCourseYear();
+            result = student.getStudentYear();
 
         if (request.equals("term"))
-            result = student.getCourseTerm();
+            result = student.getStudentTerm();
 
         if (request.equals("grade"))
-            result = student.getCourseGrade();
+            result = student.getStudentGrade();
     }
 
     @When("^I ask if the student is taking (?:the|a) course$")
     public void iAskIfStudentTakes() throws Throwable
     {
-        result = student.isInCourseNow();
+        result = student.isTakingNow();
     }
 
     // Thens
@@ -125,11 +133,8 @@ public class StudentTest
         if (expected.equals("SPRING"))
             term = Term.SPRING;
 
-        if (expected.equals("JANUARY SHORT"))
-            term = Term.JAN_SHORT;
-
-        if (expected.equals("MAY") || expected.equals("MAYMESTER"))
-            term = Term.MAY;
+        if (expected.equals("SUMMER"))
+            term = Term.SUMMER;
 
         assertEquals(term, (Term)result);
     }
@@ -143,14 +148,14 @@ public class StudentTest
     @Then("^I am told that (?:the|a) student (is|is not) taking (?:the|a) course$")
     public void iAmToldThatBeingTaken(String active) throws Throwable
     {
-        boolean inCourse;
+        Boolean inCourse;
 
         if (active.equals("is"))
             inCourse = true;
         else
             inCourse = false;
 
-        assertEquals(inCourse, student.isInCourseNow());
+        assertEquals(inCourse, (Boolean)result);
     }
 }
 

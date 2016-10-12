@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class CourseDescriptionTest
 {
     // CourseDescription object to be used for tests
-    private static CourseDescription coursedesc = new CourseDescription(0000, "CS", 101, "Software Engineering");
+    private static CourseDescription coursedesc = new CourseDescription("CS", "101", "Software Engineering");
 
     // Object to store result of tests
     private static Object result = null;
@@ -27,14 +27,11 @@ public class CourseDescriptionTest
     {
         attribute = attribute.toLowerCase();
 
-        if (attribute.equals("crn"))
-            coursedesc.setCourseCRN(Integer.parseInt(value));
-
         if (attribute.equals("subject"))
             coursedesc.setCourseSubject(value);
 
         if (attribute.equals("number"))
-            coursedesc.setCourseNumber(Integer.parseInt(value));
+            coursedesc.setCourseNumber(value);
 
         if (attribute.equals("title"))
             coursedesc.setCourseTitle(value);
@@ -45,9 +42,6 @@ public class CourseDescriptionTest
     public void iAskForTheCourseDescription(String attribute) throws Throwable
     {
         attribute = attribute.toLowerCase();
-
-        if (attribute.equals("crn"))
-            result = coursedesc.getCourseCRN();
 
         if (attribute.equals("subject"))
             result = coursedesc.getCourseSubject();

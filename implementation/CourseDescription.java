@@ -1,17 +1,22 @@
 package implementation;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
+
 /**
  * Represents a single course offered by ACU.  Maintains data for
  * <ul>
- *     <li>CRN (course registration number)</li>
  *     <li>course subject</li>
- *     <li>course title</li>
  *     <li>course number</li>
+ *     <li>course title</li>
+ *     <li>prerequisite list</li>
+ *     <li>student set</li>
  * </ul>
  *
  * <p>
- *     Instances of CourseDescription will also contain CRNs, by which Courses may
- *     look up data from their coresponding CourseDescription.
+ *     Instances of CourseDescription will also contain a subject and number,
+ *     by which Courses may look up data from their coresponding CourseDescription.
  * </p>
  *
  * @author Kevin Shurtz
@@ -20,16 +25,16 @@ package implementation;
 public class CourseDescription
 {
     // Course characteristics
-    int courseCRN;          // Course Registration Number
-    String courseSubject;   // Course subject (BIBL, CS, IT, etc.)
-    int courseNumber;       // Course number (101, 102, etc.)
-    String courseTitle;     // Course title (without number)
+    private String courseSubject;               // Course subject (BIBL, CS, IT, etc.)
+    private String courseNumber;                // Course number (101, 102, etc.)
+    private String courseTitle;                 // Course title (without number)
+	private ArrayList<Prereq> prereqsNeeded;    // List of prereqs needed for a certain class
+    private HashSet<Student> students;          // Set of students in course history
 
     /**
      * Constructs a Course object to represent a student's course.  Course
      * delegates the instantiation of instance variables to method setCourse.
      *
-     * @param crnNum    course registration number
      * @param subject   course subject, such as 'BIBL', 'CS', 'IT', etc
      * @param title     course title, such as 'Software Engineering', 'Networking', etc
      * @param courseNum course number, such as 220, 221, etc
@@ -37,9 +42,11 @@ public class CourseDescription
      *                                  was unacceptable
      * @see             CourseDescription#setCourseDescription(int, String, int, String)
      */
-    public CourseDescription(int crnNum, String subject, int courseNum, String title)
+    public CourseDescription(String subject, String courseNum, String title)
     {
-        setCourseDescription(crnNum, subject, courseNum, title);
+        setCourseDescription(subject, courseNum, title);
+        prereqsNeeded = new ArrayList<Prereq>();    // instantiate prerequisite list
+        students = new HashSet<Student>();          // instantiate student list
     }
 
     /**
@@ -54,22 +61,31 @@ public class CourseDescription
      * @throws IllegalArgumentException If one of the arguements provided
      *                                  was unacceptable
      */
-    public void setCourseDescription(int crnNum, String subject, int courseNum, String title)
+    public void setCourseDescription(String subject, String courseNum, String title)
     {
-        setCourseCRN(crnNum);           // Assign crn
-        setCourseSubject(subject);      // Assign subject
-        setCourseNumber(courseNum);     // Assign course number
-        setCourseTitle(courseTitle);    // Assign title
+        setCourseSubject(subject);                  // Assign subject
+        setCourseNumber(courseNum);                 // Assign course number
+        setCourseTitle(title);                      // Assign title
     }
 
     /**
-     * Assigns the course registration number.  No validation is conducted.
+     * Adds a Prereq to CourseDescriptions's List of Prereqs.
      *
-     * @param crnNum    course registration number, a unique course identifier
+     * @param prerequisite  a course prerequisite
      */
-    public void setCourseCRN(int crnNum)
+    public void addPrereq(Prereq prerequisite)
     {
-        courseCRN = crnNum;
+        prereqsNeeded.add(prerequisite);
+    }
+
+    /**
+     * Adds a student to CourseDescription's Set of Students.
+     *
+     * @param student   a student that has taken the CourseDescription's course
+     */
+    public void addStudent(Student student)
+    {
+        students.add(student);
     }
 
     /**
@@ -94,9 +110,9 @@ public class CourseDescription
      * @throws IllegalArgumentException If the course number is not three digits
      * @see                 Course#setCourseNumberExt(String)
      */
-    public void setCourseNumber(int courseNum)
+    public void setCourseNumber(String courseNum)
     {
-        if (Integer.toString(courseNum).length() != 3)
+        if (courseNum.length() != 3)
             throw new IllegalArgumentException("Course number is not three digits");
 
         courseNumber = courseNum;
@@ -112,17 +128,7 @@ public class CourseDescription
     {
         courseTitle = title;
     }
-
-    /**
-     * Returns the CRN.  The CRN is the course registration number.
-     *
-     * @return  the course CRN
-     */
-    public int getCourseCRN()
-    {
-        return courseCRN;
-    }
-
+	
     /**
      * Returns the course subject.  The course subject is output in an abbreviated format such
      * as 'BIBL', 'CS', 'IT', etc.
@@ -139,7 +145,7 @@ public class CourseDescription
      *
      * @return  the course number
      */
-    public int getCourseNumber()
+    public String getCourseNumber()
     {
         return courseNumber;
     }
@@ -155,23 +161,124 @@ public class CourseDescription
     }
 
     /**
+     * Returns a deeply copied ArrayList of Prereqs.
+     *
+     * @return      a copy of the Prereq list for the CourseDescription
+     */
+    public ArrayList<Prereq> getPrereqList()
+    {
+        // deep copy and return
+        ArrayList<Prereq> prereqList = new ArrayList<Prereq>();
+
+        for (Prereq prerequisite : prereqsNeeded)
+        {
+            // Note: While Strings are objects, they are immutable; this works for a deep copy
+            String subject = prerequisite.getPrereqSubject();
+            String number = prerequisite.getPrereqNumber();
+            String title = prerequisite.getPrereqTitle();
+            String grade = prerequisite.getPrereqGrade();
+
+            prereqList.add(new Prereq(subject, number, title, grade));
+        }
+
+        return prereqList;
+    }
+
+    /**
+     * Returns a deeply copied HashSet of Students.
+     *
+     * @return      a copy of the Student set for the CourseDescription
+     */
+    public HashSet<Student> getStudentSet()
+    {
+        // deep copy and return
+        HashSet<Student> studentSet = new HashSet<Student>();
+
+        for (Student student : students)
+        {
+            // Note: While Strings are objects, they are immutable; this works for a deep copy
+            int bannerID = student.getStudentBannerID();
+            String section = student.getStudentSection();
+            int year = student.getStudentYear();
+            Term term = student.getStudentTerm();
+            String grade = student.getStudentGrade();
+            boolean now = student.isTakingNow();
+
+            studentSet.add(new Student(bannerID, section, year, term, grade, now));
+        }
+
+        return studentSet;
+    }
+
+    /**
+     * Returns a deeply copied HashSet of Students currently in the course.
+     *
+     * @return      a copy of the Student set for the CourseDescription for all current students
+     */
+    public HashSet<Student> getCurrentStudentSet()
+    {
+        // deep copy and return
+        HashSet<Student> studentSet = new HashSet<Student>();
+
+        for (Student student : students)
+        {
+            // Note: While Strings are objects, they are immutable; this works for a deep copy
+            int bannerID = student.getStudentBannerID();
+            String section = student.getStudentSection();
+            int year = student.getStudentYear();
+            Term term = student.getStudentTerm();
+            String grade = student.getStudentGrade();
+            boolean now = student.isTakingNow();
+
+            // If the student is current
+            if (year == DataModule.currentYear && term == DataModule.currentTerm)
+                studentSet.add(new Student(bannerID, section, year, term, grade, now));
+        }
+
+        return studentSet;
+    }
+
+    /**
+     * Determines if the CourseDescription is equal to another CourseDescripion or Course.
+     * This function delegates the equals operation to one of the two private equals
+     * functions in CourseDescription.
+     *
+     * @param other     either a CourseDescription or Course object
+     * @return          whether the CourseDescription is equal to the other object
+     */
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other == null)
+            return false;
+
+        if (other == this)
+            return true;
+
+        if (other instanceof CourseDescription)
+            return equals((CourseDescription)other);
+
+        if (other instanceof Course)
+            return equals((Course)other);
+
+        return false;
+    }
+
+    /**
      * Checks if two CourseDescription objects are equal.
      *
      * @param other the other CourseDescription object
      * @return      whether or not the CourseDescription objects are identical
      */
-    public boolean equals(CourseDescription other)
+    private boolean equals(CourseDescription other)
     {
-        if (courseCRN != other.getCourseCRN())
+        if (other == null)
             return false;
 
-        if (courseSubject != other.getCourseSubject())
+        if (!getCourseSubject().equals(other.getCourseSubject()))
             return false;
 
-        if (courseNumber != other.getCourseNumber())
-            return false;
-
-        if (courseTitle != other.getCourseTitle())
+        if (!getCourseNumber().equals(other.getCourseNumber()))
             return false;
 
         return true;
@@ -183,11 +290,31 @@ public class CourseDescription
      * @param other the Course object looking up the appropriate CourseDescription object
      * @return      whether or not the Course object is represetned by the CourseDescription object
      */
-    public boolean equals(Course other)
+    private boolean equals(Course other)
     {
-        if (courseCRN == other.getCourseCRN())
-            return true;
+        if (other == null)
+            return false;
 
-        return false;
+        if (!courseSubject.equals(other.getCourseSubject()))
+            return false;
+
+        if (!courseNumber.equals(other.getCourseNumber()))
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Returns a hash for CourseDescription.  The hash utilizes the Objects library
+     * hash function, and uses the course subject and number to generate the hash.
+     *
+     * Course should hash to the same value.
+     *
+     * @return      a hash for CourseDescription
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getCourseSubject(), getCourseNumber());
     }
 }

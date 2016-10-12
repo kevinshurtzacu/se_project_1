@@ -4,9 +4,9 @@ Feature: Student instance maintains data about itself
 
   Scenario Outline: System asks for the student profile last name
     Given the student profile has the last name <lastname>
-    And the student profile has the first name <firstname>
-    And the student profile has the email <email>
-    And the student profile has the banner id <bannerid>
+      And the student profile has the first name <firstname>
+      And the student profile has the email <email>
+      And the student profile has the banner id <bannerid>
     When I ask for the student profile last name
     Then I receive the string <result> from student profile
 
@@ -20,9 +20,9 @@ Feature: Student instance maintains data about itself
 	  
   Scenario Outline: System asks for the student profile first name
     Given the student profile has the last name <lastname>
-    And the student profile has the first name <firstname>
-    And the student profile has the email <email>
-    And the student profile has the banner id <bannerid>
+      And the student profile has the first name <firstname>
+      And the student profile has the email <email>
+      And the student profile has the banner id <bannerid>
     When I ask for the student profile first name
     Then I receive the string <result> from student profile
 
@@ -36,9 +36,9 @@ Feature: Student instance maintains data about itself
 	  
   Scenario Outline: System asks for the student profile email
     Given the student profile has the last name <lastname>
-    And the student profile has the first name <firstname>
-    And the student profile has the email <email>
-    And the student profile has the banner id <bannerid>
+      And the student profile has the first name <firstname>
+      And the student profile has the email <email>
+      And the student profile has the banner id <bannerid>
     When I ask for the student profile email
     Then I receive the string <result> from student profile
 
@@ -52,9 +52,9 @@ Feature: Student instance maintains data about itself
 	  
   Scenario Outline: System asks for the student profile banner id
     Given the student profile has the last name <lastname>
-    And the student profile has the first name <firstname>
-    And the student profile has the email <email>
-    And the student profile has the banner id <bannerid>
+      And the student profile has the first name <firstname>
+      And the student profile has the email <email>
+      And the student profile has the banner id <bannerid>
     When I ask for the student profile banner id
     Then I receive the integer <result> from student profile
 
@@ -65,3 +65,4 @@ Feature: Student instance maintains data about itself
       | Pettit    | Virginia  | vxp12c@acu.edu  | 000499799 | 000499799 |
       | Heidecker | Tim       | teh13d@acu.edu  | 000777777 | 000777777 |
       | Wareheim  | Eric      | ebw14a@acu.edu  | 000888888 | 000888888 |
+
