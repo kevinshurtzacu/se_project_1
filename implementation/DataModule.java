@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-
 /**
  * Contains methods to load and store information to and from the database.  The
  * DataModule also allows other modules and objects to request information
@@ -30,7 +29,7 @@ public class DataModule
     static private ArrayList<Prereq> allPrereqs = new ArrayList<Prereq>();
 
     // These will be calculated later
-    static public int currentYear = 2016;
+    static public int currentYear = 2015;
     static public Term currentTerm = Term.FALL;
 
     /**
@@ -62,14 +61,13 @@ public class DataModule
      * @param courseNum the CourseDescription number (to identify the CourseDescription)
      * @param title     the CourseDescription title (to identify the CourseDescription)
      */
-    private static void addStudent(Student student, String subject, String courseNum, String title)
+    private static void addStudent(Student student, String subject, String courseNum)
     {
         // add a student to a course description
         for (CourseDescription description : courseDescriptions)
         {
             if (description.getCourseSubject().equals(subject) &&
-                    description.getCourseNumber().equals(courseNum) &&
-                    description.getCourseTitle().equals(title))
+                    description.getCourseNumber().equals(courseNum))
             {
                 description.addStudent(student);
             }
@@ -121,13 +119,12 @@ public class DataModule
      * @param course    the CourseDescription object to be matched to a Course
      * @return          the CourseDescription that matches course
      */
-    private static CourseDescription getCourseDescription(String subject, String courseNum, String title)
+    private static CourseDescription getCourseDescription(String subject, String courseNum)
     {
         for (CourseDescription description : courseDescriptions)
         {
             if (description.getCourseSubject().equals(subject) &&
-                    description.getCourseNumber().equals(courseNum) &&
-                    description.getCourseTitle().equals(title))
+                    description.getCourseNumber().equals(courseNum))
             {
                 return description;
             }
@@ -151,9 +148,7 @@ public class DataModule
         for (StudentProfile profile : studentProfiles)
         {
             if (profile.getBannerID() == bannerID)
-            {
                 profile.addCourse(course);
-            }
         }
     }
 
@@ -264,48 +259,36 @@ public class DataModule
             if (courseDesc != null)
                 courseDescriptions.add(courseDesc);
 
-            if (studentProfile != null)
+            if (studentProfile != null) {
+                // System.out.print("*");
                 studentProfiles.add(studentProfile);
+            }
 
             // if (studentProfile != null)
             //     studentProfiles.add(studentProfile);
 
             // System.out.println(courseDesc.getStudentBannerID());
-            if (student != null && courseDesc != null)
+            if (student != null && courseDesc != null) {
+                // System.out.print(".");
                 addStudent(student,
                         courseDesc.getCourseSubject(),
-                        courseDesc.getCourseNumber(),
-                        courseDesc.getCourseTitle());
-
-            if (course != null && studentProfile != null) {
-                System.out.println(course);
-                System.out.println(studentProfile);
-                System.out.println(studentProfile.getBannerID());
-                addCourse(course, studentProfile.getBannerID());
+                        courseDesc.getCourseNumber());
             }
+
+            if (course != null && studentProfile != null)
+                addCourse(course, studentProfile.getBannerID());
+
             // add course to student profiles once such methods are implemented
         }
 
         // In actuality, there are about 1605      unique courses
         //                         about 9359-9485 unique students
 
-        /*
-        System.out.println("course description set size: " + courseDescriptions.size());
 
-        for (CourseDescription cd : courseDescriptions) {
-            System.out.println(cd.getCourseSubject() + " " + cd.getCourseNumber() + " " + cd.getCourseTitle());
-
-            ArrayList<Prereq> prereqList = cd.getPrereqList();
-
-            for (Prereq pr : prereqList)
-                System.out.println("\t" +
-                        pr.getPrereqSubject() +
-                        pr.getPrereqNumber() +
-                        pr.getPrereqTitle());
-        }
-        */
+        System.out.println(" [Set Size: " + courseDescriptions.size() + "]");
     }
 
+    public static int count = 0;
     /**
      * Applies all Prereqs to their respective CourseDescriptions.  This function
      * is only useful if loadHistory has already been called.  Otherwise, there
@@ -338,28 +321,92 @@ public class DataModule
             String prereqTitle;
             String prereqGrade;
 
+            /*
+            System.out.println("\n" + "LINE " + (++count));
+            System.out.println("p subject: " + descriptionSubject);
+            System.out.println("p number: " + descriptionNumber);
+            System.out.println("p title: " + descriptionTitle);
+            */
+
+            for (String each : record)
+                System.out.println("\tEACH: " + each);
+
+            System.out.print("PREREQ: " + descriptionSubject + " " + descriptionNumber + "\t");
+            boolean flag = false;
             for (CourseDescription description : courseDescriptions)
             {
                 // if there is a course description that matches the course description for this record
                 if (description.getCourseSubject().equals(descriptionSubject) &&
-                        description.getCourseNumber().equals(descriptionNumber) &&
-                        description.getCourseTitle().equals(descriptionTitle))
+                        description.getCourseNumber().equals(descriptionNumber))
                 {
+                    // System.out.println("\tMATCH:  " + descriptionSubject + " " + descriptionNumber + " " + descriptionTitle);
+                    flag = true;
+                    boolean flag2 = false;
+                    if (descriptionSubject.equals("CS") && descriptionNumber.equals("130"))
+                        flag2 = true;
                     // add each Prereq to the corresponding CourseDescription
+                    System.out.println(record.length);
                     for (int index = 1; index < record.length; ++index)
                     {
+                        System.out.println("\tCHECK SPOT: " + index);
                         prereqID = record[index].split(",");
+
+                        if (flag2) {
+                            for (String aarg : prereqID)
+                                System.out.print(aarg + " ");
+                            System.out.println();
+                        }
 
                         prereqSubject = prereqID[0];
                         prereqNumber = prereqID[1];
                         prereqTitle = prereqID[2];
                         prereqGrade = prereqID[3];
 
+                        if (flag2) {
+                            System.out.println("\t" + prereqSubject);
+                            System.out.println("\t" + prereqNumber);
+                            System.out.println("\t" + prereqTitle);
+                            System.out.println("\t" + prereqGrade);
+
+                            System.out.println("\nADD PREREQ");
+                            System.out.println("\tsubject: " + prereqSubject);
+                            System.out.println("\tnumber: " + prereqNumber);
+                            System.out.println("\ttitle: " + prereqTitle);
+                            System.out.println("\tgrade: " + prereqGrade);
+                        }
+
                         description.addPrereq(new Prereq(prereqSubject, prereqNumber, prereqTitle, prereqGrade));
                     }
                 }
             }
+            System.out.println(flag ? "MATCH" : "NO MATCH");
+
+            /*
+            for (CourseDescription description : courseDescriptions)
+            {
+                System.out.println("\n" + description.getCourseSubject() + " " + description.getCourseNumber() +
+                        " " + description.getCourseTitle());
+                System.out.println("c subject: " + description.getCourseSubject());
+                System.out.println("c number: " + description.getCourseNumber());
+                System.out.println("c title: " + description.getCourseTitle());
+            }
+            */
         }
+
+        /*
+        // Prints out course descriptions with prereqs
+        for (CourseDescription cd : courseDescriptions) {
+            System.out.println(cd.getCourseSubject() + " " + cd.getCourseNumber() + " " + cd.getCourseTitle());
+
+            ArrayList<Prereq> prereqList = cd.getPrereqList();
+
+            for (Prereq pr : prereqList)
+                System.out.println("\t" + " " +
+                        pr.getPrereqSubject() + " " +
+                        pr.getPrereqNumber() + " " +
+                        pr.getPrereqTitle());
+        }
+        */
     }
 
     /**
@@ -369,16 +416,21 @@ public class DataModule
      * @param courseNum     the number of the CourseDescription being queried
      * @param title         the titel of the CourseDescription being queried
      */
-    public static void printIneligable(String subject, String courseNum, String title)
+    public static void printIneligible(String subject, String courseNum)
     {
         // uniquely identify course description under review
-        CourseDescription description = getCourseDescription(subject, courseNum, title);
+        CourseDescription description = getCourseDescription(subject, courseNum);
 
         // get all prerequisites
         ArrayList<Prereq> prereqList = description.getPrereqList();
 
+        System.out.println("Prereq list size: " + prereqList.size());
+
         // get all current students
         HashSet<Student> currentStudents = description.getCurrentStudentSet();
+
+        // print the number of students enrolled
+        System.out.println("Students Enrolled: " + currentStudents.size());
 
         // check each student's history agains the list of prereqs
         for (Student student : currentStudents)
@@ -395,13 +447,18 @@ public class DataModule
                 if (!courseSet.contains(prerequisite))
                 {
                     // The student does not contain a prerequisite - notify the user
-                    System.out.println(profile.getFirstName() + " " + profile.getLastName() + " is ineligable for " +
+                    System.out.println(profile.getFirstName() + " " + profile.getLastName() + "\tis ineligible for " +
                             "Course: " + description.getCourseSubject() + " " + description.getCourseNumber() + ": " +
                             description.getCourseTitle());
 
                     // Tell the user about the missing prerequisite
-                    System.out.println("Student requires Prerequisite: " + prerequisite.getPrereqSubject() + " " +
+                    System.out.println("\t\tStudent requires Prerequisite: " + prerequisite.getPrereqSubject() + " " +
                             prerequisite.getPrereqNumber() + ": " + prerequisite.getPrereqTitle());
+                }
+                else
+                {
+                    // Tell the user about students that satisfy prerequisites
+                    System.out.println(profile.getFirstName() + " "  + profile.getLastName() + "\tmeets all requirements!");
                 }
             }
         }
@@ -438,6 +495,8 @@ public class DataModule
         // prepare for the first iteration
         startPoint = 0;
 
+        System.out.println();
+
         // parse each token
         for (int index = 0; index < record.length; ++index)
         {
@@ -458,6 +517,7 @@ public class DataModule
                 }
                 else
                 {
+                    System.out.print(record[index]);
                     token.add(record[index]);   // add a character to the token
                 }
             }
@@ -467,8 +527,9 @@ public class DataModule
                 {
                     delimOn = false;    // begin a clause
                 }
-                else if (record[index] == delim || index == record.length)
+                else if (record[index] == delim || index >= record.length)
                 {
+                    System.out.print("\t");
                     StringBuilder completeToken = new StringBuilder();
 
                     for (char character : token)
@@ -482,10 +543,16 @@ public class DataModule
                 }
                 else
                 {
+                    System.out.print(record[index]);
                     token.add(record[index]);   // add a character to the token
                 }
             }
         }
+
+        System.out.println("\n\n");
+        for (String r : result)
+            System.out.println("\t\tRESULT: " + result);
+        System.out.println("\n");
 
         // return the String array of tokens
         return result.toArray(new String[result.size()]);

@@ -480,9 +480,6 @@ public class Course
         if (!getCourseTitle().equals(other.getCourseTitle()))
             return false;
 
-        if (!getCourseTitle().equals(other.getCourseTitle()))
-            return false;
-
         return true;
     }
 

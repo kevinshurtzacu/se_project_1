@@ -12,11 +12,13 @@ public class Prereq
 	
 	public Prereq(String sbt, String num, String ttl, String grd)
 	{
-		setPrereq(sbt, title, num, grd);
+        // System.out.println("\t\tALL GOOD 1: " + sbt + " " + num + " " + ttl + " " + grd);
+		setPrereq(sbt, num, ttl, grd);
 	}
 	
 	public void setPrereq(String sbt, String num, String ttl, String grd)
 	{
+        // System.out.print("\t\tALL GOOD 2: " + sbt + " " + num + " " + ttl + " " + grd);
 		setPrereqSubject(sbt);
 		setPrereqNumber(num);
         setPrereqTitle(ttl);
@@ -25,36 +27,43 @@ public class Prereq
 	
 	public void setPrereqSubject(String sbt)
 	{
-		subject = sbt;
+		// System.out.print(" `");
+        subject = sbt;
 	}
 	
 	public void setPrereqNumber(String num)
 	{
-		number = num;
+		// System.out.print(" ~");
+        number = num;
 	}
 
 	public void setPrereqTitle(String ttl)
     {
+        // System.out.print(" *");
         title = ttl;
     }
 
 	public void setPrereqGrade(String grd)
 	{
+        // System.out.println(" ^");
 		grade = grd;
 	}
 	
 	public String getPrereqSubject()
 	{
+		// System.out.print("[SUB: " + subject + "] ");
 		return subject;
 	}
 	
 	public String getPrereqNumber()
 	{
+        // System.out.print("[NUM: " + number + "] ");
 		return number;
 	}
 
 	public String getPrereqTitle()
     {
+        // System.out.print("[TTL: " + title + "] ");
         return title;
     }
 
@@ -89,9 +98,6 @@ public class Prereq
 		if (!getPrereqNumber().equals(other.getPrereqNumber()))
 			return false;
 
-        if (!getPrereqTitle().equals(other.getPrereqTitle()))
-            return false;
-
 		if (!getPrereqGrade().equals(other.getPrereqGrade()))
 			return false;
 		
@@ -106,9 +112,6 @@ public class Prereq
 		if (!getPrereqNumber().equals(other.getCourseNumber()))
 			return false;
 
-        if (!getPrereqTitle().equals(other.getCourseTitle()))
-            return false;
-
         if (!getPrereqGrade().equals(other.getCourseGrade()))
 			return false;
 		
@@ -118,6 +121,6 @@ public class Prereq
 	@Override
 	public int hashCode()
     {
-        return Objects.hash(getPrereqSubject(), getPrereqNumber(), getPrereqTitle());
+        return Objects.hash(getPrereqSubject(), getPrereqNumber());
     }
 }

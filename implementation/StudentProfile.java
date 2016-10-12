@@ -46,6 +46,7 @@ public class StudentProfile
     public StudentProfile(int banner, String first, String last, String mail)
     {
         setStudentProfile(banner, first, last, email);
+        courses = new HashSet<Course>();
     }
 
     /**

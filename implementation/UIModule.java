@@ -24,29 +24,43 @@ public class UIModule
                 tokens[0] = input;
             }
             else
-                tokens = input.split("\\w+");
+                tokens = input.split("\\s+");
 
-            // Help
             if (tokens[0].toUpperCase().equals("HELP"))
-                showHelp();
-
-            // Query
-            if (tokens[0].toUpperCase().equals("SHOW"))
             {
-                if (tokens[1].toUpperCase().equals("INELIGABLE") &&
+                // Help
+                showHelp();
+            }
+            else if (tokens[0].toUpperCase().equals("SHOW"))
+            {
+                // Query
+                if (tokens[1].toUpperCase().equals("INELIGIBLE") &&
                         tokens[2].toUpperCase().equals("IN"))
                 {
+                    // Get subject and number
+                    String subject = tokens[3];
+                    String number = tokens[4];
 
+                    System.out.println("\t" + subject + " " + number);
+
+                    // query for data
+                    DataModule.printIneligible(subject, number);
                 }
             }
-
-            // Exit
-            if (tokens[0].toUpperCase().equals("EXIT"))
+            else if (tokens[0].toUpperCase().equals("EXIT"))
+            {
+                // Exit
                 run = false;
+            }
+            else
+            {
+                // Error
+                System.out.println("No such query.  Type 'HELP' for help.");
+            }
         }
     }
 
-    private static void showHelp()
+    public static void showHelp()
     {
         System.out.println("Version 1.0");
         System.out.println("Authors:\n" +
@@ -59,7 +73,7 @@ public class UIModule
                 "user prompts follow the '>' character, and are case insensitive.");
 
         System.out.println("\nTo request all ineligable students in a course, enter:");
-        System.out.println("\t'SHOW INELIGABLE IN [SUBJECT] [NUMBER] [TITLE]'");
+        System.out.println("\t'SHOW INELIGIBLE IN [SUBJECT] [NUMBER]'");
 
         System.out.println("\nTo exit, enter:");
         System.out.println("\t'EXIT'");

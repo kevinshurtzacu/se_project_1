@@ -45,6 +45,8 @@ public class CourseDescription
     public CourseDescription(String subject, String courseNum, String title)
     {
         setCourseDescription(subject, courseNum, title);
+        prereqsNeeded = new ArrayList<Prereq>();    // instantiate prerequisite list
+        students = new HashSet<Student>();          // instantiate student list
     }
 
     /**
@@ -64,8 +66,6 @@ public class CourseDescription
         setCourseSubject(subject);                  // Assign subject
         setCourseNumber(courseNum);                 // Assign course number
         setCourseTitle(title);                      // Assign title
-        prereqsNeeded = new ArrayList<Prereq>();    // instantiate prerequisite list
-        students = new HashSet<Student>();          // instnatiate student list
     }
 
     /**
@@ -281,9 +281,6 @@ public class CourseDescription
         if (!getCourseNumber().equals(other.getCourseNumber()))
             return false;
 
-        if (!getCourseTitle().equals(other.getCourseTitle()))
-            return false;
-
         return true;
     }
 
@@ -318,6 +315,6 @@ public class CourseDescription
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCourseSubject(), getCourseNumber(), getCourseTitle());
+        return Objects.hash(getCourseSubject(), getCourseNumber());
     }
 }
