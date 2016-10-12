@@ -259,8 +259,8 @@ public class DataModule
             if (courseDesc != null)
                 courseDescriptions.add(courseDesc);
 
-            if (studentProfile != null) {
-                // System.out.print("*");
+            if (studentProfile != null)
+            {
                 studentProfiles.add(studentProfile);
             }
 
@@ -268,8 +268,8 @@ public class DataModule
             //     studentProfiles.add(studentProfile);
 
             // System.out.println(courseDesc.getStudentBannerID());
-            if (student != null && courseDesc != null) {
-                // System.out.print(".");
+            if (student != null && courseDesc != null)
+            {
                 addStudent(student,
                         courseDesc.getCourseSubject(),
                         courseDesc.getCourseNumber());
@@ -328,11 +328,10 @@ public class DataModule
             System.out.println("p title: " + descriptionTitle);
             */
 
-            for (String each : record)
-                System.out.println("\tEACH: " + each);
+            // System.out.println(" RF: " + record.length);
 
-            System.out.print("PREREQ: " + descriptionSubject + " " + descriptionNumber + "\t");
-            boolean flag = false;
+            // System.out.print("PREREQ: " + descriptionSubject + " " + descriptionNumber + "\t");
+            // boolean flag = false;
             for (CourseDescription description : courseDescriptions)
             {
                 // if there is a course description that matches the course description for this record
@@ -340,28 +339,33 @@ public class DataModule
                         description.getCourseNumber().equals(descriptionNumber))
                 {
                     // System.out.println("\tMATCH:  " + descriptionSubject + " " + descriptionNumber + " " + descriptionTitle);
+                    /*
                     flag = true;
                     boolean flag2 = false;
                     if (descriptionSubject.equals("CS") && descriptionNumber.equals("130"))
                         flag2 = true;
                     // add each Prereq to the corresponding CourseDescription
                     System.out.println(record.length);
+                    */
                     for (int index = 1; index < record.length; ++index)
                     {
-                        System.out.println("\tCHECK SPOT: " + index);
+                        // System.out.println("\tCHECK SPOT: " + index);
                         prereqID = record[index].split(",");
 
+                        /*
                         if (flag2) {
                             for (String aarg : prereqID)
                                 System.out.print(aarg + " ");
                             System.out.println();
                         }
+                        */
 
                         prereqSubject = prereqID[0];
                         prereqNumber = prereqID[1];
                         prereqTitle = prereqID[2];
                         prereqGrade = prereqID[3];
 
+                        /*
                         if (flag2) {
                             System.out.println("\t" + prereqSubject);
                             System.out.println("\t" + prereqNumber);
@@ -374,12 +378,12 @@ public class DataModule
                             System.out.println("\ttitle: " + prereqTitle);
                             System.out.println("\tgrade: " + prereqGrade);
                         }
-
+                        */
                         description.addPrereq(new Prereq(prereqSubject, prereqNumber, prereqTitle, prereqGrade));
                     }
                 }
             }
-            System.out.println(flag ? "MATCH" : "NO MATCH");
+            // System.out.println(flag ? "MATCH" : "NO MATCH");
 
             /*
             for (CourseDescription description : courseDescriptions)
@@ -444,6 +448,12 @@ public class DataModule
             // Compare each prerequisite against each student's course history
             for (Prereq prerequisite : prereqList)
             {
+                /*
+                System.out.println("INFO: " + prerequisite.getPrereqSubject() + " " + prerequisite.getPrereqNumber() + " " + prerequisite.getPrereqGrade());
+                for (Course c : courseSet)
+                    System.out.println("\tPAST COURSES: " + c.getCourseSubject() + " " + c.getCourseNumber() + " " + c.getCourseGrade());
+                */
+                System.out.println("INFO: " + prerequisite.getPrereqSubject() + " " + prerequisite.getPrereqNumber() + " " + prerequisite.getPrereqGrade());
                 if (!courseSet.contains(prerequisite))
                 {
                     // The student does not contain a prerequisite - notify the user
@@ -495,7 +505,7 @@ public class DataModule
         // prepare for the first iteration
         startPoint = 0;
 
-        System.out.println();
+        // System.out.println();
 
         // parse each token
         for (int index = 0; index < record.length; ++index)
@@ -505,19 +515,33 @@ public class DataModule
             // if we are in a clause, we ignore the delimeter; otherwise, we proceed as usual
             if (!delimOn)
             {
-                // handle special characters
                 if (record[index] == escape && (index + 1 < record.length && record[index + 1] == clause))
                 {
                     token.add(clause);  // add the escaped clause begin/end character
                     ++index;            // move up two indeces by the end of the iteration
                 }
+                else if (record[index] == clause && index == record.length - 1)
+                {
+                    StringBuilder completeToken = new StringBuilder();
+
+                    for (char character : token)
+                    {
+                        completeToken.append(character);
+                    }
+
+                    token.clear();                          // begin a new token
+                    result.add(completeToken.toString());   // add the new token
+                    startPoint = index + 1;                 // start point for next token
+
+                    delimOn = true;     // end a clause
+                }
                 else if (record[index] == clause)
                 {
                     delimOn = true;     // end a clause
                 }
+                // handle special characters
                 else
                 {
-                    System.out.print(record[index]);
                     token.add(record[index]);   // add a character to the token
                 }
             }
@@ -527,9 +551,8 @@ public class DataModule
                 {
                     delimOn = false;    // begin a clause
                 }
-                else if (record[index] == delim || index >= record.length)
+                else if (record[index] == delim || index == record.length - 1)
                 {
-                    System.out.print("\t");
                     StringBuilder completeToken = new StringBuilder();
 
                     for (char character : token)
@@ -543,16 +566,12 @@ public class DataModule
                 }
                 else
                 {
-                    System.out.print(record[index]);
                     token.add(record[index]);   // add a character to the token
                 }
             }
         }
 
-        System.out.println("\n\n");
-        for (String r : result)
-            System.out.println("\t\tRESULT: " + result);
-        System.out.println("\n");
+        // System.out.print("RL: " + result.size() + " RLA: " + result.toArray(new String[result.size()]).length);
 
         // return the String array of tokens
         return result.toArray(new String[result.size()]);

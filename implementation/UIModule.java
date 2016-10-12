@@ -15,7 +15,7 @@ public class UIModule
             prompt();
             input = scan.nextLine();
 
-            // createt tokens from user input
+            // created tokens from user input
             String[] tokens;
 
             if (!input.contains(" "))
@@ -72,7 +72,7 @@ public class UIModule
                 "in a course who do not have sufficient prerequisites to take it.  All " +
                 "user prompts follow the '>' character, and are case insensitive.");
 
-        System.out.println("\nTo request all ineligable students in a course, enter:");
+        System.out.println("\nTo request all ineligible students in a course, enter:");
         System.out.println("\t'SHOW INELIGIBLE IN [SUBJECT] [NUMBER]'");
 
         System.out.println("\nTo exit, enter:");

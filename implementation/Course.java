@@ -428,9 +428,11 @@ public class Course
         if (other instanceof Course)
             return equals((Course)other);
 
-        if (other instanceof CourseDescription) {
+        if (other instanceof CourseDescription)
             return equals((CourseDescription)other);
-        }
+
+        if (other instanceof Prereq)
+            return equals((Prereq)other);
 
         return false;
     }
@@ -477,7 +479,25 @@ public class Course
         if (!getCourseNumber().equals(other.getCourseNumber()))
             return false;
 
-        if (!getCourseTitle().equals(other.getCourseTitle()))
+        return true;
+    }
+
+    /**
+     * Returns true if a Course can be related to a Prereq
+     * via its subject and number.
+     *
+     * @param other     the Prereq being compared
+     * @return          whether the Course relates to the Prereq
+     */
+    private boolean equals(Prereq other)
+    {
+        if (!getCourseSubject().equals(other.getPrereqSubject()))
+            return false;
+
+        if (!getCourseNumber().equals(other.getPrereqNumber()))
+            return false;
+
+        if (getCourseGrade().compareTo(other.getPrereqGrade()) >= 0)
             return false;
 
         return true;
@@ -494,7 +514,7 @@ public class Course
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCourseSubject(), getCourseNumber(), getCourseTitle());
+        return Objects.hash(getCourseSubject(), getCourseNumber());
     }
 }
 

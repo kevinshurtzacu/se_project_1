@@ -112,7 +112,7 @@ public class Prereq
 		if (!getPrereqNumber().equals(other.getCourseNumber()))
 			return false;
 
-        if (!getPrereqGrade().equals(other.getCourseGrade()))
+        if (getPrereqGrade().compareTo(other.getCourseGrade()) < 0)
 			return false;
 		
 		return true;
