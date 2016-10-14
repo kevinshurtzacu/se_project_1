@@ -1,2 +1,2 @@
-javac -cp "jars/*:." Main.java
+javac -cp "jars/*:." Run.java
 
