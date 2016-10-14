@@ -418,7 +418,6 @@ public class DataModule
      *
      * @param subject       the subject of the CourseDescription being queried
      * @param courseNum     the number of the CourseDescription being queried
-     * @param title         the titel of the CourseDescription being queried
      */
     public static void printIneligible(String subject, String courseNum)
     {
@@ -428,7 +427,7 @@ public class DataModule
         // get all prerequisites
         ArrayList<Prereq> prereqList = description.getPrereqList();
 
-        System.out.println("Prereq list size: " + prereqList.size());
+        // System.out.println("Prereq list size: " + prereqList.size());
 
         // get all current students
         HashSet<Student> currentStudents = description.getCurrentStudentSet();
@@ -437,6 +436,10 @@ public class DataModule
         System.out.println("Students Enrolled: " + currentStudents.size());
 
         // check each student's history agains the list of prereqs
+        System.out.println("Fail to satisfy prerequisites:");
+
+        int studentsFound = 0;
+
         for (Student student : currentStudents)
         {
             // find the matching student profile
@@ -445,33 +448,101 @@ public class DataModule
             // identify all courses taken by the student
             HashSet<Course> courseSet = profile.getCourseSet();
 
+            // capture all the prereqs unsatisfied by the student's history
+            boolean satisfies = true;
+            ArrayList<Prereq> stillNeeds = new ArrayList<Prereq>();
+
             // Compare each prerequisite against each student's course history
             for (Prereq prerequisite : prereqList)
             {
-                /*
-                System.out.println("INFO: " + prerequisite.getPrereqSubject() + " " + prerequisite.getPrereqNumber() + " " + prerequisite.getPrereqGrade());
-                for (Course c : courseSet)
-                    System.out.println("\tPAST COURSES: " + c.getCourseSubject() + " " + c.getCourseNumber() + " " + c.getCourseGrade());
-                */
-                System.out.println("INFO: " + prerequisite.getPrereqSubject() + " " + prerequisite.getPrereqNumber() + " " + prerequisite.getPrereqGrade());
                 if (!courseSet.contains(prerequisite))
                 {
-                    // The student does not contain a prerequisite - notify the user
-                    System.out.println(profile.getFirstName() + " " + profile.getLastName() + "\tis ineligible for " +
-                            "Course: " + description.getCourseSubject() + " " + description.getCourseNumber() + ": " +
-                            description.getCourseTitle());
-
-                    // Tell the user about the missing prerequisite
-                    System.out.println("\t\tStudent requires Prerequisite: " + prerequisite.getPrereqSubject() + " " +
-                            prerequisite.getPrereqNumber() + ": " + prerequisite.getPrereqTitle());
+                    satisfies = false;
+                    stillNeeds.add(prerequisite);
                 }
-                else
+            }
+
+            // show all needed courses
+            if (!satisfies)
+            {
+                // The student does not contain a prerequisite - notify the user
+                System.out.println("* " + profile.getFirstName() + " " + profile.getLastName() +
+                        " (" + profile.getBannerID() + ") needs: ");
+
+                for (Prereq prerequisite : stillNeeds)
+                {
+                    // Tell the user about the missing prerequisite
+                    System.out.println("  * " + prerequisite.getPrereqSubject() + " " + prerequisite.getPrereqNumber() +
+                            ": " + prerequisite.getPrereqTitle());
+                }
+
+                // increment students found
+                ++studentsFound;
+            }
+        }
+
+        // Mark the total number of students found
+        System.out.println("[" + studentsFound + " Results]\n");
+    }
+
+    /**
+     * Prints all of the eligable students for a given course.
+     *
+     * @param subject       the subject of the CourseDescription being queried
+     * @param courseNum     the number of the CourseDescription being queried\
+     */
+    public static void printEligible(String subject, String courseNum)
+    {
+        // uniquely identify course description under review
+        CourseDescription description = getCourseDescription(subject, courseNum);
+
+        // get all prerequisites
+        ArrayList<Prereq> prereqList = description.getPrereqList();
+
+        // System.out.println("Prereq list size: " + prereqList.size());
+
+        // get all current students
+        HashSet<Student> currentStudents = description.getCurrentStudentSet();
+
+        // print the number of students enrolled
+        System.out.println("Students Enrolled: " + currentStudents.size());
+
+        // check each student's history agains the list of prereqs
+        System.out.println("Satisty prerequisites: ");
+
+        int studentsFound = 0;
+
+        for (Student student : currentStudents)
+        {
+            // find the matching student profile
+            StudentProfile profile = getStudentProfile(student);
+
+            // identify all courses taken by the student
+            HashSet<Course> courseSet = profile.getCourseSet();
+
+            boolean satisfies = true;
+
+            // Compare each prerequisite against each student's course history
+            for (Prereq prerequisite : prereqList)
+            {
+                // System.out.println("INFO: " + prerequisite.getPrereqSubject() + " " + prerequisite.getPrereqNumber() + " " + prerequisite.getPrereqGrade());
+                if (!courseSet.contains(prerequisite))
+                    satisfies = false;
+
+                if (satisfies)
                 {
                     // Tell the user about students that satisfy prerequisites
-                    System.out.println(profile.getFirstName() + " "  + profile.getLastName() + "\tmeets all requirements!");
+                    System.out.println("* " + profile.getFirstName() + " " +
+                            profile.getLastName() + " (" + profile.getBannerID() + ")");
+
+                    // Increment studentsFound
+                    ++studentsFound;
                 }
             }
         }
+
+        // Mark the total number of students found
+        System.out.println("[" + studentsFound + " Results]\n");
     }
 
     /**
